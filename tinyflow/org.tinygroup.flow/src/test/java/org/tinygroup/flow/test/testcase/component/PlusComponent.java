@@ -13,22 +13,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.flow.exception.errorcode;
+package org.tinygroup.flow.test.testcase.component;
+
+import org.tinygroup.context.Context;
+import org.tinygroup.flow.ComponentInterface;
+import org.tinygroup.flow.test.testcase.DataUtil;
+
+public class PlusComponent implements ComponentInterface{
+	int ii;
+	
+	public int getIi() {
+		return ii;
+	}
 
 
-public class FlowExceptionErrorCode {
-	 /**
-     * 流程节点名称非空校验
-     */
-    public static final String FLOW_NODE_NAME_VALIDATE_EXCEPTION = "0TE12"+"0081"+"001";
-    
-    /**
-     * 流程节点参数校验失败异常
-     */
-    public static final String FLOW_PROPERTY_VALIDATE_EXCEPTION = "0TE12"+"0081"+"002";
 
-    /**
-     * 未找到后续节点
-     */
-    public static final String FLOW_NEXT_NODE_NOT_FOUND_EXCEPTION = "0TE12"+"0081"+"003";
+	public void setIi(int ii) {
+		this.ii = ii;
+	}
+
+
+
+	public void execute(Context context) {
+		DataUtil.plus(ii);
+	}
+
 }

@@ -14,8 +14,8 @@
         </properties>
       </component>
       <next-nodes>
-        <next-node exception-type="org.tinygroup.flow.test.Exception.ExceptionNew1" next-node-id="plusComponent"/>
-        <next-node exception-type="org.tinygroup.flow.test.Exception.ExceptionNew2" next-node-id="plusComponent_1"/>
+        <next-node exception-type="org.tinygroup.flow.test.testcase.component.ExceptionNew1" next-node-id="plusComponent"/>
+        <next-node exception-type="org.tinygroup.flow.test.testcase.component.ExceptionNew2" next-node-id="plusComponent_1"/>
       </next-nodes>
     </node>
     <node id="plusComponent" name="plusComponent" title="+1 Exception1">
@@ -46,7 +46,7 @@
         <properties/>
       </component>
       <next-nodes>
-        <next-node exception-type="org.tinygroup.flow.test.Exception.ExceptionNew3InOtherNode" next-node-id="plusComponent_2"/>
+        <next-node exception-type="org.tinygroup.flow.test.testcase.component.ExceptionNew3InOtherNode" next-node-id="plusComponent_2"/>
       </next-nodes>
     </node>
     <node id="plusComponent_2" name="plusComponent" title="+3 Exception3">

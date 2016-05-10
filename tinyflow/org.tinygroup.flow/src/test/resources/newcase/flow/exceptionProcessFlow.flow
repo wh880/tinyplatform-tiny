@@ -14,7 +14,7 @@
         <properties/>
       </component>
       <next-nodes>
-        <next-node exception-type="org.tinygroup.flow.test.Exception.ExceptionNew4InOtherFlow" next-node-id="plusComponent"/>
+        <next-node exception-type="org.tinygroup.flow.test.testcase.component.ExceptionNew4InOtherFlow" next-node-id="plusComponent"/>
         <next-node exception-type="org.tinygroup.flow.test.newtestcase.exception.component.ComponentException4" next-node-id="exceptionUtilComponent"/>
       </next-nodes>
     </node>

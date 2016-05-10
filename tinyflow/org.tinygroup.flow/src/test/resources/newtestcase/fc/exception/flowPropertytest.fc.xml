@@ -1,0 +1,10 @@
+<components>
+	<component name="flowPropertyComponent" bean="flowPropertyComponent"
+		title="流程属性校验" icon="">
+		<short-description>流程属性校验</short-description>
+		<long-description>流程属性校验，系统启动初始化流程时校验流程下面节点的参数是否按照是否必须填值</long-description>
+		<parameter name="el" title="el表达式" required="true" type="java.lang.String"></parameter>
+		<parameter name="str" title="普通类型" required="true" type="java.lang.String"></parameter>
+	</component>
+</components>
+

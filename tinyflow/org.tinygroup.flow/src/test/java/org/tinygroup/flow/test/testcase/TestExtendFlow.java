@@ -18,7 +18,7 @@ package org.tinygroup.flow.test.testcase;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.flow.component.AbstractFlowComponent;
-import org.tinygroup.flow.test.Exception.ExceptionNew0;
+import org.tinygroup.flow.test.testcase.component.ExceptionNew0;
 
 public class TestExtendFlow extends AbstractFlowComponent {
 	public void setUp() throws Exception {

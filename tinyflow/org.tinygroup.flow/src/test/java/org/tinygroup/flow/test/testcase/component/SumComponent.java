@@ -13,22 +13,34 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.flow.exception.errorcode;
+package org.tinygroup.flow.test.testcase.component;
 
+import org.tinygroup.context.Context;
+import org.tinygroup.flow.ComponentInterface;
 
-public class FlowExceptionErrorCode {
-	 /**
-     * 流程节点名称非空校验
-     */
-    public static final String FLOW_NODE_NAME_VALIDATE_EXCEPTION = "0TE12"+"0081"+"001";
-    
-    /**
-     * 流程节点参数校验失败异常
-     */
-    public static final String FLOW_PROPERTY_VALIDATE_EXCEPTION = "0TE12"+"0081"+"002";
+public class SumComponent implements ComponentInterface {
+	private int a;
+	private int b;
+	private String resultKey = "sum";
 
-    /**
-     * 未找到后续节点
-     */
-    public static final String FLOW_NEXT_NODE_NOT_FOUND_EXCEPTION = "0TE12"+"0081"+"003";
+	public int getA() {
+		return a;
+	}
+
+	public void setA(int a) {
+		this.a = a;
+	}
+
+	public int getB() {
+		return b;
+	}
+
+	public void setB(int b) {
+		this.b = b;
+	}
+
+	public void execute(Context context) {
+		context.put(resultKey, a+b);
+	}
+
 }

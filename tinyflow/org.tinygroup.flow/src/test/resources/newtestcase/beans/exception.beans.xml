@@ -7,4 +7,6 @@
 	<bean id="exceptionSwitchComponent" class="org.tinygroup.flow.test.newtestcase.exception.component.ExceptionSwitchComponent" scope="prototype"/>
 	
 	<bean id="exceptionUtilComponent" class="org.tinygroup.flow.test.newtestcase.exception.component.ExceptionUtilComponent" scope="prototype"/>
+
+	<bean id="flowPropertyComponent" class="org.tinygroup.flow.test.newtestcase.exception.component.FlowPropertyComponent" scope="prototype"/>
 </beans>

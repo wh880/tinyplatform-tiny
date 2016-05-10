@@ -15,13 +15,15 @@
  */
 package org.tinygroup.flow.component;
 
+import java.util.ArrayList;
+
 import junit.framework.TestCase;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.test.testcase.FlowEventProcessorForTest;
-import org.tinygroup.tinytestutil.AbstractTestUtil;
+import org.tinygroup.tinyrunner.Runner;
 
 public abstract class AbstractFlowComponent extends TestCase {
 
@@ -30,7 +32,7 @@ public abstract class AbstractFlowComponent extends TestCase {
 	protected CEPCore cepcore;
 	protected FlowEventProcessorForTest eventProcessorForTest;
 	void init() {
-		AbstractTestUtil.init("application.xml", true);
+		Runner.init("application.xml", new ArrayList<String>());
 	}
 
 	protected void setUp() throws Exception {

@@ -28,6 +28,7 @@ import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.config.*;
 import org.tinygroup.flow.containers.ComponentContainers;
 import org.tinygroup.flow.exception.FlowRuntimeException;
+import org.tinygroup.flow.exception.errorcode.FlowExceptionErrorCode;
 import org.tinygroup.flow.util.FlowElUtil;
 import org.tinygroup.format.Formater;
 import org.tinygroup.format.impl.ContextFormater;
@@ -258,12 +259,13 @@ public class FlowExecutorImpl implements FlowExecutor {
 			// 先直接取，如果取到就执行，如果取不到，则用正则去匹配，效率方面的考虑
 			String nextNodeId = node.getNextNodeId(context);
 			if (nextNodeId == null) {
-				int index = flow.getNodes().indexOf(node);
-				if (index != flow.getNodes().size() - 1) {
-					nextNodeId = flow.getNodes().get(index + 1).getId();
-				} else {
-					nextNodeId = DEFAULT_END_NODE;
-				}
+				throw new FlowRuntimeException(FlowExceptionErrorCode.FLOW_NEXT_NODE_NOT_FOUND_EXCEPTION,flow.getId(),nodeId);
+//				int index = flow.getNodes().indexOf(node);
+//				if (index != flow.getNodes().size() - 1) {
+//					nextNodeId = flow.getNodes().get(index + 1).getId();
+//				} else {
+//					nextNodeId = DEFAULT_END_NODE;
+//				}
 			}
 			LOGGER.logMessage(LogLevel.INFO, "下一节点:{}", nextNodeId);
 			executeNextNode(flow, flowContext, nextNodeId);
@@ -485,11 +487,7 @@ public class FlowExecutorImpl implements FlowExecutor {
 
 	public void assemble() {
 		for (Flow flow : flowIdMap.values()) {
-			try {
-				flow.validate();
-			} catch (Exception e) {
-				// TODO: 测试完成之后去掉此处的try
-			}
+			flow.validate();
 			flow.assemble();
 		}
 	}
