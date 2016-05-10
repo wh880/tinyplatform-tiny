@@ -46,8 +46,9 @@ public class CustomSql extends BaseObject {
 	}
 
 	public List<SqlBody> getSqlBodyList() {
-		if (sqlBodyList == null)
+		if (sqlBodyList == null) {
 			sqlBodyList = new ArrayList<SqlBody>();
+		}
 		return sqlBodyList;
 	}
 

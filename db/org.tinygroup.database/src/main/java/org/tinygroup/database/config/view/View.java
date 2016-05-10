@@ -42,8 +42,9 @@ public class View extends BaseObject {
 	List<ViewHaving> havingList;// 表间有主外键关系的，不用加条件
 
 	public String getName() {
-		if (getSchema() == null || "".equals(getSchema()))
+		if (getSchema() == null || "".equals(getSchema())) {
 			return super.getName();
+		}
 		return String.format("%s.%s", getSchema(), super.getName());
 	}
 
@@ -56,8 +57,9 @@ public class View extends BaseObject {
 	}
 
 	public List<ViewHaving> getHavingList() {
-		if (havingList == null)
+		if (havingList == null) {
 			havingList = new ArrayList<ViewHaving>();
+		}
 		return havingList;
 	}
 
@@ -66,8 +68,9 @@ public class View extends BaseObject {
 	}
 
 	public List<ViewTable> getTableList() {
-		if (tableList == null)
+		if (tableList == null) {
 			tableList = new ArrayList<ViewTable>();
+		}
 		return tableList;
 	}
 
@@ -76,8 +79,9 @@ public class View extends BaseObject {
 	}
 
 	public List<ViewField> getFieldList() {
-		if (fieldList == null)
+		if (fieldList == null) {
 			fieldList = new ArrayList<ViewField>();
+		}
 		return fieldList;
 	}
 
@@ -86,8 +90,9 @@ public class View extends BaseObject {
 	}
 
 	public List<ViewCondition> getConditionList() {
-		if (conditionList == null)
+		if (conditionList == null) {
 			conditionList = new ArrayList<ViewCondition>();
+		}
 		return conditionList;
 	}
 
@@ -96,8 +101,9 @@ public class View extends BaseObject {
 	}
 
 	public List<OrderByField> getOrderByFieldList() {
-		if (orderByFieldList == null)
+		if (orderByFieldList == null) {
 			orderByFieldList = new ArrayList<OrderByField>();
+		}
 		return orderByFieldList;
 	}
 
@@ -109,8 +115,9 @@ public class View extends BaseObject {
 	private List<GroupByField> groupByFieldList;
 
 	public List<GroupByField> getGroupByFieldList() {
-		if (groupByFieldList == null)
+		if (groupByFieldList == null) {
 			groupByFieldList = new ArrayList<GroupByField>();
+		}
 		return groupByFieldList;
 	}
 

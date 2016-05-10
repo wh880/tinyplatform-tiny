@@ -27,8 +27,9 @@ public class Record {
 	private List<ValuePair> valuePairs;
 
 	public List<ValuePair> getValuePairs() {
-		if (valuePairs == null)
+		if (valuePairs == null) {
 			valuePairs = new ArrayList<ValuePair>();
+		}
 		return valuePairs;
 	}
 

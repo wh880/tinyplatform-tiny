@@ -27,8 +27,9 @@ public class DialectFunctions {
 	private List<DialectFunction> functions;
 
 	public List<DialectFunction> getFunctions() {
-		if (functions == null)
+		if (functions == null) {
 			functions = new ArrayList<DialectFunction>();
+		}
 		return functions;
 	}
 

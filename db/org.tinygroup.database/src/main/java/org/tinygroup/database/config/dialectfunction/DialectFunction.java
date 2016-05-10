@@ -42,8 +42,9 @@ public class DialectFunction {
 	}
 
 	public List<Dialect> getDialects() {
-		if (dialects == null)
+		if (dialects == null) {
 			dialects = new ArrayList<Dialect>();
+		}
 		return dialects;
 	}
 
