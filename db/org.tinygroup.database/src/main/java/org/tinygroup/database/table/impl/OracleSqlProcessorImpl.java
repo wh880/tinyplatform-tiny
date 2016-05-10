@@ -17,12 +17,8 @@ package org.tinygroup.database.table.impl;
 
 import java.util.List;
 
-import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableSqlProcessor;
-import org.tinygroup.metadata.config.stdfield.StandardField;
-import org.tinygroup.metadata.util.MetadataUtil;
 
 public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 	
@@ -80,7 +76,7 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 
 	protected void appendFooter(StringBuffer ddlBuffer, Table table,List<String> list) {
 		super.appendFooter(ddlBuffer, table,list);
-		appendComment(ddlBuffer, table,list);
+		appendFooterComment(ddlBuffer, table,list);
 	}
 
 	/**
@@ -91,30 +87,5 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
      */
 	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list){
 		//do nothing
-	}
-	/**
-	 * 添加oracle的字段备注信息
-	 * @param ddlBuffer
-	 * @param table
-	 */
-	private void appendComment(StringBuffer ddlBuffer, Table table, List<String> list) {
-		for (TableField field : table.getFieldList()) {
-
-			StandardField standardField = MetadataUtil.getStandardField(field
-					.getStandardFieldId(), this.getClass().getClassLoader());
-			if (standardField.getDescription() == null){	continue;}
-			String columnName = null;
-			if (StringUtil.isBlank(table.getSchema())) {
-				columnName = String.format("%s.%s", table.getName(),
-						standardField.getName());
-			} else {
-				columnName = String.format("%s.%s.%s", table.getSchema(),table.getName(),
-						standardField.getName());
-			}
-			StringBuffer commentBuffer = new StringBuffer();
-			commentBuffer.append("COMMENT ON COLUMN ").append(columnName)
-					.append(" IS ").append("'").append(standardField.getDescription()).append("'");
-			list.add(commentBuffer.toString());
-		}
 	}
 }

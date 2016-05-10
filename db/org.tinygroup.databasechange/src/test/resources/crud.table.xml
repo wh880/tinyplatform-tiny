@@ -10,7 +10,7 @@
 		<table-field standard-field-id="parent_id" primary="false"
 					 unique="false" not-null="false" id="parent_id" >
 		</table-field>
-		<foreign-reference foreign-field="parent_id" main-table="t_user" reference-field="v_id" />
+		<foreign-reference name="fk_user_parent" foreign-field="parent_id" main-table="t_user" reference-field="v_id" />
 	</table>
 	<table id="t_custom" name="t_custom" title="客户表">
 		<description>客户表</description>

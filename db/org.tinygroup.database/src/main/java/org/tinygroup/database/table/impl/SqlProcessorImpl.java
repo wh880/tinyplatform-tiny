@@ -366,6 +366,33 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 	}
 
+	/**
+	 * 在footer增加comment
+	 * @param ddlBuffer
+	 * @param table
+	 * @param list
+     */
+	protected void appendFooterComment(StringBuffer ddlBuffer, Table table, List<String> list) {
+		for (TableField field : table.getFieldList()) {
+
+			StandardField standardField = MetadataUtil.getStandardField(field
+					.getStandardFieldId(), this.getClass().getClassLoader());
+			if (standardField.getDescription() == null){	continue;}
+			String columnName = null;
+			if (StringUtil.isBlank(table.getSchema())) {
+				columnName = String.format("%s.%s", table.getName(),
+						standardField.getName());
+			} else {
+				columnName = String.format("%s.%s.%s", table.getSchema(),table.getName(),
+						standardField.getName());
+			}
+			StringBuffer commentBuffer = new StringBuffer();
+			commentBuffer.append("COMMENT ON COLUMN ").append(columnName)
+					.append(" IS ").append("'").append(standardField.getDescription()).append("'");
+			list.add(commentBuffer.toString());
+		}
+	}
+
 	// 如果是字符串类型，defaultValue必须是'XXX'格式
 	protected void appendDefaultValue(String defaultValue,
 			StringBuffer ddlBuffer) {
