@@ -124,12 +124,13 @@ public class BaseRuntimeException extends RuntimeException {
     public String getMessage() {
         StringBuffer msgBuffer = new StringBuffer();
         if (errorCode == null) {
-            if (StringUtil.isBlank(errorMsg))
+            if (StringUtil.isBlank(errorMsg)) {
                 return super.getMessage();
+            }
             msgBuffer.append(errorMsg);
         } else {
             msgBuffer.append(String.format("[%s]", errorCode));
-            if (!StringUtil.isBlank(errorMsg)) msgBuffer.append(" : ").append(errorMsg);
+            if (!StringUtil.isBlank(errorMsg)){ msgBuffer.append(" : ").append(errorMsg);}
         }
         return msgBuffer.toString();
     }

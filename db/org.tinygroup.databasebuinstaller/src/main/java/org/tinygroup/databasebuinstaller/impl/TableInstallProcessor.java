@@ -47,8 +47,9 @@ public class TableInstallProcessor extends AbstractInstallProcessor {
 
 	private void deal(String language, Table table, List<String> sqls,
 			Connection connect,boolean isFull) throws SQLException {
-		if (tableList.contains(table))
+		if (tableList.contains(table)) {
 			return;
+		}
 		tableList.add(table);
 		installTable(language, table, sqls, connect,isFull);
 	}

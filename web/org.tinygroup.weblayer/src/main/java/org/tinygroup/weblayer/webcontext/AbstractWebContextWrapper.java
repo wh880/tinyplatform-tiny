@@ -116,8 +116,9 @@ public abstract class AbstractWebContextWrapper extends ContextImpl implements
 
 	protected <T> T getFromWrapperContext(String name, WebContext webContext) {
 		T result = getFromSubContext(name, webContext);
-		if (result!=null)
+		if (result!=null) {
 			return result;
+		}
 		if (webContext.getWrappedWebContext() != null) {
 			result = getFromWrapperContext(name,
 					webContext.getWrappedWebContext());

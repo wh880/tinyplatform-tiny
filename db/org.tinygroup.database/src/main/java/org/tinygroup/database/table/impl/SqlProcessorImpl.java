@@ -332,7 +332,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		String fieldDefaultValue = getDefaultValue(field,standardField);
 		
 		// 非自增的字段设置字段默认值
-		if(!field.isAutoIncrease())	appendDefaultValue(fieldDefaultValue, ddlBuffer);
+		if(!field.isAutoIncrease()){	appendDefaultValue(fieldDefaultValue, ddlBuffer);}
 		Boolean notNull = field.getNotNull();
 		if (notNull != null && notNull.booleanValue()) {
 			ddlBuffer.append(" NOT NULL");
