@@ -52,8 +52,9 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public SpringBeanContainer() {
-		if (initialized == true)
+		if (initialized == true) {
 			return;
+		}
 		initialized = true;
 		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext();
 		fileSystemXmlApplicationContext.setAllowBeanDefinitionOverriding(true);
@@ -63,8 +64,9 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 	}
 
 	public SpringBeanContainer(SpringBeanContainer parent, ClassLoader loader) {
-		if (initialized == true)
+		if (initialized == true) {
 			return;
+		}
 		initialized = true;
 		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext(
 				parent.getBeanContainerPrototype());
@@ -77,8 +79,9 @@ public class SpringBeanContainer implements BeanContainer<ApplicationContext> {
 
 	public SpringBeanContainer(SpringBeanContainer parent,
 			List<FileObject> files, ClassLoader loader) {
-		if (initialized == true)
+		if (initialized == true) {
 			return;
+		}
 		initialized = true;
 		List<String> configLocations = new ArrayList<String>();
 		for (FileObject fileObject : files) {

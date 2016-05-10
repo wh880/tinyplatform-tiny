@@ -661,8 +661,9 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 		for (Object object : objects) {
 			builder.append("," + object);
 		}
-		if (builder.length() <= 1)
+		if (builder.length() <= 1) {
 			return "";
+		}
 		return builder.toString().substring(1);
 	}
 
@@ -674,8 +675,9 @@ public class DBSpringBaseOperator extends StatementTransformComposite implements
 		for (Object object : objects) {
 			builder.append("," + object);
 		}
-		if (builder.length() <= 1)
+		if (builder.length() <= 1) {
 			return "";
+		}
 		return builder.toString().substring(1);
 	}
 

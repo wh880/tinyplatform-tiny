@@ -290,7 +290,7 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
                     params.add(values[i]);
                 }
             }
-            if (isAllNull) return null;
+            if (isAllNull){ return null;}
             InExpression inExpression = new InExpression(this, rightItemsList);
             return new Condition(inExpression, params.toArray());
         }
@@ -309,7 +309,7 @@ public abstract class SimpleBinaryOperator implements BinaryOperator,
                     params.add(values[i]);
                 }
             }
-            if (isAllNull) return null;
+            if (isAllNull){ return null;}
             InExpression inExpression = new InExpression(this, rightItemsList, true);
             return new Condition(inExpression, params.toArray());
         }

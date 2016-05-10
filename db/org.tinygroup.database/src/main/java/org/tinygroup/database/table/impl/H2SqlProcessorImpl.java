@@ -61,4 +61,13 @@ public class H2SqlProcessorImpl extends SqlProcessorImpl {
 		//do nothing
 	}
 
+	/**
+	 * 支持identity和auto_increment
+	 * 这里选用auto_increment
+	 * @return
+     */
+	protected String appendIncrease() {
+		return " auto_increment ";
+	}
+
 }
