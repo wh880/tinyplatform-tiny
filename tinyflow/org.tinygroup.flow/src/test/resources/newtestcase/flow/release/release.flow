@@ -1,7 +1,8 @@
-<flow id="releaseFlow" name="release" enable="false" private-context="false">
+<flow id="releaseFlow" name="releaseFlow" enable="false" private-context="false">
   <parameters>
     <parameter array="false" required="true" name="a" type="java.lang.Integer" scope="in"/>
     <parameter array="false" required="true" name="b" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="sum" type="java.lang.Integer" scope="out"/>
   </parameters>
   <nodes>
     <node id="begin" name="begin" title="开始">

@@ -20,10 +20,12 @@ import java.util.List;
 
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
+import org.tinygroup.event.Event;
 import org.tinygroup.flow.component.AbstractFlowComponent;
 import org.tinygroup.flow.release.FlowReleaseManager;
 import org.tinygroup.flow.release.config.FlowRelease;
 import org.tinygroup.flow.release.config.ReleaseItem;
+import org.tinygroup.tinyrunner.Runner;
 
 public class ReleaseFlowTest extends AbstractFlowComponent {
 
@@ -39,13 +41,28 @@ public class ReleaseFlowTest extends AbstractFlowComponent {
 		FlowReleaseManager.add(flowRelease);
 		super.setUp();
 	}
-
+	
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		FlowReleaseManager.clear();
+		Runner.initDirect("application.xml", new ArrayList<String>());
+		super.setUp();
+	}
 	public void testInclude1() {
 		Context context = new ContextImpl();
 		context.put("a", 1);
 		context.put("b", 2);
 		flowExecutor.execute("releaseFlow", "begin", context);
 		assertEquals(3, Integer.valueOf(context.get("sum").toString()).intValue());
+		
+		Context context2 = new ContextImpl();
+		context2.put("a", 1);
+		context2.put("b", 2);
+		Event e = Event.createEvent("releaseFlow", context2);
+		cepcore.process(e);
+		assertEquals(3, Integer.valueOf(e.getServiceRequest().getContext().get("sum").toString()).intValue());
+	
 	}
 
 }

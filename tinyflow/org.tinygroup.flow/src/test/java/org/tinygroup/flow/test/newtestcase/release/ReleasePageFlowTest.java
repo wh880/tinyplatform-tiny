@@ -24,6 +24,7 @@ import org.tinygroup.flow.component.AbstractFlowComponent;
 import org.tinygroup.flow.release.PageFlowReleaseManager;
 import org.tinygroup.flow.release.config.PageFlowRelease;
 import org.tinygroup.flow.release.config.ReleaseItem;
+import org.tinygroup.tinyrunner.Runner;
 
 public class ReleasePageFlowTest extends AbstractFlowComponent {
 
@@ -40,9 +41,19 @@ public class ReleasePageFlowTest extends AbstractFlowComponent {
 		super.setUp();
 	}
 
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		PageFlowReleaseManager.clear();
+		Runner.initDirect("application.xml", new ArrayList<String>());
+		super.setUp();
+	}
+	
 	public void testInclude1() {
 		Context context = new ContextImpl();
-		pageFlowExecutor.execute("pageflowreleaseFlow", "begin", context);
+		context.put("a", 1);
+		context.put("b", 2);
+		pageFlowExecutor.execute("pageflowreleaseFlow", context);
 		assertEquals(3, Integer.valueOf(context.get("sum").toString()).intValue());
 	}
 

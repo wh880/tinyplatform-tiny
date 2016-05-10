@@ -9,8 +9,8 @@
       <component name="sumComponent" title="求和组件">
         <description>求a+b的和</description>
         <properties>
-          <flow-property name="a" required="true" type="int"/>
-          <flow-property name="b" required="true" type="int"/>
+          <flow-property name="a" required="false" type="int"/>
+          <flow-property name="b" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
@@ -22,17 +22,9 @@
       <component name="sumComponent" title="求和组件">
         <description>求a+b的和</description>
         <properties>
-          <flow-property name="a" required="true" type="int"/>
-          <flow-property name="b" required="true" type="int"/>
+          <flow-property name="a" required="false" type="int"/>
+          <flow-property name="b" required="false" type="int"/>
         </properties>
-      </component>
-      <next-nodes>
-        <next-node next-node-id="end"/>
-      </next-nodes>
-    </node>
-    <node id="testSumFlow:begin" name="begin" title="开始">
-      <component>
-        <properties/>
       </component>
       <next-nodes>
         <next-node next-node-id="end"/>
