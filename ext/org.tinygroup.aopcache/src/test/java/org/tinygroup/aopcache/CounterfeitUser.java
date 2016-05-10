@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * Created by wangwy11342 on 2016/4/7.
- * 假冒的user
+ * 假冒的user,用于测试类型不一致的情况
  */
 public class CounterfeitUser implements Serializable{
 

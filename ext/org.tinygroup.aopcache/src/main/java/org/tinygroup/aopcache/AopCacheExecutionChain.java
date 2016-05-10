@@ -17,19 +17,34 @@ public class AopCacheExecutionChain {
     private AopCacheHolder[] processors;
     private List<AopCacheHolder> processorList;
 
+    /**
+     *
+     */
     public AopCacheExecutionChain() {
         this(null);
     }
 
+    /**
+     * 构造方法初始化processors
+     * @param processors
+     */
     public AopCacheExecutionChain(AopCacheHolder[] processors) {
         this.processors = processors;
     }
 
+    /**
+     * 单个增加processor
+     * @param processor
+     */
     public void addAopCacheProcessor(AopCacheHolder processor) {
         initAopCacheProcessor();
         this.processorList.add(processor);
     }
 
+    /**
+     * 增加多个processor
+     * @param processors
+     */
     public void addAopCacheProcessors(AopCacheHolder[] processors) {
         if (processors != null) {
             initAopCacheProcessor();

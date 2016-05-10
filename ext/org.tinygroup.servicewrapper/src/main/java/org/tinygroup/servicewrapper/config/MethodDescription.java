@@ -66,28 +66,37 @@ public class MethodDescription {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj){
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		MethodDescription other = (MethodDescription) obj;
 		if (className == null) {
-			if (other.className != null)
+			if (other.className != null) {
 				return false;
-		} else if (!className.equals(other.className))
+			}
+		} else if (!className.equals(other.className)) {
 			return false;
+		}
 		if (methodName == null) {
-			if (other.methodName != null)
+			if (other.methodName != null) {
 				return false;
-		} else if (!methodName.equals(other.methodName))
+			}
+		} else if (!methodName.equals(other.methodName)) {
 			return false;
+		}
 		if (parameterTypes == null) {
-			if (other.parameterTypes != null)
+			if (other.parameterTypes != null) {
 				return false;
-		} else if (!parameterTypes.equals(other.parameterTypes))
+			}
+		} else if (!parameterTypes.equals(other.parameterTypes)) {
 			return false;
+		}
 		return true;
 	}
 	

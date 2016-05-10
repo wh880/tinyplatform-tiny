@@ -148,7 +148,7 @@ public class CEPCoreImpl implements CEPCore {
 		for (ServiceInfo service : serviceList) {
 			String serviceId = service.getServiceId();
 			if (remoteServiceMap.containsKey(serviceId)) {
-				ServiceInfo oldService = localServiceMap.get(serviceId);
+				ServiceInfo oldService = remoteServiceMap.get(serviceId);
 				if (oldService.compareTo(service) != 0) {
 					LOGGER.logMessage(LogLevel.ERROR, "RemoteService发生id重复");
 					logConflictServiceInfo(serviceId, eventProcessor);
