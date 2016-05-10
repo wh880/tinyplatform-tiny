@@ -132,12 +132,7 @@ public class Flow implements Serializable{
 			validateNode(node);
 			//流程节点有挂组件，则校验组件必传的参数是否有赋值
 			if(node.getComponent()!=null){
-				try {
-					
-					validateParameter(node);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				validateParameter(node);
 			}
 		}
     }
