@@ -221,8 +221,9 @@ public class ViewSqlCreator {
 
 	protected void appendCondition(StringBuffer buffer) {
 		if (view.getConditionList() == null
-				|| view.getConditionList().size() == 0)
+				|| view.getConditionList().size() == 0) {
 			return;
+		}
 		buffer.append(" WHERE ");
 		List<ViewCondition> conditions = view.getConditionList();
 		String conditionStr = dealCondtionList(conditions);
@@ -268,8 +269,9 @@ public class ViewSqlCreator {
 		String conditionStr = fieldName + condition.getOperator()
 				+ conditionValue;
 		String subCondtionStr = dealCondtionList(condition.getConditionList());
-		if ("".equals(subCondtionStr))
+		if ("".equals(subCondtionStr)) {
 			return conditionStr;
+		}
 		if (condition.getConditionList().size() > 1) {
 			return String
 					.format(" %s OR ( %s ) ", conditionStr, subCondtionStr);
@@ -370,8 +372,9 @@ public class ViewSqlCreator {
 
 	protected TableField getTableField(String fieldId, Table table) {
 		for (TableField field : table.getFieldList()) {
-			if (field.getId().equals(fieldId))
+			if (field.getId().equals(fieldId)) {
 				return field;
+			}
 		}
 		return null;
 	}

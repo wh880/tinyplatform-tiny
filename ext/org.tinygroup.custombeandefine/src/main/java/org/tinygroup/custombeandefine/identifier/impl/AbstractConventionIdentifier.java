@@ -44,8 +44,9 @@ public abstract class AbstractConventionIdentifier implements ConventionComponen
         for (String pkgPattern : pkgPatterns) {
             boolean flag = pathMatcher
                 .match(this.getHandlerClassNamePattern(pkgPattern), className);
-            if (flag)
+            if (flag) {
                 return true;
+            }
         }
         return false;
     }

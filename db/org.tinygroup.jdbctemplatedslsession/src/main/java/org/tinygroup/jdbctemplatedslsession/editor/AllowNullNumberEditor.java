@@ -32,10 +32,10 @@ public class AllowNullNumberEditor extends CustomNumberEditor {
 
 	private static Map<Class, Number> DEFAULT = new HashMap<Class, Number>();
 	static {
-		DEFAULT.put(Byte.class, new Byte("0"));
-		DEFAULT.put(Short.class, new Short("0"));
-		DEFAULT.put(Integer.class, new Integer("0"));
-		DEFAULT.put(Long.class, new Long("0"));
+		DEFAULT.put(Byte.class, Byte.valueOf("0"));
+		DEFAULT.put(Short.class, Short.valueOf("0"));
+		DEFAULT.put(Integer.class, Integer.valueOf("0"));
+		DEFAULT.put(Long.class, Long.valueOf("0"));
 		DEFAULT.put(Float.class, new Float("0.0"));
 		DEFAULT.put(Double.class, new Double("0.0"));
 	}

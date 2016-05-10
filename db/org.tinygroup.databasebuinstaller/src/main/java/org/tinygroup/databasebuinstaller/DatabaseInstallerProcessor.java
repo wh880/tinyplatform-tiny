@@ -80,8 +80,9 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 	}
 
 	public String getLanguage() {
-		if ("".equals(dbLanguage))
+		if ("".equals(dbLanguage)) {
 			return defaultLanguage;
+		}
 		return dbLanguage;
 	}
 
