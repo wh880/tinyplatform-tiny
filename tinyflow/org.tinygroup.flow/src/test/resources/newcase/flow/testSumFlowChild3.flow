@@ -1,5 +1,9 @@
 <flow id="testSumFlowChild3" extend-flow-id="testSumFlow" enable="true" private-context="false">
-  <parameters/>
+  <parameters>
+    <parameter array="false" required="true" name="a" type="int" scope="in"/>
+    <parameter array="false" required="true" name="b" type="int" scope="in"/>
+    <parameter array="false" required="true" name="sum" type="int" scope="out"/>
+  </parameters>
   <nodes>
     <node id="sumComponent_1" name="sumComponent" title="求和组件">
       <component name="sumComponent" title="求和组件">
