@@ -94,7 +94,7 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
 		return String.format(
-				"ALTER TABLE %s CHANGE %s %s %s", tableName,
+				"ALTER TABLE %s CHANGE %s %s %s ", tableName,
 				fieldName, fieldName, tableDataType);
 	}
 	

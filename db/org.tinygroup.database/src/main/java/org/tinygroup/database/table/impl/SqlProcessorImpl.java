@@ -277,21 +277,28 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			String standardFieldName = standardField.getName();
 			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
 					.toLowerCase()) == -1) {
-				String alterType = createAlterTypeSql(table.getName(),
-						standardFieldName, tableDataType);
-				existUpdateList.add(alterType);
-			}
-			// 如果数据库中字段允许为空，但table中不允许为空
-			if (field.getNotNull()
-					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
-				String notNullSql = createNotNullSql(table.getName(),
-						standardFieldName, tableDataType);
-				existUpdateList.add(notNullSql);
-			} else if (!field.getNotNull()
-					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
-				String nullSql = createNullSql(table.getName(), standardFieldName,
-						tableDataType);
-				existUpdateList.add(nullSql);
+				StringBuffer alterTypeBuffer = new StringBuffer();
+				// 如果数据库中字段允许为空，但table中不允许为空
+				if (field.getNotNull()
+						&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
+					alterTypeBuffer.append(createNotNullSql(table.getName(),
+							standardFieldName, tableDataType));
+				} else if (!field.getNotNull()
+						&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
+					alterTypeBuffer.append(createNullSql(table.getName(), standardFieldName,
+							tableDataType));
+				}else{
+					alterTypeBuffer.append(createAlterTypeSql(table.getName(),
+							standardFieldName, tableDataType));
+				}
+
+				// 非自增的字段设置字段默认值
+				if(!field.isAutoIncrease()){
+					String fieldDefaultValue = getDefaultValue(field,standardField);
+					appendDefaultValue(fieldDefaultValue, alterTypeBuffer);
+				}
+				dealComment(alterTypeBuffer,standardField,existUpdateList);
+				existUpdateList.add(alterTypeBuffer.toString());
 			}
 		}
 		return existUpdateList;
@@ -352,6 +359,16 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			ddlBuffer.append(appendIncrease());
 		}
 
+		dealComment(ddlBuffer,standardField,list);
+	}
+
+	/**
+	 * 处理comment
+	 * @param ddlBuffer
+	 * @param standardField
+	 * @param list
+     */
+	private void dealComment(StringBuffer ddlBuffer, StandardField standardField,List<String> list){
 		// 设置字段备注信息
 		String title = standardField.getTitle();
 		String description = standardField.getDescription();
@@ -399,6 +416,13 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		if (!StringUtil.isBlank(defaultValue)) {
 			ddlBuffer.append(" DEFAULT ").append(defaultValue);
 		}
+	}
+
+	protected void appendDefaultValue(String defaultValue,
+									  String ddlStr) {
+		StringBuffer ddlBuffer = new StringBuffer(ddlStr);
+		appendDefaultValue(defaultValue, ddlBuffer);
+		ddlStr = ddlBuffer.toString();
 	}
 
 	protected String appendIncrease() {
