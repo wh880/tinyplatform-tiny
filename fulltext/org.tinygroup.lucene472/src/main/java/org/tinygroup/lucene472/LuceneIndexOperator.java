@@ -118,7 +118,11 @@ public class LuceneIndexOperator implements IndexOperator {
 			
 			TopDocs topDocs =indexSearcher.search(query, getSearchLimit());
 			if(topDocs!=null && topDocs.totalHits>0){
-				return wrapperTopDocs(indexSearcher, query, topDocs, start, limit);
+			    if(topDocs.totalHits<=start){
+			    	return new Pager<Document>(topDocs.totalHits,start,limit,new ArrayList<Document>());
+			    }else{
+			    	return wrapperTopDocs(indexSearcher, query, topDocs, start, limit);
+			    }
 			}else{
 				return new Pager<Document>(0,start,limit,new ArrayList<Document>());
 			}

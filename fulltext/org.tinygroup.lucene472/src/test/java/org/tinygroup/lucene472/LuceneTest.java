@@ -75,5 +75,10 @@ public class LuceneTest extends TestCase{
 		assertEquals(2, pager.getCurrentPage());
 		assertEquals(2, pager.getTotalPages());
 		
+		pager = fullText.search("我们",4,2);
+		assertEquals(4, pager.getTotalCount());
+		assertEquals(0, pager.getRecords().size());
+		assertEquals(2, pager.getCurrentPage());
+		assertEquals(2, pager.getTotalPages());
 	}
 }
