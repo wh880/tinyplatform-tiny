@@ -1,14 +1,21 @@
-<flow id="queryWithIdService" name="queryWithIdService" begin-node-id="queryWithIdService"
-	default-node-id="end">
-	<nodes>
-		<node id="queryWithIdService" name="queryWithIdService"  title="根据主键查询服务">
-			<component name="tinydbQueryServiceWithId">
-				<properties>
-					<flow-property name="beanType" value="${beanType}" />
-					<flow-property name="primaryKey" value="${primaryKey}" />
-					<flow-property name="resultKey" value="result" />
-				</properties>
-			</component>
-		</node>
-	</nodes>
+<flow id="queryWithIdService" name="queryWithIdService" enable="false" private-context="false">
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="queryWithIdService"/>
+      </next-nodes>
+    </node>
+    <node id="queryWithIdService" name="queryWithIdService" title="根据主键查询服务">
+      <component name="tinydbQueryServiceWithId">
+        <properties>
+          <flow-property name="beanType" value="${beanType}" required="false"/>
+          <flow-property name="primaryKey" value="${primaryKey}" required="false"/>
+          <flow-property name="resultKey" value="result" required="false"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
 </flow>

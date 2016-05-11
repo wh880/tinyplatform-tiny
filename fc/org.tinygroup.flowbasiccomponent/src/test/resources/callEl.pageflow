@@ -1,13 +1,20 @@
-<flow id="callEl" name="callEl" begin-node-id="callEl"
-	default-node-id="end">
-	<nodes>
-		<node id="callEl" name="callEl"  title="转换对象">
-			<component name="callElComponent">
-				<properties>
-					<flow-property name="expression" value="age=age+1;return age;" />
-					<flow-property name="resultKey" value="elResult" />
-				</properties>
-			</component>
-		</node>
-	</nodes>
+<flow id="callEl" name="callEl" enable="false" private-context="false">
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="callEl"/>
+      </next-nodes>
+    </node>
+    <node id="callEl" name="callEl" title="转换对象">
+      <component name="callElComponent">
+        <properties>
+          <flow-property name="expression" value="age=age+1;return age;" required="false"/>
+          <flow-property name="resultKey" value="elResult" required="false"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
 </flow>
