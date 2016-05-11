@@ -356,6 +356,7 @@
         <module>sample</module>
         <module>studioext</module>
         <module>weixin</module>
+        <module>fulltext</module>
     </modules>
     <dependencyManagement>
         <dependencies>
