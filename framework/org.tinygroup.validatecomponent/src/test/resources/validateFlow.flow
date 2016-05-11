@@ -1,11 +1,19 @@
-<flow id="validateFlow" name="add" private-context="false" enable="true">
+<flow id="validateFlow" name="add" enable="true" private-context="false">
   <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="validateNode"/>
+      </next-nodes>
+    </node>
     <node id="validateNode" name="validateNode" title="校验节点">
       <component name="validateComponent">
-      	 <properties>
-      	 	<flow-property name="objectName" value="userdemo"/>
-      	 </properties>
+        <properties>
+          <flow-property name="objectName" value="userdemo" required="false"/>
+        </properties>
       </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
     </node>
   </nodes>
 </flow>
