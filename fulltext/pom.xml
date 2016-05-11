@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.tinygroup</groupId>
+    <artifactId>tiny</artifactId>
+    <version>2.2.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>fulltext</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+        <module>org.tinygroup.tinyseg</module>
+        <module>org.tinygroup.fulltext</module>
+        <module>org.tinygroup.mmseg4j</module>
+        <module>org.tinygroup.lucene472</module>
+        <module>org.tinygroup.indexinstaller</module>
+        <module>org.tinygroup.pdfindexsource</module>
+        <module>org.tinygroup.chineseanalyzer</module>
+        <module>org.tinygroup.officeindexsource</module>
+  </modules>
+</project>
