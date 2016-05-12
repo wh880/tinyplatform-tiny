@@ -283,9 +283,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			if(standardComment!=null && standardComment.trim().length()==0) standardComment = null;
 			standardDefault = StringUtil.defaultIfEmpty(standardDefault,null);
 			columnDef = StringUtil.defaultIfEmpty(columnDef,null);
-			if(standardComment!=null && standardComment.trim().length()==0) standardComment = null;
-			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
-					.toLowerCase()) == -1 || !StringUtil.equals(standardDefault,columnDef)
+			if (!checkTypeSame(dbColumnType,tableDataType) || !StringUtil.equals(standardDefault,columnDef)
 					|| !StringUtil.equals(standardComment,remarks)) {
 				StringBuffer alterTypeBuffer = new StringBuffer();
 				// 如果数据库中字段允许为空，但table中不允许为空
@@ -313,6 +311,11 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 		return existUpdateList;
 
+	}
+
+	protected boolean checkTypeSame(String dbColumnType, String tableDataType) {
+		return dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
+				.toLowerCase()) != -1;
 	}
 
 /*	private boolean checkColumnChange(Map<String, String> attribute, String tableDataType){
