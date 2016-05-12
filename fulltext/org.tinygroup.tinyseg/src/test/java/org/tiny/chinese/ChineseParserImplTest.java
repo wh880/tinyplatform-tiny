@@ -21,7 +21,7 @@ public class ChineseParserImplTest extends TestCase {
 			ChineseParserImpl cpi = new ChineseParserImpl();
 //			URL u = this.getClass().getClassLoader().getResource("199801.dic");
 //			FileInputStream f = new FileInputStream(new File(u.toURI()));
-			FileInputStream f = new FileInputStream(new File("src\\test\\resources\\199801.dic"));
+			FileInputStream f = new FileInputStream(new File("src/test/resources/199801.dic"));
 			cpi.loadDict(f, "utf-8");
 			List<String> result = new ArrayList<String>();
 			Map<String, Integer> resultMap = new HashMap<String, Integer>();
