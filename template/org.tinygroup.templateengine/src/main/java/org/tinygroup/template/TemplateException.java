@@ -25,19 +25,23 @@ import org.tinygroup.template.listener.Point;
  * Created by luoguo on 2014/6/4.
  */
 public class TemplateException extends Exception {
-    private ParserRuleContext context;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7478199180490496722L;
+	private transient ParserRuleContext context;
     private String fileName;
     private String originalMsg;
     private boolean showUpperMessage = true;
-    private List<Macro> macroList; //关联的宏列表信息
+    private transient List<Macro> macroList; //关联的宏列表信息
     /**
      * 异常语法块起点
      */
-    private Point startPoint;
+    private transient Point startPoint;
     /**
      * 异常语法块终点
      */
-    private Point endPoint;
+    private transient Point endPoint;
 
     public TemplateException() {
 

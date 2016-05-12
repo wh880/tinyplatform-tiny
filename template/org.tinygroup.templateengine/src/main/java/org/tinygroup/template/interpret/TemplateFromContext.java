@@ -155,45 +155,7 @@ public class TemplateFromContext extends AbstractTemplate {
         return text;
     }
 
-    /**
-     * Trim 文本前缀的空格
-     * @param str 文本
-     * @return
-
-    private static String trimStartWhiteSpace(String str) {
-    int strLen;
-    if (str != null && (strLen = str.length()) != 0) {
-    int start = 0;
-    while (start < strLen
-    && (      " ".indexOf(str.charAt(start)) != -1          // ' '
-    || "    ".indexOf(str.charAt(start)) != -1)) {      // '\t'
-    ++start;
-    }
-
-    return str.substring(start);
-    }
-    return str;
-    }*/
-
-    /**
-     * Trim 文本后缀的空格
-     * @param str 文本
-     * @return
-
-    private static String trimEndWhiteSpace(String str) {
-    int end;
-    if (str != null && (end = str.length()) != 0) {
-    while ( end != 0
-    && (      " ".indexOf(str.charAt(end - 1)) != -1         // ' '
-    || "    ".indexOf(str.charAt(end - 1)) != -1 )) {    // '\t'
-    --end;
-    }
-
-    return str.substring(0,end);
-    }
-    return str;
-    }*/
-
+   
     /**
      * Trim TextContext左边多余的\r\n
      * @param text 文本
@@ -239,15 +201,18 @@ public class TemplateFromContext extends AbstractTemplate {
      */
     private ParserRuleContext getParseTrreeParentButBlock(ParserRuleContext parseTree) {
         ParserRuleContext parentParserRuleContext = parseTree.getParent();
-        if (parentParserRuleContext instanceof TinyTemplateParser.TemplateContext)
+        if (parentParserRuleContext instanceof TinyTemplateParser.TemplateContext){
             return parentParserRuleContext;
+        }
         if (parentParserRuleContext instanceof TinyTemplateParser.BlockContext) {
-            if (parentParserRuleContext.getParent() instanceof TinyTemplateParser.TemplateContext)
+            if (parentParserRuleContext.getParent() instanceof TinyTemplateParser.TemplateContext){
                 return parentParserRuleContext;
+            }
             if ( parentParserRuleContext.getParent() instanceof TinyTemplateParser.BlockContext) {
                 return getParseTrreeParentButBlock(parentParserRuleContext.getParent());
-            } else
+            } else{
                 return parentParserRuleContext.getParent();
+            }
         }
         return parentParserRuleContext;
     }

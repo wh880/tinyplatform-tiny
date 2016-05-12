@@ -12,7 +12,7 @@ import org.tinygroup.template.TemplateException;
  */
 public class MacroException extends TemplateException {
 
-	private Macro macro;
+	private transient Macro macro;
 	
 	/**
 	 * 

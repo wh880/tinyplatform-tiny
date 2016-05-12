@@ -49,7 +49,7 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
     public Template createTemplate(FileObject fileObject) throws TemplateException {
         if (fileObject != null) {
         	caches.put(fileObject.getPath(), fileObject);//缓存起来
-            return loadTemplate(fileObject, getClassLoader());
+            return loadTemplate(fileObject);
         }
         return null;
     }
@@ -93,7 +93,7 @@ public class FileObjectResourceLoader extends AbstractResourceLoader<FileObject>
         return null;
     }
 
-    private Template loadTemplate(FileObject fileObject, ClassLoader classLoader) throws TemplateException {
+    private Template loadTemplate(FileObject fileObject) throws TemplateException {
         try {
             Template templateFromContext = TemplateLoadUtil.loadComponent((TemplateEngineDefault) getTemplateEngine(), fileObject.getPath(), getResourceContent(fileObject.getPath(),getTemplateEngine().getEncode()));
             addTemplate(templateFromContext);

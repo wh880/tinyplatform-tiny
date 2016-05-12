@@ -133,7 +133,7 @@ public final class TemplateUtil {
             try {
                 return getAttribute(object, name);
             } catch (TemplateException e) {
-                if (e.getCause().getClass() == NullPointerException.class || e.getCause().getClass() == NoSuchFieldException.class || e.getMessage().indexOf("中不能找到") > 0) {
+                if (e.getCause().getClass() == NullPointerException.class || e.getCause().getClass() == NoSuchFieldException.class || e.getMessage().indexOf("中不能找到") > -1) {
                     return null;
                 } else {
                     throw e;
@@ -522,9 +522,9 @@ public final class TemplateUtil {
      * @return
      */
     public static String trimStart(String str,String[] stripChars) {
-        if (stripChars == null || stripChars.length == 0)
+        if (stripChars == null || stripChars.length == 0){
             return str;
-
+        }
         int strLen;
         if (str != null && (strLen = str.length()) != 0) {
             int start = 0;
@@ -565,8 +565,9 @@ public final class TemplateUtil {
      */
     private static boolean isStripChar(char charStr,String[] stripChars) {
         for (int i = 0; i < stripChars.length ; i++) {
-            if (stripChars[i].indexOf(charStr) != -1)
+            if (stripChars[i].indexOf(charStr) != -1){
                 return true;
+            }
         }
         return false;
     }
