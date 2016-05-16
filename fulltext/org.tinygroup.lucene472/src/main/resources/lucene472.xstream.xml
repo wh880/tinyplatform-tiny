@@ -1,0 +1,7 @@
+<xstream-configuration package-name="luceneconfig">
+	<xstream-annotation-classes>
+		<xstream-annotation-class
+			class-name="org.tinygroup.lucene472.config.LuceneConfigs" />
+	</xstream-annotation-classes>
+</xstream-configuration>
+

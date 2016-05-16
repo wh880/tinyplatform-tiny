@@ -1,16 +1,23 @@
-<flow id="callBeanMethod" name="callBeanMethod" begin-node-id="callMethod"
-	default-node-id="end">
-	<nodes>
-		<node id="callMethod" name="callMethodComponent"  title="转换对象">
-			<component name="callMethodComponent">
-				<properties>
-					<flow-property name="className" value="" />
-					<flow-property name="beanName" value="beanMethod" />
-					<flow-property name="methodName" value="hello" />
-					<flow-property name="params" value="name" />
-					<flow-property name="resultKey" value="helloResult" />
-				</properties>
-			</component>
-		</node>
-	</nodes>
+<flow id="callBeanMethod" name="callBeanMethod" enable="false" private-context="false">
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="callMethod"/>
+      </next-nodes>
+    </node>
+    <node id="callMethod" name="callMethodComponent" title="转换对象">
+      <component name="callMethodComponent">
+        <properties>
+          <flow-property name="className" value="" required="false"/>
+          <flow-property name="beanName" value="beanMethod" required="false"/>
+          <flow-property name="methodName" value="hello" required="false"/>
+          <flow-property name="params" value="name" required="false"/>
+          <flow-property name="resultKey" value="helloResult" required="false"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
 </flow>

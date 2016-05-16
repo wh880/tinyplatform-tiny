@@ -1,12 +1,16 @@
 <flow id="testSumFlowChild3" extend-flow-id="testSumFlow" enable="true" private-context="false">
-  <parameters/>
+  <parameters>
+    <parameter array="false" required="true" name="a" type="int" scope="in"/>
+    <parameter array="false" required="true" name="b" type="int" scope="in"/>
+    <parameter array="false" required="true" name="sum" type="int" scope="out"/>
+  </parameters>
   <nodes>
     <node id="sumComponent_1" name="sumComponent" title="求和组件">
       <component name="sumComponent" title="求和组件">
         <description>求a+b的和</description>
         <properties>
-          <flow-property name="a" value="${b}" required="true" type="int"/>
-          <flow-property name="b" value="${sum}" required="true" type="int"/>
+          <flow-property name="a" value="${b}" required="false" type="int"/>
+          <flow-property name="b" value="${sum}" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
@@ -17,11 +21,13 @@
       <component name="sumComponent" title="求和组件">
         <description>求a+b的和</description>
         <properties>
-          <flow-property name="a" value="${sum}" required="true" type="int"/>
-          <flow-property name="b" value="${sum}" required="true" type="int"/>
+          <flow-property name="a" value="${sum}" required="false" type="int"/>
+          <flow-property name="b" value="${sum}" required="false" type="int"/>
         </properties>
       </component>
-      <next-nodes/>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
     </node>
   </nodes>
 </flow>

@@ -272,31 +272,60 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			String tableDataType = MetadataUtil.getStandardFieldType(
 					standardField.getId(), getDatabaseType(), this.getClass()
 							.getClassLoader());
+
+			String standardFieldName = standardField.getName();
 			String dbColumnType = getDbColumnType(attribute)
 					.replaceAll(" ", "").toLowerCase();
-			String standardFieldName = standardField.getName();
-			if (dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
-					.toLowerCase()) == -1) {
-				String alterType = createAlterTypeSql(table.getName(),
-						standardFieldName, tableDataType);
-				existUpdateList.add(alterType);
-			}
-			// 如果数据库中字段允许为空，但table中不允许为空
-			if (field.getNotNull()
-					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
-				String notNullSql = createNotNullSql(table.getName(),
-						standardFieldName, tableDataType);
-				existUpdateList.add(notNullSql);
-			} else if (!field.getNotNull()
-					&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
-				String nullSql = createNullSql(table.getName(), standardFieldName,
-						tableDataType);
-				existUpdateList.add(nullSql);
+			String remarks = getDbColumnRemarks(attribute);
+			String columnDef = getDbColumnColumnDef(attribute);
+			String standardComment = getComment(standardField);
+			String standardDefault = standardField.getDefaultValue();
+			if(standardComment!=null && standardComment.trim().length()==0) standardComment = null;
+			standardDefault = StringUtil.defaultIfEmpty(standardDefault,null);
+			columnDef = StringUtil.defaultIfEmpty(columnDef,null);
+			if (!checkTypeSame(dbColumnType,tableDataType) || !StringUtil.equals(standardDefault,columnDef)
+					|| !StringUtil.equals(standardComment,remarks)) {
+				StringBuffer alterTypeBuffer = new StringBuffer();
+				// 如果数据库中字段允许为空，但table中不允许为空
+				if (field.getNotNull()
+						&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNullable) {
+					alterTypeBuffer.append(createNotNullSql(table.getName(),
+							standardFieldName, tableDataType));
+				} else if (!field.getNotNull()
+						&& Integer.parseInt(attribute.get(NULLABLE)) == DatabaseMetaData.columnNoNulls) {
+					alterTypeBuffer.append(createNullSql(table.getName(), standardFieldName,
+							tableDataType));
+				}else{
+					alterTypeBuffer.append(createAlterTypeSql(table.getName(),
+							standardFieldName, tableDataType));
+				}
+
+				// 非自增的字段设置字段默认值
+				if(!field.isAutoIncrease()){
+					String fieldDefaultValue = getDefaultValue(field,standardField);
+					appendDefaultValue(fieldDefaultValue, alterTypeBuffer);
+				}
+				appendComment(standardComment, alterTypeBuffer,existUpdateList);
+				existUpdateList.add(alterTypeBuffer.toString());
 			}
 		}
 		return existUpdateList;
 
 	}
+
+	protected boolean checkTypeSame(String dbColumnType, String tableDataType) {
+		return dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
+				.toLowerCase()) != -1;
+	}
+
+/*	private boolean checkColumnChange(Map<String, String> attribute, String tableDataType){
+		String dbColumnType = getDbColumnType(attribute)
+				.replaceAll(" ", "").toLowerCase();
+		if(dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
+				.toLowerCase()) != -1){
+			return false;
+		}
+	}*/
 
 	protected abstract String createNotNullSql(String tableName,
 			String fieldName, String tableDataType);
@@ -332,7 +361,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		String fieldDefaultValue = getDefaultValue(field,standardField);
 		
 		// 非自增的字段设置字段默认值
-		if(!field.isAutoIncrease())	appendDefaultValue(fieldDefaultValue, ddlBuffer);
+		if(!field.isAutoIncrease()){	appendDefaultValue(fieldDefaultValue, ddlBuffer);}
 		Boolean notNull = field.getNotNull();
 		if (notNull != null && notNull.booleanValue()) {
 			ddlBuffer.append(" NOT NULL");
@@ -352,11 +381,25 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			ddlBuffer.append(appendIncrease());
 		}
 
+		dealComment(ddlBuffer,standardField,list);
+	}
+
+	/**
+	 * 处理comment
+	 * @param ddlBuffer
+	 * @param standardField
+	 * @param list
+     */
+	private void dealComment(StringBuffer ddlBuffer, StandardField standardField,List<String> list){
 		// 设置字段备注信息
+		String comment = getComment(standardField);
+		appendComment(comment, ddlBuffer,list);
+	}
+
+	private String getComment(StandardField standardField){
 		String title = standardField.getTitle();
 		String description = standardField.getDescription();
-		String comment = StringUtil.isBlank(title)?description:(StringUtil.isBlank(description)?title:(title+"\n"+description));
-		appendComment(comment, ddlBuffer,list);
+		return StringUtil.isBlank(title)?description:(StringUtil.isBlank(description)?title:(title+"\n"+description));
 	}
 
 	protected void appendComment(String comment, StringBuffer ddlBuffer,List<String> list) {
@@ -366,12 +409,46 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		}
 	}
 
+	/**
+	 * 在footer增加comment
+	 * @param ddlBuffer
+	 * @param table
+	 * @param list
+     */
+	protected void appendFooterComment(StringBuffer ddlBuffer, Table table, List<String> list) {
+		for (TableField field : table.getFieldList()) {
+
+			StandardField standardField = MetadataUtil.getStandardField(field
+					.getStandardFieldId(), this.getClass().getClassLoader());
+			if (standardField.getDescription() == null){	continue;}
+			String columnName = null;
+			if (StringUtil.isBlank(table.getSchema())) {
+				columnName = String.format("%s.%s", table.getName(),
+						standardField.getName());
+			} else {
+				columnName = String.format("%s.%s.%s", table.getSchema(),table.getName(),
+						standardField.getName());
+			}
+			StringBuffer commentBuffer = new StringBuffer();
+			commentBuffer.append("COMMENT ON COLUMN ").append(columnName)
+					.append(" IS ").append("'").append(standardField.getDescription()).append("'");
+			list.add(commentBuffer.toString());
+		}
+	}
+
 	// 如果是字符串类型，defaultValue必须是'XXX'格式
 	protected void appendDefaultValue(String defaultValue,
 			StringBuffer ddlBuffer) {
 		if (!StringUtil.isBlank(defaultValue)) {
 			ddlBuffer.append(" DEFAULT ").append(defaultValue);
 		}
+	}
+
+	protected void appendDefaultValue(String defaultValue,
+									  String ddlStr) {
+		StringBuffer ddlBuffer = new StringBuffer(ddlStr);
+		appendDefaultValue(defaultValue, ddlBuffer);
+		ddlStr = ddlBuffer.toString();
 	}
 
 	protected String appendIncrease() {
@@ -531,6 +608,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 		attributes.put(TYPE_NAME, colRet.getString(TYPE_NAME));
 		attributes.put(COLUMN_SIZE, colRet.getString(COLUMN_SIZE));
 		attributes.put(DECIMAL_DIGITS, colRet.getString(DECIMAL_DIGITS));
+		attributes.put(COLUMN_DEF,colRet.getString(COLUMN_DEF));
+		attributes.put(REMARKS,colRet.getString(REMARKS));
 		map.put(columnName.toUpperCase(), attributes);
 	}
 
@@ -575,6 +654,24 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			lengthInfo = lengthInfo + "," + attributes.get(DECIMAL_DIGITS);
 		}
 		return String.format("%s(%s)", attributes.get(TYPE_NAME), lengthInfo);
+	}
+
+	/**
+	 * 获取注释
+	 * @param attributes
+	 * @return
+     */
+	protected String getDbColumnRemarks(Map<String, String> attributes) {
+		return attributes.get(REMARKS);
+	}
+
+	/**
+	 * 获取默认值
+	 * @param attributes
+	 * @return
+     */
+	protected String getDbColumnColumnDef(Map<String, String> attributes) {
+		return attributes.get(COLUMN_DEF);
 	}
 	
 	private String getDefaultValue(TableField field,StandardField standardField){

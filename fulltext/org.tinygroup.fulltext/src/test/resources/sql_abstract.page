@@ -1,0 +1,7 @@
+#if(abstract)
+${abstract}
+#elseif(CONTENT)
+${CONTENT}${AUTHOR}
+#elseif(_abstract)
+${_abstract}
+#end

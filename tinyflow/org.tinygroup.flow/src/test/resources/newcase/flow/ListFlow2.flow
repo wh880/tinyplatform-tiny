@@ -1,0 +1,30 @@
+<flow id="ListFlow2" enable="true" private-context="false">
+  <parameters>
+    <parameter collection-type="java.unti.List" array="false" required="true" name="list" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="false" name="str" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="false" name="ii" type="java.lang.Integer" scope="in"/>
+    <parameter collection-type="java.unti.List" array="false" required="true" name="list1" type="java.lang.String" scope="out"/>
+    <parameter array="false" required="true" name="str1" type="java.lang.String" scope="out"/>
+    <parameter array="false" required="true" name="ii1" type="java.lang.Integer" scope="out"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="listComponent"/>
+      </next-nodes>
+    </node>
+    <node id="listComponent" name="listComponent" title="List组件">
+      <component name="listComponent" title="List组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="list" value="list" required="false" type="el"/>
+          <flow-property name="str" value="s12" required="false"/>
+          <flow-property name="ii" value="1" required="false"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

@@ -131,8 +131,9 @@ public class BasicConfigInfo {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null)
+		if (obj == null) {
 			return false;
+		}
 		if (this == obj) {
 			return true;
 		}

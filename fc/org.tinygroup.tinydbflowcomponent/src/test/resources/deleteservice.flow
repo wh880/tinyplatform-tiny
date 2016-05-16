@@ -1,13 +1,20 @@
-<flow id="deleteService" name="deleteService" begin-node-id="deleteService"
-	default-node-id="end">
-	<nodes>
-		<node id="deleteService" name="deleteService"  title="删除服务">
-			<component name="tinydbDeleteService">
-				<properties>
-					<flow-property name="beanType" value="${beanType}" />
-					<flow-property name="resultKey" value="result" />
-				</properties>
-			</component>
-		</node>
-	</nodes>
+<flow id="deleteService" name="deleteService" enable="false" private-context="false">
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="deleteService"/>
+      </next-nodes>
+    </node>
+    <node id="deleteService" name="deleteService" title="删除服务">
+      <component name="tinydbDeleteService">
+        <properties>
+          <flow-property name="beanType" value="${beanType}" required="false"/>
+          <flow-property name="resultKey" value="result" required="false"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
 </flow>

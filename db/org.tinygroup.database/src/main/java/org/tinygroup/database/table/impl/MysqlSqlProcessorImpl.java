@@ -94,8 +94,18 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
 		return String.format(
-				"ALTER TABLE %s CHANGE %s %s %s", tableName,
+				"ALTER TABLE %s CHANGE %s %s %s ", tableName,
 				fieldName, fieldName, tableDataType);
+	}
+
+	protected boolean checkTypeSame(String dbColumnType, String tableDataType) {
+		//对tinyint特殊处理,由于tinyint在metadata中都是tiny(3,0),故返回true
+		if(dbColumnType.startsWith("tinyint")
+				&& tableDataType.replaceAll(" ", "")
+				.toLowerCase().startsWith("tinyint")){
+			return true;
+		}
+		return super.checkTypeSame(dbColumnType,tableDataType);
 	}
 	
 	@Override

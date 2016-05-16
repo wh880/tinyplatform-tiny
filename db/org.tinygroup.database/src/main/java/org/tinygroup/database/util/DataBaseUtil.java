@@ -79,8 +79,9 @@ public class DataBaseUtil {
 
 	public static TableField getPrimaryField(Table table){
 		for(TableField field:table.getFieldList()){
-			if(field.getPrimary())
+			if(field.getPrimary()) {
 				return field;
+			}
 		}
 		throw new RuntimeException("表格"+table.getName()+"主键不存在");
 	}

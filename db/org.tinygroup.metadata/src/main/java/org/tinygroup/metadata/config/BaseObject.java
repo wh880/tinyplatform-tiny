@@ -31,6 +31,7 @@ public abstract class BaseObject {
 	private String name;
 	@XStreamAsAttribute
 	private String title;
+	@XStreamAsAttribute
 	private String description;
 
 	public String getId() {

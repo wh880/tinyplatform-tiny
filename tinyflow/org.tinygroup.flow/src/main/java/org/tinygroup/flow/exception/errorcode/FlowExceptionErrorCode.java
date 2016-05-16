@@ -27,4 +27,8 @@ public class FlowExceptionErrorCode {
      */
     public static final String FLOW_PROPERTY_VALIDATE_EXCEPTION = "0TE12"+"0081"+"002";
 
+    /**
+     * 未找到后续节点
+     */
+    public static final String FLOW_NEXT_NODE_NOT_FOUND_EXCEPTION = "0TE12"+"0081"+"003";
 }

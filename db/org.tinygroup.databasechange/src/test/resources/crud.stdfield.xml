@@ -1,6 +1,9 @@
 <standard-fields package-name="org.tinygroup.common">
-  <standard-field title="主键字段" business-type-id="Varchar50" name="id" id="id">
+  <standard-field title="主键字段" business-type-id="Varchar50" name="v_id" id="v_id">
   <description>通用id</description>
+  </standard-field>
+  <standard-field title="整型主键字段" business-type-id="Int" name="id" id="id">
+    <description>整型id</description>
   </standard-field>
   <standard-field title="名称" business-type-id="Varchar50" name="name" id="name" defalut="22222"><description>人名</description></standard-field>
   <standard-field title="年龄" business-type-id="Int" name="age" id="age" default="20"></standard-field>

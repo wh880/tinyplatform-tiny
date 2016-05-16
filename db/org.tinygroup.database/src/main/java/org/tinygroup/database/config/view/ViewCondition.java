@@ -96,8 +96,9 @@ public class ViewCondition {
 	}
 
 	public List<ViewCondition> getConditionList() {
-		if (conditionList == null)
+		if (conditionList == null) {
 			conditionList = new ArrayList<ViewCondition>();
+		}
 		return conditionList;
 	}
 

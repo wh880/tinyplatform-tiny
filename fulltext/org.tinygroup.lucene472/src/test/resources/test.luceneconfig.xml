@@ -1,0 +1,12 @@
+<lucene-configs>
+  <lucene-config id="index001" title="配置一" index-version="" allow-duplication="false" >
+     <directory><![CDATA[index/index01]]></directory>
+     <analyzer-bean-name><![CDATA[newSimpleAnalyzer]]></analyzer-bean-name>
+  </lucene-config>
+  <lucene-config id="index002" title="配置二" index-version="LUCENE_30" allow-duplication="true">
+     <directory><![CDATA[index/index02]]></directory>
+  </lucene-config>
+  <lucene-config id="index002" title="配置三" index-version="LUCENE_40" allow-duplication="true">
+     <directory><![CDATA[index/index03]]></directory>
+  </lucene-config>
+</lucene-configs>

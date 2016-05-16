@@ -42,8 +42,9 @@ public class Table extends BaseObject {
 	}
 	
 	public String getName() {
-		if (getSchema() == null || "".equals(getSchema()))
+		if (getSchema() == null || "".equals(getSchema())) {
 			return super.getName();
+		}
 		return String.format("%s.%s", getSchema(), super.getName());
 	}
 
@@ -64,8 +65,9 @@ public class Table extends BaseObject {
 	}
 
 	public List<TableField> getFieldList() {
-		if (fieldList == null)
+		if (fieldList == null) {
 			fieldList = new ArrayList<TableField>();
+		}
 		return fieldList;
 	}
 
@@ -74,8 +76,9 @@ public class Table extends BaseObject {
 	}
 
 	public List<Index> getIndexList() {
-		if (indexList == null)
+		if (indexList == null) {
 			indexList = new ArrayList<Index>();
+		}
 		return indexList;
 	}
 

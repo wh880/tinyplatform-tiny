@@ -171,8 +171,9 @@ public class AopCacheTest extends TestCase {
 
     /**
      * 测试不同对象情况下不进行合并
+     *
      */
-    public void testDifferentUpdateMerge(){
+    public void testDiffTypeUpdateMerge(){
         //插入user，第一次放入缓存User类型
         Date date = new Date();
         User user = new User(1, "zhangch", 18, date);

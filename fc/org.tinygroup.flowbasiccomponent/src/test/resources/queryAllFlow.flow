@@ -1,11 +1,17 @@
-<flow id="flowQueryAllFlow" name="flowQueryAllFlow" begin-node-id="queryAllFlow"
-	default-node-id="end">
-	<nodes>
-		<node id="queryAllFlow" name="queryAllFlow"  title="查询所有流程">
-			<component name="queryAllFlowComponent">
-				<properties>
-				</properties>
-			</component>
-		</node>
-	</nodes>
+<flow id="flowQueryAllFlow" name="flowQueryAllFlow" enable="false" private-context="false">
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="queryAllFlow"/>
+      </next-nodes>
+    </node>
+    <node id="queryAllFlow" name="queryAllFlow" title="查询所有流程">
+      <component name="queryAllFlowComponent">
+        <properties/>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
 </flow>

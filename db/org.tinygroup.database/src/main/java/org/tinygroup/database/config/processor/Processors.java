@@ -39,8 +39,9 @@ public class Processors {
 	}
 
 	public List<Processor> getList() {
-		if (list == null)
+		if (list == null) {
 			list = new ArrayList<Processor>();
+		}
 		return list;
 	}
 

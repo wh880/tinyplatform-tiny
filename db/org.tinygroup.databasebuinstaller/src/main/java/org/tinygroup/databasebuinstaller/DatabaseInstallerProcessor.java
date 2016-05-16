@@ -99,7 +99,7 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 		Map<Class, List<String>> processSqls = new HashMap<Class, List<String>>();
 		Connection con = null;
 		try {
-			if(!isFull) con = DataSourceHolder.getDataSource().getConnection();
+			if(!isFull){ con = DataSourceHolder.getDataSource().getConnection();}
 			for (InstallProcessor processor : installProcessors) {
 				long startTime = System.currentTimeMillis();
 				List<String> sqls = null;
@@ -178,8 +178,9 @@ public class DatabaseInstallerProcessor implements ApplicationProcessor {
 		} else {
 			XmlNode node = applicationConfig.getSubNode("database");
 			dbLanguage = node.getAttribute("type");
-			if (dbLanguage == null || "".equals(dbLanguage))
+			if (dbLanguage == null || "".equals(dbLanguage)) {
 				dbLanguage = defaultLanguage;
+			}
 		}
 
 		logger.logMessage(LogLevel.INFO, "当前数据库语言为:{dbLanguage}", dbLanguage);

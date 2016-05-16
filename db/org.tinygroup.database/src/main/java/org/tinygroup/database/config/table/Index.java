@@ -53,8 +53,9 @@ public class Index extends BaseObject {
 	}
 
 	public List<IndexField> getFields() {
-		if (fields == null)
+		if (fields == null) {
 			fields = new ArrayList<IndexField>();
+		}
 		return fields;
 	}
 

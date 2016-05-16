@@ -1,0 +1,25 @@
+<flow id="flowPropertyTestFlow" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="false" name="el" type="java.lang.String" scope="in"/>
+    <parameter array="false" required="false" name="str" type="java.lang.String" scope="in"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="flowPropertyComponent"/>
+      </next-nodes>
+    </node>
+    <node id="flowPropertyComponent" name="flowPropertyComponent" title="流程参数传递测试组件">
+      <component name="flowPropertyComponent" title="流程参数传递测试组件">
+        <description>流程参数传递测试组件</description>
+        <properties>
+          <flow-property name="el" value="el" required="true" type="el"/>
+          <flow-property name="str" value="${str}" required="true" type="java.lang.String"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

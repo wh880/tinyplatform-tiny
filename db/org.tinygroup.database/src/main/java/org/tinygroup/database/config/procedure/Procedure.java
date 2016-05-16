@@ -42,8 +42,9 @@ public class Procedure extends BaseObject {
 	private List<SqlBody> procedureBodyList;
 	
 	public String getName() {
-		if (getSchema() == null || "".equals(getSchema()))
+		if (getSchema() == null || "".equals(getSchema())) {
 			return super.getName();
+		}
 		return String.format("%s.%s", getSchema(), super.getName());
 	}
 	public String getSchema() {
@@ -54,8 +55,9 @@ public class Procedure extends BaseObject {
 		this.schema = schema;
 	}
 	public List<UsePackage> getUsePackages() {
-		if (usePackages == null)
+		if (usePackages == null) {
 			usePackages = new ArrayList<UsePackage>();
+		}
 		return usePackages;
 	}
 
@@ -64,8 +66,9 @@ public class Procedure extends BaseObject {
 	}
 
 	public List<ProcedureParameter> getParameterList() {
-		if (parameterList == null)
+		if (parameterList == null) {
 			parameterList = new ArrayList<ProcedureParameter>();
+		}
 		return parameterList;
 	}
 
@@ -74,8 +77,9 @@ public class Procedure extends BaseObject {
 	}
 
 	public List<SqlBody> getProcedureBodyList() {
-		if (procedureBodyList == null)
+		if (procedureBodyList == null) {
 			procedureBodyList = new ArrayList<SqlBody>();
+		}
 		return procedureBodyList;
 	}
 

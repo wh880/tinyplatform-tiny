@@ -48,8 +48,9 @@ public class GZIPResponseWrapper extends HttpServletResponseWrapper {
 
 	public byte[] getBufferedBytes() {
 		try {
-			if (writer != null)
+			if (writer != null) {
 				writer.close();
+			}
 			    baos.flush();
 		} catch (IOException e) {
 			logger.errorMessage(e.getMessage(), e);

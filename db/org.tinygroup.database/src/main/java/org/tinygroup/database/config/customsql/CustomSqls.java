@@ -35,8 +35,9 @@ public class CustomSqls {
 	List<CustomSql> customSqlList;
 
 	public List<UsePackage> getUsePackages() {
-		if (usePackages == null)
+		if (usePackages == null) {
 			usePackages = new ArrayList<UsePackage>();
+		}
 		return usePackages;
 	}
 
@@ -45,8 +46,9 @@ public class CustomSqls {
 	}
 
 	public List<CustomSql> getCustomSqlList() {
-		if (customSqlList == null)
+		if (customSqlList == null) {
 			customSqlList = new ArrayList<CustomSql>();
+		}
 		return customSqlList;
 	}
 

@@ -46,10 +46,12 @@ public class CustomSqlProcessorImpl implements CustomSqlProcessor {
 	}
 
 	public void addCustomSqls(CustomSqls customsqls) {
-		if (customsqls == null)
+		if (customsqls == null) {
 			return;
-		if (customsqls.getCustomSqlList() == null)
+		}
+		if (customsqls.getCustomSqlList() == null) {
 			return;
+		}
 		for (CustomSql sql : customsqls.getCustomSqlList()) {
 			String type = sql.getType();
 			for (SqlBody body : sql.getSqlBodyList()) {
@@ -77,8 +79,9 @@ public class CustomSqlProcessorImpl implements CustomSqlProcessor {
 	}
 
 	public void removeCustomSqls(CustomSqls customsqls) {
-		if (customsqls == null)
+		if (customsqls == null) {
 			return;
+		}
 		if (customsqls.getCustomSqlList() == null)
 			return;
 		for (CustomSql sql : customsqls.getCustomSqlList()) {

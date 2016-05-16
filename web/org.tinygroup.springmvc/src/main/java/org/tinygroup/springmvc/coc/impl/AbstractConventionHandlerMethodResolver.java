@@ -157,8 +157,9 @@ public abstract class AbstractConventionHandlerMethodResolver implements
     }
 
     protected boolean qualify(Method method) {
-        if (qualifier == null)
+        if (qualifier == null) {
             return true;
+        }
         return qualifier.qualify(method);
     }
 

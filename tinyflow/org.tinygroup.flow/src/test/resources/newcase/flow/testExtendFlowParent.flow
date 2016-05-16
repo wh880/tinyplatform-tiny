@@ -1,6 +1,6 @@
 <flow id="testExtendFlowParent" enable="true" private-context="false">
   <nodes>
-    <node id="start" name="start" title="开始">
+    <node id="begin" name="begin" title="开始">
       <next-nodes>
         <next-node next-node-id="node1"/>
       </next-nodes>
@@ -9,7 +9,7 @@
       <component name="plusComponent" title="加法计算组件new">
         <description></description>
         <properties>
-          <flow-property name="ii" value="1" required="true" type="int"/>
+          <flow-property name="ii" value="1" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
@@ -20,7 +20,7 @@
       <component name="plusComponent" title="加法计算组件new">
         <description></description>
         <properties>
-          <flow-property name="ii" value="3" required="true" type="int"/>
+          <flow-property name="ii" value="3" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
@@ -31,7 +31,7 @@
       <component name="plusComponent" title="加法计算组件new">
         <description></description>
         <properties>
-          <flow-property name="ii" value="2" required="true" type="int"/>
+          <flow-property name="ii" value="2" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
@@ -42,15 +42,12 @@
       <component name="plusComponent" title="加法计算组件new">
         <description></description>
         <properties>
-          <flow-property name="ii" value="4" required="true" type="int"/>
+          <flow-property name="ii" value="4" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
         <next-node next-node-id="end"/>
       </next-nodes>
-    </node>
-    <node id="end" name="end" title="结束">
-      <next-nodes/>
     </node>
   </nodes>
 </flow>

@@ -28,8 +28,9 @@ public class Procedures {
 	List<Procedure> procedureList;
 
 	public List<Procedure> getProcedureList() {
-		if (procedureList == null)
+		if (procedureList == null) {
 			procedureList = new ArrayList<Procedure>();
+		}
 		return procedureList;
 	}
 

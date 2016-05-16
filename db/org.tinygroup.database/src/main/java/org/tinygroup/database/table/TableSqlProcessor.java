@@ -28,6 +28,8 @@ public interface TableSqlProcessor {
 	String COLUMN_SIZE="COLUMN_SIZE";
 	String DECIMAL_DIGITS="DECIMAL_DIGITS";
 	String COLUMN_NAME="COLUMN_NAME";
+	String COLUMN_DEF="COLUMN_DEF";//默认值
+	String REMARKS="REMARKS";//注释
 	/**
 	 * 获得创建表格的语句(包含index)
 	 * @param table
@@ -56,7 +58,7 @@ public interface TableSqlProcessor {
 	 * 获得(正向)Update表格的语句
 	 * @param table
 	 * @param packageName
-	 * @param metadata
+	 * @param connection
 	 * @return
 	 */
 	List<String> getUpdateSql(Table table, String packageName,

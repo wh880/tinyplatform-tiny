@@ -21,19 +21,19 @@ public class RandomFunction extends AbstractTemplateFunction {
 	public Object execute(Template template, TemplateContext context,
 			Object... parameters) throws TemplateException {
 		if(parameters==null || parameters.length<1){
-		   return nextInt(template,context);
+		   return nextInt();
 		}else{
 		   String type = (String) parameters[0];
 		   if(type==null || type.equalsIgnoreCase("int")){
-			  return nextInt(template,context); 
+			  return nextInt(); 
 		   }else if(type.equalsIgnoreCase("long")){
-			   return nextLong(template,context); 
+			   return nextLong(); 
 		   }else if(type.equalsIgnoreCase("uuid")){
-			   return nextUUID(template,context); 
+			   return nextUUID(); 
 		   }else if(type.equalsIgnoreCase("double")){
-			   return nextDouble(template,context); 
+			   return nextDouble(); 
 		   }else if(type.equalsIgnoreCase("float")){
-			   return nextFloat(template,context); 
+			   return nextFloat(); 
 		   }
 		   //没有任何匹配返回Null值
 		   return null;
@@ -42,55 +42,45 @@ public class RandomFunction extends AbstractTemplateFunction {
 	
 	/**
 	 * 生成int型随机数
-	 * @param template
-	 * @param context
 	 * @return
 	 */
-	protected Integer nextInt(Template template, TemplateContext context){
+	private Integer nextInt(){
 		Random r=new Random();
 		return Math.abs(r.nextInt());
 	}
 	
 	/**
 	 * 生成long型随机数
-	 * @param template
-	 * @param context
 	 * @return
 	 */
-	protected Long nextLong(Template template, TemplateContext context){
+	private Long nextLong(){
 		Random r=new Random();
 		return Math.abs(r.nextLong());
 	}
 	
 	/**
 	 * 生成float型随机数
-	 * @param template
-	 * @param context
 	 * @return
 	 */
-	protected Float nextFloat(Template template, TemplateContext context){
+	private Float nextFloat(){
 		Random r=new Random();
 		return Math.abs(r.nextFloat());
 	}
 	
 	/**
 	 * 生成double型随机数
-	 * @param template
-	 * @param context
 	 * @return
 	 */
-	protected Double nextDouble(Template template, TemplateContext context){
+	private Double nextDouble(){
 		Random r=new Random();
 		return Math.abs(r.nextDouble());
 	}
 	
 	/**
 	 * 生成String型随机数
-	 * @param template
-	 * @param context
 	 * @return
 	 */
-	protected String nextUUID(Template template, TemplateContext context){
+	private String nextUUID(){
 		return UUID.randomUUID().toString();
 	}
 

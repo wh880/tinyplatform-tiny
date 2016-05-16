@@ -51,8 +51,9 @@ public class InitData {
 	}
 
 	public List<Record> getRecordList() {
-		if (recordList == null)
+		if (recordList == null) {
 			recordList = new ArrayList<Record>();
+		}
 		return recordList;
 	}
 

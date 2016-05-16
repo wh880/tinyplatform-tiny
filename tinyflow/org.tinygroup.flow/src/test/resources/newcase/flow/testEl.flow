@@ -1,6 +1,10 @@
 <flow id="testEl" enable="true" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="aa" type="int" scope="in"/>
+    <parameter array="false" required="true" name="bb" type="int" scope="in"/>
+  </parameters>
   <nodes>
-    <node id="start" name="start" title="开始">
+    <node id="begin" name="begin" title="开始">
       <next-nodes>
         <next-node next-node-id="abcPlusComponent"/>
       </next-nodes>
@@ -9,8 +13,8 @@
       <component name="abcPlusComponent" title="c=aa+bb new">
         <description></description>
         <properties>
-          <flow-property name="aa" value="${aa}" required="true" type="int"/>
-          <flow-property name="bb" value="${bb}" required="true" type="int"/>
+          <flow-property name="aa" value="${aa}" required="false" type="int"/>
+          <flow-property name="bb" value="${bb}" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
@@ -21,7 +25,7 @@
       <component name="abcImsubComponent" title="对c进行减法new">
         <description></description>
         <properties>
-          <flow-property name="num" value="5" required="true" type="int"/>
+          <flow-property name="num" value="5" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>
@@ -37,7 +41,7 @@
       <component name="plusComponent" title="加法计算组件new">
         <description></description>
         <properties>
-          <flow-property name="ii" value="10" required="true" type="int"/>
+          <flow-property name="ii" value="10" required="false" type="int"/>
         </properties>
       </component>
       <next-nodes>

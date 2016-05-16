@@ -1,0 +1,26 @@
+<flow id="pageflowreleaseFlow" name="pageflowreleaseFlow" enable="false" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="a" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="b" type="java.lang.Integer" scope="in"/>
+    <parameter array="false" required="true" name="sum" type="java.lang.Integer" scope="out"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="sumComponentPageFlow"/>
+      </next-nodes>
+    </node>
+    <node id="sumComponentPageFlow" name="sumComponentPageFlow" title="求和组件">
+      <component name="sumComponentPageFlow" title="求和组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="a" value="${a}" required="false" type="java.lang.Integer"/>
+          <flow-property name="b" value="${b}" required="false" type="java.lang.Integer"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

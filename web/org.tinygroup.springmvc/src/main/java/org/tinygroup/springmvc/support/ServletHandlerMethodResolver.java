@@ -488,9 +488,9 @@ public class ServletHandlerMethodResolver extends HandlerMethodResolver {
 				return 1;
 			} else if (info2MethodCount == 0 && info1MethodCount > 0) {
 				return -1;
-			} else if (info1MethodCount == 1 & info2MethodCount > 1) {
+			} else if (info1MethodCount == 1 && info2MethodCount > 1) {
 				return -1;
-			} else if (info2MethodCount == 1 & info1MethodCount > 1) {
+			} else if (info2MethodCount == 1 && info1MethodCount > 1) {
 				return 1;
 			}
 			return 0;

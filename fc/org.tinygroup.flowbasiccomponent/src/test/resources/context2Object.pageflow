@@ -1,13 +1,20 @@
-<flow id="flowContext2Object" name="flowContext2Object" begin-node-id="context2Object"
-	default-node-id="end">
-	<nodes>
-		<node id="context2Object" name="context2Object"  title="转换对象">
-			<component name="context2ObjectComponent">
-				<properties>
-					<flow-property name="className" value="${className}" />
-					<flow-property name="resultKey" value="${resultKey}" />
-				</properties>
-			</component>
-		</node>
-	</nodes>
+<flow id="flowContext2Object" name="flowContext2Object" enable="false" private-context="false">
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="context2Object"/>
+      </next-nodes>
+    </node>
+    <node id="context2Object" name="context2Object" title="转换对象">
+      <component name="context2ObjectComponent">
+        <properties>
+          <flow-property name="className" value="${className}" required="false"/>
+          <flow-property name="resultKey" value="${resultKey}" required="false"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
 </flow>

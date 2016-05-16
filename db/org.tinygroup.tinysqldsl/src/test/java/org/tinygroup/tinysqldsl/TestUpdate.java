@@ -33,6 +33,7 @@ public class TestUpdate {
                 .where(CUSTOM.NAME.eq("悠然")));
         System.out.println(update(CUSTOM).set(CUSTOM.NAME.value(null),
                 CUSTOM.AGE.value(30)).where(CUSTOM.NAME.eq("flank")));
+        System.out.println(update(CUSTOM).set(CUSTOM.NAME.value(null)));
     }
 
 }

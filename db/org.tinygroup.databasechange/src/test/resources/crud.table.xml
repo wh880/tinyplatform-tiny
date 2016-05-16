@@ -1,16 +1,23 @@
 <tables package-name="sample">
 	<table id="t_user" name="t_user" title="用户表">
 		<description>用户表</description>
-		<table-field standard-field-id="id" primary="true"
-			unique="true" not-null="true" auto-increase="false" id="id" default="1111"/>
+		<table-field standard-field-id="v_id" primary="true"
+			unique="true" not-null="true" auto-increase="false" id="v_id"/>
 		<table-field standard-field-id="name" primary="false"
 			unique="false" not-null="true" id="name" />
 		<table-field standard-field-id="age" primary="false"
-			unique="false" not-null="false" id="age" />
+			unique="false" not-null="false" id="age" default="1"/>
 		<table-field standard-field-id="parent_id" primary="false"
 					 unique="false" not-null="false" id="parent_id" >
 		</table-field>
-		<foreign-reference foreign-field="parent_id" main-table="t_user" reference-field="id" />
+		<foreign-reference name="fk_user_parent" foreign-field="parent_id" main-table="t_user" reference-field="v_id" />
+	</table>
+	<table id="t_custom" name="t_custom" title="客户表">
+		<description>客户表</description>
+		<table-field standard-field-id="id" primary="true"
+					 unique="true" not-null="true" auto-increase="true" id="id"/>
+		<table-field standard-field-id="name" primary="false"
+					 unique="false" not-null="true" id="name" />
 	</table>
 	<table id="incrementer" name="incrementer" title="主键自增长表">
 		<table-field standard-field-id="sequence_id" primary="true"

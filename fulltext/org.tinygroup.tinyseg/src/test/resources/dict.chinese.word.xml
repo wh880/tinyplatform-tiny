@@ -1,0 +1,30 @@
+﻿
+#词库结构
+#
+#本文档不是标准的XML文档结构
+#"#"号开头表示本行为注释
+#对于非空行，非"#"号开头的行，为词组说明行，词组说明行是XML结构
+#其中属性含义为：word单词、 partOfSpeech词性、 weighing权重、 thesaurus同义词、antonym表示反义词、pinyin拼音
+#如果没有pinyin或pinyin中内容为空，表示采用每个字的第一序拼音
+#反义词，同义词，词性可以有用","隔开的多个值
+#同义词，表示意义与本单词相同，不管文章中有哪一个，用哪个处理结果都一样
+<word word="重庆" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="重庆市" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="中国" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="帽子" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="服装" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="和服" partOfSpeech="n,a" weighing="2" thesaurus="" antonym="" pinyin="11" />
+<word word="中华" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="人民" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="共和" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="共和国" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="中华人民共和国" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="中华人" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="中华人民" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="感冒解毒胶囊" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="解毒" partOfSpeech="n,a" weighing="2" thesaurus="" antonym="" pinyin="11" />
+<word word="胶囊" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />
+<word word="感冒" partOfSpeech="n,a" weighing="2" thesaurus="" antonym="" pinyin="11" />
+<word word="有意" partOfSpeech="n,a" weighing="2" thesaurus="" antonym="" pinyin="11" />
+<word word="分歧" partOfSpeech="n,a" weighing="2" thesaurus="" antonym="" pinyin="11" />
+<word word="意见" partOfSpeech="n,a" weighing="3" thesaurus="" antonym="" pinyin="11" />

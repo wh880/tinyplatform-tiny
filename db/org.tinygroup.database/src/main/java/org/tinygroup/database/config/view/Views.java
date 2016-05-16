@@ -28,8 +28,9 @@ public class Views extends BaseObject {
 	private List<View> viewTableList;
 
 	public List<View> getViewTableList() {
-		if (viewTableList == null)
+		if (viewTableList == null) {
 			viewTableList = new ArrayList<View>();
+		}
 		return viewTableList;
 	}
 
