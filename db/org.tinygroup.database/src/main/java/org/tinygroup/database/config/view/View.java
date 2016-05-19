@@ -17,6 +17,7 @@ package org.tinygroup.database.config.view;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.metadata.config.BaseObject;
 
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class View extends BaseObject {
 	List<ViewTable> tableList;
 	@XStreamAlias("view-havings")
 	List<ViewHaving> havingList;// 表间有主外键关系的，不用加条件
+	@XStreamAlias("sqls")
+	private List<SqlBody> procedureBodyList;
 
 	public String getName() {
 		if (getSchema() == null || "".equals(getSchema())) {
