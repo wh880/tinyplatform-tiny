@@ -1,8 +1,11 @@
 package org.tinygroup.lucene472;
 
+import java.util.List;
+
 import org.tinygroup.fulltext.FullTextConfigManager;
 import org.tinygroup.lucene472.config.LuceneConfig;
 import org.tinygroup.lucene472.config.LuceneConfigs;
+import org.tinygroup.templateindex.config.BaseIndexConfig;
 
 /**
  * Lucene配置管理器
@@ -24,6 +27,10 @@ public interface LuceneConfigManager extends FullTextConfigManager<LuceneConfig>
 	 * @param configs
 	 */
 	public void removeLuceneConfigs(LuceneConfigs configs);
-
-	
+    
+	/**
+	 * 获得索引配置项列表
+	 * @return
+	 */
+	public List<BaseIndexConfig> getIndexConfigList();
 }

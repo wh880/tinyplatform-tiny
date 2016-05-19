@@ -28,6 +28,7 @@ import org.tinygroup.fulltext.field.Field;
 import org.tinygroup.fulltext.field.StoreField;
 import org.tinygroup.lucene472.LuceneConfigManager;
 import org.tinygroup.lucene472.config.LuceneConfig;
+import org.tinygroup.templateindex.config.BaseIndexConfig;
 
 /**
  * 构建Lucene的相关对象
@@ -137,13 +138,30 @@ public class LuceneBuilder {
 	 * @return
 	 */
 	public String[] buildQueryFields(){
-		LuceneConfig config = buildConfig();
+		
+		Set<String> indexFields = new HashSet<String>();
+		List<BaseIndexConfig> indexConfigList = getLuceneConfigManager().getIndexConfigList();
+		if(indexConfigList!=null){
+		   for(BaseIndexConfig indexConfig:indexConfigList){
+			   indexFields.addAll(indexConfig.getQueryFields());
+		   }
+		}
+		if(!indexFields.isEmpty()){
+			return indexFields.toArray(new String[indexFields.size()]);
+		}else{
+			return buildDefaultQueryFields();
+		}
+		
+	}
+	
+	private String[] buildDefaultQueryFields(){
 		List<String> fields = new ArrayList<String>();
+		LuceneConfig config = buildConfig();
+		
 		fields.add(FullTextHelper.getStoreId());
 		fields.add(FullTextHelper.getStoreType());
 		fields.add(FullTextHelper.getStoreTitle());
 		fields.add(FullTextHelper.getStoreAbstract());
-		
 		if(!StringUtil.isEmpty(config.getSearchFields())){
 		   if(config.getSearchFields().indexOf(",")>-1){
 			   String[] ss = config.getSearchFields().trim().split(",");

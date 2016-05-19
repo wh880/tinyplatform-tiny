@@ -29,6 +29,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.tinygroup</groupId>
+			<artifactId>org.tinygroup.templateindex</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
 			<version>${lucene_version}</version>
@@ -48,6 +53,23 @@
 			<artifactId>lucene-highlighter</artifactId>
 			<version>${lucene_version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.tinygroup</groupId>
+			<artifactId>org.tinygroup.sqlindexsource</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.tinygroup</groupId>
+			<artifactId>org.tinygroup.fileindexsource</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		   <groupId>mysql</groupId>
+		   <artifactId>mysql-connector-java</artifactId>
+		   <scope>test</scope>
+	    </dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

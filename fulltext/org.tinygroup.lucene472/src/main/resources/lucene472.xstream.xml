@@ -2,6 +2,8 @@
 	<xstream-annotation-classes>
 		<xstream-annotation-class
 			class-name="org.tinygroup.lucene472.config.LuceneConfigs" />
+		<xstream-annotation-class
+			class-name="org.tinygroup.sqlindexsource.config.SqlConfigs" />
 	</xstream-annotation-classes>
 </xstream-configuration>
 

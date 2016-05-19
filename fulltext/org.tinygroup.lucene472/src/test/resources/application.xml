@@ -29,19 +29,8 @@
 	</greetings>
 	<application-processors>
 		<application-processor bean="fileResolverProcessor"></application-processor>
-		<application-processor bean="tinyTemplateConfigProcessor"></application-processor>
+		<application-processor bean="fullTextTemplateProcessor"></application-processor>
+		<!-- <application-processor bean="luceneIndexInstallProcessor"></application-processor> -->
 	</application-processors>
 	
-	<template-config templateExtFileName="page" layoutExtFileName="layout"  componentExtFileName="component">
-       <!--模板引擎的基本属性 -->
-       <init-param name="encode" value="UTF-8" ></init-param>
-       <init-param name="cacheEnabled" value="false" ></init-param>
-       <init-param name="safeVariable" value="false" ></init-param>
-       <init-param name="compactMode" value="false" ></init-param> 
-       <init-param name="checkModified" value="true" ></init-param>
-       <init-param name="localeTemplateEnable" value="false" ></init-param> 
-    </template-config>
-	
-	<!-- 这里是文件搜索器相关配置，如果配置请参考file-resolver-configuration配置手册 -->
-
 </application>
