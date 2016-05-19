@@ -1,0 +1,67 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	<bean id="fileResolver" scope="singleton"
+		class="org.tinygroup.fileresolver.impl.FileResolverImpl">
+		<property name="fileProcessorList">
+			<list>
+				<ref bean="i18nFileProcessor" />
+				<ref bean="xStreamFileProcessor" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="fileResolverProcessor" scope="singleton"
+		class="org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor">
+		<property name="fileResolver" ref="fileResolver"></property>
+	</bean>
+	
+	<bean id="memoryFullText" scope="singleton"
+		class="org.tinygroup.sqlindexsource.MemoryFullText">
+		<property name="documentListCreators">
+			<list>
+				<ref bean="resultSetDocumentListCreator" />
+			</list>
+		</property>
+		<property name="indexOperator" ref="memoryIndexOperator"></property>
+	</bean>
+	
+	<bean id="memoryIndexOperator" scope="singleton"
+		class="org.tinygroup.sqlindexsource.MemoryIndexOperator">
+	</bean>
+	
+	
+	<bean id="resultSetDocumentListCreator" scope="singleton"
+		class="org.tinygroup.sqlindexsource.impl.ResultSetDocumentListCreator">
+		<property name="templateIndexRender" ref="sqlTemplate"></property>
+	</bean>
+	
+	<bean id="sqlTemplate" scope="singleton"
+		class="org.tinygroup.templateindex.impl.TemplateDocumentCreator">
+		<property name="idRule" value="/sql_id.fulltextpage"></property>
+		<property name="typeRule" value="/sql_type.fulltextpage"></property>
+		<property name="titleRule" value="/sql_title.fulltextpage"></property>
+		<property name="abstractRule" value="/sql_abstract.fulltextpage"></property>
+		<property name="templateRender" ref="fullTextTemplateRender"></property>
+	</bean>
+	
+	<bean id="derbyDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>org.apache.derby.jdbc.EmbeddedDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:derby:TESTDB;create=true</value>
+		</property>
+		<property name="username">
+			<value>opensource</value>
+		</property>
+		<property name="password">
+			<value>opensource</value>
+		</property>
+	</bean>
+	
+</beans>
