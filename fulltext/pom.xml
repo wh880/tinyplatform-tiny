@@ -16,5 +16,8 @@
         <module>org.tinygroup.pdfindexsource</module>
         <module>org.tinygroup.chineseanalyzer</module>
         <module>org.tinygroup.officeindexsource</module>
+        <module>org.tinygroup.templateindex</module>
+        <module>org.tinygroup.sqlindexsource</module>
+        <module>org.tinygroup.fileindexsource</module>
   </modules>
 </project>
