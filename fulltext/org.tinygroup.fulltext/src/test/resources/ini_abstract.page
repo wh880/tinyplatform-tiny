@@ -1,7 +1,0 @@
-#if(abstract)
-${abstract}
-#elseif(content)
-${content}
-#elseif(_abstract)
-${_abstract}
-#end

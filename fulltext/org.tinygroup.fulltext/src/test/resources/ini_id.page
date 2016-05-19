@@ -1,5 +1,0 @@
-#if(id)
-${id}
-#elseif(_id)
-${_id}
-#end

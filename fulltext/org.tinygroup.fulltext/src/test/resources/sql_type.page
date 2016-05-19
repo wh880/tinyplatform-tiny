@@ -1,5 +1,0 @@
-#if(TYPE)
-${TYPE}
-#elseif(_type)
-${_type}
-#end

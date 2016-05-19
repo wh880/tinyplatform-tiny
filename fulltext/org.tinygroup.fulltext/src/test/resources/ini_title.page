@@ -1,5 +1,0 @@
-#if(title)
-${title}
-#elseif(_title)
-${_title}
-#end
