@@ -12,9 +12,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
 import org.tinygroup.fulltext.FullTextHelper;
-import org.tinygroup.fulltext.TemplateDocumentCreator;
 import org.tinygroup.fulltext.document.Document;
 import org.tinygroup.fulltext.exception.FullTextException;
+import org.tinygroup.templateindex.impl.TemplateDocumentCreator;
 
 /**
  * 抽象excel的索引数据源基类
