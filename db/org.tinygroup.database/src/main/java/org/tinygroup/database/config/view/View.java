@@ -31,8 +31,18 @@ import java.util.List;
 public class View extends BaseObject {
 	@XStreamAsAttribute
 	private String schema;
+	@XStreamAlias("view-fields")
+	List<ViewField> fieldList;
+	@XStreamAlias("view-conditions")
+	List<ViewCondition> conditionList;// 表间有主外键关系的，不用加条件
+	@XStreamAlias("order-by-fields")
+	List<OrderByField> orderByFieldList;
+	@XStreamAlias("view-tables")
+	List<ViewTable> tableList;
+	@XStreamAlias("view-havings")
+	List<ViewHaving> havingList;// 表间有主外键关系的，不用加条件
 	@XStreamAlias("sqls")
-	private List<SqlBody> viewSqlBodyList;
+	private List<SqlBody> procedureBodyList;
 
 	public String getName() {
 		if (getSchema() == null || "".equals(getSchema())) {
@@ -49,6 +59,61 @@ public class View extends BaseObject {
 		this.schema = schema;
 	}
 
+	public List<ViewHaving> getHavingList() {
+		if (havingList == null) {
+			havingList = new ArrayList<ViewHaving>();
+		}
+		return havingList;
+	}
+
+	public void setHavingList(List<ViewHaving> havingList) {
+		this.havingList = havingList;
+	}
+
+	public List<ViewTable> getTableList() {
+		if (tableList == null) {
+			tableList = new ArrayList<ViewTable>();
+		}
+		return tableList;
+	}
+
+	public void setTableList(List<ViewTable> tableList) {
+		this.tableList = tableList;
+	}
+
+	public List<ViewField> getFieldList() {
+		if (fieldList == null) {
+			fieldList = new ArrayList<ViewField>();
+		}
+		return fieldList;
+	}
+
+	public void setFieldList(List<ViewField> fieldList) {
+		this.fieldList = fieldList;
+	}
+
+	public List<ViewCondition> getConditionList() {
+		if (conditionList == null) {
+			conditionList = new ArrayList<ViewCondition>();
+		}
+		return conditionList;
+	}
+
+	public void setConditionList(List<ViewCondition> conditionList) {
+		this.conditionList = conditionList;
+	}
+
+	public List<OrderByField> getOrderByFieldList() {
+		if (orderByFieldList == null) {
+			orderByFieldList = new ArrayList<OrderByField>();
+		}
+		return orderByFieldList;
+	}
+
+	public void setOrderByFieldList(List<OrderByField> orderByFieldList) {
+		this.orderByFieldList = orderByFieldList;
+	}
+
 	@XStreamAlias("group-by-fields")
 	private List<GroupByField> groupByFieldList;
 
@@ -63,11 +128,22 @@ public class View extends BaseObject {
 		this.groupByFieldList = groupByFieldList;
 	}
 
-	public List<SqlBody> getViewSqlBodyList() {
-		return viewSqlBodyList;
+	public ViewField getViewField(String tableFieldId){
+		for (ViewField viewField : fieldList) {
+			if(viewField.getTableFieldId().equals(tableFieldId)){
+				return viewField;
+			}
+
+		}
+		return null;
 	}
 
-	public void setViewSqlBodyList(List<SqlBody> viewSqlBodyList) {
-		this.viewSqlBodyList = viewSqlBodyList;
+	public ViewTable getViewTable(String viewTableId){
+		for (ViewTable viewTable : tableList) {
+			if(viewTable.getId().equals(viewTableId)){
+				return viewTable;
+			}
+		}
+		return null;
 	}
 }
