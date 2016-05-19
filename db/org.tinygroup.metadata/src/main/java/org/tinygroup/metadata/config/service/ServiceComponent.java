@@ -13,33 +13,46 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.database.config;
+package org.tinygroup.metadata.config.service;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-/**
- * sql信息
- * @author luoguo
- *
- */
-@XStreamAlias("sql")
-public class SqlBody {
+import java.util.List;
+
+@XStreamAlias("service-component")
+public class ServiceComponent {
 	@XStreamAsAttribute
-	String dialectTypeName;
+	private String type;
 	@XStreamAsAttribute
-	String content;
-	public String getDialectTypeName() {
-		return dialectTypeName;
+	private String bean;
+	@XStreamImplicit
+	private List<ServiceMethod> serviceMethods;
+
+	public String getBean() {
+		return bean;
 	}
-	public void setDialectTypeName(String dialectTypeName) {
-		this.dialectTypeName = dialectTypeName;
+
+	public void setBean(String bean) {
+		this.bean = bean;
 	}
-	public String getContent() {
-		return content;
+
+	public List<ServiceMethod> getServiceMethods() {
+		return serviceMethods;
 	}
-	public void setContent(String content) {
-		this.content = content;
+
+	public void setServiceMethods(List<ServiceMethod> serviceMethods) {
+		this.serviceMethods = serviceMethods;
 	}
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
 }

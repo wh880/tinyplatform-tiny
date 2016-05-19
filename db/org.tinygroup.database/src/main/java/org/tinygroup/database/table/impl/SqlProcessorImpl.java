@@ -280,9 +280,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 			String columnDef = getDbColumnColumnDef(attribute);
 			String standardComment = getComment(standardField);
 			String standardDefault = standardField.getDefaultValue();
-			if(standardComment!=null && standardComment.trim().length()==0) standardComment = null;
+			if(standardComment!=null && standardComment.trim().length()==0){ standardComment = null;}
 			standardDefault = StringUtil.defaultIfEmpty(standardDefault,null);
 			columnDef = StringUtil.defaultIfEmpty(columnDef,null);
+			//类型或默认值或注释可以更新
 			if (!checkTypeSame(dbColumnType,tableDataType) || !StringUtil.equals(standardDefault,columnDef)
 					|| !StringUtil.equals(standardComment,remarks)) {
 				StringBuffer alterTypeBuffer = new StringBuffer();
@@ -313,6 +314,12 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
 	}
 
+	/**
+	 * 检查数据类型是否相同
+	 * @param dbColumnType
+	 * @param tableDataType
+     * @return
+     */
 	protected boolean checkTypeSame(String dbColumnType, String tableDataType) {
 		return dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
 				.toLowerCase()) != -1;

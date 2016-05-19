@@ -25,6 +25,8 @@ public class Constant extends BaseObject {
 	private String standardTypeName;// 标准字段类型名
 	@XStreamAsAttribute
 	private String value;// 常量的值
+	@XStreamAlias("business-type-id")
+	private String businessTypeName;// 引用业务类型唯一标识
 
 	public String getStandardTypeName() {
 		return standardTypeName;
@@ -42,4 +44,11 @@ public class Constant extends BaseObject {
 		this.value = value;
 	}
 
+	public String getBusinessTypeName() {
+		return businessTypeName;
+	}
+
+	public void setBusinessTypeName(String businessTypeName) {
+		this.businessTypeName = businessTypeName;
+	}
 }
