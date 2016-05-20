@@ -13,7 +13,7 @@
 			<field index-name="_title">
 				<template-rule><![CDATA[${doc_ext_title}]]></template-rule>
 			</field>
-			<field index-name="_abstarct">
+			<field index-name="_abstract">
 				<template-rule><![CDATA[${doc_text}]]></template-rule>
 			</field>
 			<!-- 扩展的索引字段除了模板规则,还需要配置生成索引的规则 -->
