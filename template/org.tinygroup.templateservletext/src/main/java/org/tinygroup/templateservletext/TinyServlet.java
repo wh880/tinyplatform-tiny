@@ -42,9 +42,9 @@ public class TinyServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory
             .getLogger(TinyServlet.class);
 
-    private static TemplateEngine engine;
+    private static TemplateEngine engine = new TemplateEngineDefault();
 
-    private ResourceLoader resourceLoader;
+    private transient ResourceLoader resourceLoader;
 
     private static String defaultContentType;
 
@@ -128,7 +128,7 @@ public class TinyServlet extends HttpServlet {
         try {
             checkResource(getExtFileName(path));
         } catch (Exception e) {
-            e.printStackTrace();
+        	logger.errorMessage("Template merge error:", e);
             return;
         }
         if (isPagelet(path)) {
@@ -156,7 +156,7 @@ public class TinyServlet extends HttpServlet {
     }
 
     protected String chooseCharacterEncoding(HttpServletRequest request) {
-        return "";
+        return request.getCharacterEncoding();
     }
 
     protected TemplateContext createContext(HttpServletRequest request, HttpServletResponse response) {
@@ -244,7 +244,7 @@ public class TinyServlet extends HttpServlet {
     private void engineInit(String resource, String functionPath, String i18npath) {
         logger.logMessage(LogLevel.INFO,
                 "TinyTemplateEngine init start..");
-        engine = engine == null ? new TemplateEngineDefault() : engine;
+        
         logger.logMessage(LogLevel.INFO,
                 "ResourceLoader init start..");
         if(resource!=null) {
@@ -381,7 +381,7 @@ public class TinyServlet extends HttpServlet {
                     logger.logMessage(LogLevel.INFO,
                             "ADD macroLibrary file [" + path + "]");
                 } catch (TemplateException e) {
-                    e.printStackTrace();
+                   logger.errorMessage("resolveFileDir has error:", e);
                 }
             }
         }
