@@ -197,4 +197,33 @@ public class AopCacheTest extends TestCase {
         assertEquals(cacheUser.getAge(),20);
         assertEquals(cacheUser.getBirth(),date);
     }
+
+    public void testMapUpdateMerge(){
+        //插入user，第一次放入缓存User类型
+        Date date = new Date();
+        Map map = new HashMap();
+        map.put("username","zhangch");
+        map.put("id",1);
+        map.put("age",18);
+        map.put("birth",date);
+        userDao.insertUser(map);
+        System.out.println(cache.get(FIRST_GROUP,"1"));
+        //第二次，同key放入CounterfeitUser对象
+        Map map2 = new HashMap();
+        map2.put("username","zhangch2");
+        map2.put("id",1);
+        map.put("birth",null);
+        userDao.updateUserMerge(map2);
+        Map cacheMap = (Map) cache.get(FIRST_GROUP,"1");
+        assertEquals(1,cacheMap.get("id"));
+        assertNull(cacheMap.get("birth"));
+        assertEquals("zhangch2",cacheMap.get("username"));
+        assertEquals(18,cacheMap.get("age"));
+
+       /* //因为cache-put中配置了merge=true,所以name属性被更新，其他属性不变
+        assertEquals(cacheUser.getName(),"zhangch2");
+        assertEquals(cacheUser.getBirth(),date);
+        assertEquals(cacheUser.getAge(),0);
+        assertEquals(cacheUser.getId(),1);*/
+    }
 }
