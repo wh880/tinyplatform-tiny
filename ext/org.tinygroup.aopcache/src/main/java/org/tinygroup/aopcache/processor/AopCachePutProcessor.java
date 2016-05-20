@@ -12,6 +12,7 @@ import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.template.TemplateContext;
 
 import java.beans.PropertyDescriptor;
+import java.util.Map;
 
 /**
  * aop缓存存放操作
@@ -88,6 +89,12 @@ public class AopCachePutProcessor extends AbstractAopCacheProcessor {
      * @param newValue 与cacheValue类型相同，包含更新字段
      */
     private void updateCacheValue(Object cacheValue, Object newValue) {
+        if(cacheValue instanceof Map){
+            Map cacheMap = (Map)cacheValue;
+            Map newValueMap = (Map)newValue;
+            cacheMap.putAll(newValueMap);
+            return;
+        }
         //当前value的beanWrapper
         BeanWrapper valueWrapper = BeanWrapperHolder.getInstance()
                 .getBeanWrapper(newValue);

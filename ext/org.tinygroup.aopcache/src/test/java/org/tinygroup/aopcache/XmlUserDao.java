@@ -41,10 +41,20 @@ public class XmlUserDao {
         testDbOperatorLog += "update user;";
     }
 
+    public void updateUserMerge(Map user) {
+//		System.out.println("update user merge");
+        testDbOperatorLog += "update map user;";
+    }
+
     public void insertUser(User user) {
 //		System.out.println("insert user");
         testDbOperatorLog += "insert user;";
         container.put(user.id, user);
+    }
+
+    public void insertUser(Map user) {
+//		System.out.println("insert user");
+        testDbOperatorLog += "insert map user;";
     }
 
     public User insertUserNoParam(User user) {
