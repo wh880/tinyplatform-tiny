@@ -38,11 +38,17 @@ public abstract class AbstractResultSetOperator {
 	private void updateDate(int type, ResultSet data, int i, String name,
 			Context context) throws SQLException {
 		if (type == Types.DATE) {
-			context.put(name, new Date(data.getDate(i).getTime()));
+			if(data.getDate(i)!=null){
+			   context.put(name, new Date(data.getDate(i).getTime()));
+			}
 		} else if (type == Types.TIME) {
-			context.put(name, new Date(data.getTime(i).getTime()));
+			if(data.getTime(i)!=null){
+			   context.put(name, new Date(data.getTime(i).getTime()));
+			}
 		} else {
-			context.put(name, new Date(data.getTimestamp(i).getTime()));
+			if(data.getTimestamp(i)!=null){
+			   context.put(name, new Date(data.getTimestamp(i).getTime()));
+			}
 		}
 	}
 
