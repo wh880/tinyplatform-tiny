@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.tinygroup</groupId>
     <artifactId>tiny</artifactId>
-    <version>2.2.2-SNAPSHOT</version>
+    <version>2.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>fulltext</artifactId>
   <packaging>pom</packaging>
@@ -16,5 +16,8 @@
         <module>org.tinygroup.pdfindexsource</module>
         <module>org.tinygroup.chineseanalyzer</module>
         <module>org.tinygroup.officeindexsource</module>
+        <module>org.tinygroup.templateindex</module>
+        <module>org.tinygroup.sqlindexsource</module>
+        <module>org.tinygroup.fileindexsource</module>
   </modules>
 </project>

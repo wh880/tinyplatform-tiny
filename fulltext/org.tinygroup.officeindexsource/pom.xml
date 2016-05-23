@@ -4,13 +4,18 @@
 	<parent>
 		<groupId>org.tinygroup</groupId>
 		<artifactId>fulltext</artifactId>
-		<version>2.2.2-SNAPSHOT</version>
+		<version>2.2.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.tinygroup.officeindexsource</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>org.tinygroup</groupId>
 			<artifactId>org.tinygroup.fulltext</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.tinygroup</groupId>
+			<artifactId>org.tinygroup.templateindex</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

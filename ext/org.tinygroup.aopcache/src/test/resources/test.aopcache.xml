@@ -15,6 +15,13 @@
                            remove-keys="users" remove-groups="multiGroup"></cache-put>
             </cache-actions>
         </method-config>
+        <method-config method-name="insertUser">
+            <parameter-type type="java.util.Map"></parameter-type>
+            <cache-actions>
+                <cache-put keys="${user.id}" parameter-names="user" group="singleGroup">
+                </cache-put>
+            </cache-actions>
+        </method-config>
         <method-config method-name="insertUserNoParam">
             <parameter-type type="org.tinygroup.aopcache.User"></parameter-type>
             <cache-actions>
@@ -27,6 +34,13 @@
             <cache-actions>
                 <cache-put keys="${user.id}" parameter-names="user" group="singleGroup"
                            remove-keys="users" remove-groups="multiGroup"></cache-put>
+            </cache-actions>
+        </method-config>
+        <method-config method-name="updateUserMerge">
+            <parameter-type type="java.util.Map"></parameter-type>
+            <cache-actions>
+                <cache-put keys="${user.id}" merge="true" parameter-names="user" group="singleGroup">
+                </cache-put>
             </cache-actions>
         </method-config>
         <method-config method-name="updateUserMerge">

@@ -11,7 +11,6 @@
 			<list>
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
-				<ref bean="tinyMacroFileProcessor" />
 			</list>
 		</property>
 	</bean>
@@ -44,11 +43,12 @@
 	</bean>
 	
 	<bean id="excelTemplate" scope="singleton"
-		class="org.tinygroup.fulltext.TemplateDocumentCreator">
-		<property name="idRule" value="/excel/excel_id.page"></property>
-		<property name="typeRule" value="/excel/excel_type.page"></property>
-		<property name="titleRule" value="/excel/excel_title.page"></property>
-		<property name="abstractRule" value="/excel/excel_abstract.page"></property>
+		class="org.tinygroup.templateindex.impl.TemplateDocumentCreator">
+		<property name="idRule" value="/excel/excel_id.fulltextpage"></property>
+		<property name="typeRule" value="/excel/excel_type.fulltextpage"></property>
+		<property name="titleRule" value="/excel/excel_title.fulltextpage"></property>
+		<property name="abstractRule" value="/excel/excel_abstract.fulltextpage"></property>
+		<property name="templateRender" ref="fullTextTemplateRender"></property>
 	</bean>
 	
 </beans>

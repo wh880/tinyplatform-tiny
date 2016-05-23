@@ -159,10 +159,8 @@ public class Flow implements Serializable{
 
 	private void compareParameter(List<FlowProperty> flowProperties, String name,String nodeId) {
 		for(FlowProperty fp : flowProperties){
-			if(name.equals(fp.getName())){
-				if(fp.getValue().isEmpty()){
-					throw new FlowRuntimeException(FlowExceptionErrorCode.FLOW_PROPERTY_VALIDATE_EXCEPTION,id,nodeId,name);
-				}
+			if(name.equals(fp.getName()) && fp.getValue().isEmpty()){
+				throw new FlowRuntimeException(FlowExceptionErrorCode.FLOW_PROPERTY_VALIDATE_EXCEPTION,id,nodeId,name);
 			}
 		}
 	}

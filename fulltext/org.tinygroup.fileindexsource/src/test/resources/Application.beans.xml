@@ -1,0 +1,78 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	<bean id="fileResolver" scope="singleton"
+		class="org.tinygroup.fileresolver.impl.FileResolverImpl">
+		<property name="fileProcessorList">
+			<list>
+				<ref bean="i18nFileProcessor" />
+				<ref bean="xStreamFileProcessor" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="fileResolverProcessor" scope="singleton"
+		class="org.tinygroup.fileresolver.applicationprocessor.FileResolverProcessor">
+		<property name="fileResolver" ref="fileResolver"></property>
+	</bean>
+	
+	<bean id="memoryFullText" scope="singleton"
+		class="org.tinygroup.fileindexsource.MemoryFullText">
+		<property name="documentListCreators">
+			<list>
+				<ref bean="fileDocumentListCreator" />
+				<ref bean="fileObjectDocumentListCreator" />
+			</list>
+		</property>
+		<property name="indexOperator" ref="memoryIndexOperator"></property>
+	</bean>
+	
+	<bean id="memoryIndexOperator" scope="singleton"
+		class="org.tinygroup.fileindexsource.MemoryIndexOperator">
+	</bean>
+	
+	<bean id="fileDocumentListCreator" scope="singleton"
+		class="org.tinygroup.fileindexsource.impl.FileDocumentListCreator">
+		<property name="documentCreators">
+			<list>
+				<ref bean="iniDocumentCreator" />
+				<ref bean="textDocumentCreator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="fileObjectDocumentListCreator" scope="singleton"
+		class="org.tinygroup.fileindexsource.impl.FileObjectDocumentListCreator">
+		<property name="documentCreators">
+			<list>
+				<ref bean="iniDocumentCreator" />
+				<ref bean="textDocumentCreator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="iniDocumentCreator" scope="singleton"
+		class="org.tinygroup.fileindexsource.impl.IniDocumentCreator">
+		<property name="encode" value="utf-8"></property>
+		<property name="templateDocumentCreator" ref="iniTemplate"></property>
+	</bean>
+	
+	<bean id="textDocumentCreator" scope="singleton"
+		class="org.tinygroup.fileindexsource.impl.TextDocumentCreator">
+		<property name="encode" value="utf-8"></property>
+	</bean>
+	
+	<bean id="iniTemplate" scope="singleton"
+		class="org.tinygroup.templateindex.impl.TemplateDocumentCreator">
+		<property name="idRule" value="/ini_id.fulltextpage"></property>
+		<property name="typeRule" value="/ini_type.fulltextpage"></property>
+		<property name="titleRule" value="/ini_title.fulltextpage"></property>
+		<property name="abstractRule" value="/ini_abstract.fulltextpage"></property>
+		<property name="templateRender" ref="fullTextTemplateRender"></property>
+	</bean>
+	
+</beans>

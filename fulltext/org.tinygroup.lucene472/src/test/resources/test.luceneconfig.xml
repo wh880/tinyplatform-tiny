@@ -1,12 +1,39 @@
 <lucene-configs>
-  <lucene-config id="index001" title="配置一" index-version="" allow-duplication="false" >
-     <directory><![CDATA[index/index01]]></directory>
-     <analyzer-bean-name><![CDATA[newSimpleAnalyzer]]></analyzer-bean-name>
-  </lucene-config>
-  <lucene-config id="index002" title="配置二" index-version="LUCENE_30" allow-duplication="true">
-     <directory><![CDATA[index/index02]]></directory>
-  </lucene-config>
-  <lucene-config id="index002" title="配置三" index-version="LUCENE_40" allow-duplication="true">
-     <directory><![CDATA[index/index03]]></directory>
-  </lucene-config>
+	<sql-source driver="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://127.0.0.1:3306/kms?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true"
+		user="root" password="123456">
+		<sql statement="select * from doc_ext">
+			<!-- 固定的四个标准索引字段只需要配置模板规则 -->
+			<field index-name="_id">
+				<template-rule><![CDATA[${doc_id}]]></template-rule>
+			</field>
+			<field index-name="_type">
+				<template-rule><![CDATA[doc]]></template-rule>
+			</field>
+			<field index-name="_title">
+				<template-rule><![CDATA[${doc_ext_title}]]></template-rule>
+			</field>
+			<field index-name="_abstract">
+				<template-rule><![CDATA[${doc_text}]]></template-rule>
+			</field>
+			<!-- 扩展的索引字段除了模板规则,还需要配置生成索引的规则 -->
+			<field index-name="ext_id" stored="true" indexed="true"
+				tokenized="false">
+				<template-rule><![CDATA[${doc_ext_id}]]></template-rule>
+			</field>
+		</sql>
+	</sql-source>
+	<lucene-config id="index001" title="配置一" index-version=""
+		allow-duplication="false">
+		<directory><![CDATA[index/index01]]></directory>
+		<analyzer-bean-name><![CDATA[newSimpleAnalyzer]]></analyzer-bean-name>
+	</lucene-config>
+	<lucene-config id="index002" title="配置二" index-version="LUCENE_30"
+		allow-duplication="true">
+		<directory><![CDATA[index/index02]]></directory>
+	</lucene-config>
+	<lucene-config id="index002" title="配置三" index-version="LUCENE_40"
+		allow-duplication="true">
+		<directory><![CDATA[index/index03]]></directory>
+	</lucene-config>
 </lucene-configs>

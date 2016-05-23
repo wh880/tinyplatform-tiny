@@ -25,7 +25,10 @@ import java.util.List;
 public class Constants {
 	@XStreamAlias("package-name")
 	@XStreamAsAttribute
-	private String packageName;
+	private String packageName;//常量所在包名
+	@XStreamAlias("class-name")
+	@XStreamAsAttribute
+	private String className;//常量所在类名
 	@XStreamImplicit
 	private List<Constant> constantList;
 
@@ -45,4 +48,11 @@ public class Constants {
 		this.constantList = constantList;
 	}
 
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
 }

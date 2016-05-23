@@ -19,4 +19,10 @@
 		class="org.tinygroup.lucene472.LuceneIndexOperator">
 	</bean>
 	
+	<bean id="luceneIndexInstallProcessor" scope="singleton"
+		class="org.tinygroup.lucene472.application.LuceneIndexInstallProcessor">
+		<property name="luceneConfigManager" ref="luceneConfigManager"></property>
+		<property name="luceneIndexOperator" ref="luceneIndexOperator"></property>
+	</bean>
+	
 </beans>

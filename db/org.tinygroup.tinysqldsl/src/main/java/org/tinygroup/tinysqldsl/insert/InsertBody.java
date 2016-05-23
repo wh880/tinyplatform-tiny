@@ -27,174 +27,182 @@ import java.util.List;
  * Insert语句
  */
 public class InsertBody implements StatementBody {
-    /**
-     * 要插入的表
-     */
-    private Table table;
-    /**
-     * 要插入的字段列表
-     */
-    private List<Column> columns;
-    /**
-     * 要插入的值列表
-     */
-    private ItemsList itemsList;
-    private boolean useValues = true;
-    private SelectBody selectBody;
-    private boolean useSelectBrackets = false;
-    private boolean returningAllColumns = false;
+	/**
+	 * 要插入的表
+	 */
+	private Table table;
+	/**
+	 * 要插入的字段列表
+	 */
+	private List<Column> columns;
+	/**
+	 * 要插入的值列表
+	 */
+	private ItemsList itemsList;
+	private boolean useValues = true;
+	private SelectBody selectBody;
+	private boolean useSelectBrackets = false;
+	private boolean returningAllColumns = false;
 
-    private List<SelectExpressionItem> returningExpressionList = null;
+	private List<SelectExpressionItem> returningExpressionList = null;
 
-    public Table getTable() {
-        return table;
-    }
+	public Table getTable() {
+		return table;
+	}
 
-    public void setTable(Table name) {
-        table = name;
-    }
+	public void setTable(Table name) {
+		table = name;
+	}
 
-    public List<Column> getColumns() {
-        return columns;
-    }
+	public List<Column> getColumns() {
+		return columns;
+	}
 
-    public void setColumns(List<Column> list) {
-        columns = list;
-    }
+	public void setColumns(List<Column> list) {
+		columns = list;
+	}
 
-    public ItemsList getItemsList() {
-        return itemsList;
-    }
+	public ItemsList getItemsList() {
+		return itemsList;
+	}
 
-    public void setItemsList(ItemsList list) {
-        itemsList = list;
-    }
+	public void setItemsList(ItemsList list) {
+		itemsList = list;
+	}
 
-    public boolean isUseValues() {
-        return useValues;
-    }
+	public boolean isUseValues() {
+		return useValues;
+	}
 
-    public void setUseValues(boolean useValues) {
-        this.useValues = useValues;
-    }
+	public void setUseValues(boolean useValues) {
+		this.useValues = useValues;
+	}
 
-    public boolean isReturningAllColumns() {
-        return returningAllColumns;
-    }
+	public boolean isReturningAllColumns() {
+		return returningAllColumns;
+	}
 
-    public void setReturningAllColumns(boolean returningAllColumns) {
-        this.returningAllColumns = returningAllColumns;
-    }
+	public void setReturningAllColumns(boolean returningAllColumns) {
+		this.returningAllColumns = returningAllColumns;
+	}
 
-    public List<SelectExpressionItem> getReturningExpressionList() {
-        return returningExpressionList;
-    }
+	public List<SelectExpressionItem> getReturningExpressionList() {
+		return returningExpressionList;
+	}
 
-    public void setReturningExpressionList(
-            List<SelectExpressionItem> returningExpressionList) {
-        this.returningExpressionList = returningExpressionList;
-    }
+	public void setReturningExpressionList(
+			List<SelectExpressionItem> returningExpressionList) {
+		this.returningExpressionList = returningExpressionList;
+	}
 
-    public SelectBody getSelectBody() {
-        return selectBody;
-    }
+	public SelectBody getSelectBody() {
+		return selectBody;
+	}
 
-    public void setSelectBody(SelectBody selectBody) {
-        this.selectBody = selectBody;
-    }
+	public void setSelectBody(SelectBody selectBody) {
+		this.selectBody = selectBody;
+	}
 
-    public boolean isUseSelectBrackets() {
-        return useSelectBrackets;
-    }
+	public boolean isUseSelectBrackets() {
+		return useSelectBrackets;
+	}
 
-    public void setUseSelectBrackets(boolean useSelectBrackets) {
-        this.useSelectBrackets = useSelectBrackets;
-    }
+	public void setUseSelectBrackets(boolean useSelectBrackets) {
+		this.useSelectBrackets = useSelectBrackets;
+	}
 
-    public String toString() {
-        StringBuilder sql = new StringBuilder();
+	public String toString() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("INSERT INTO ");
+		sql.append(getTable().getFullyQualifiedName());
+		if (getColumns() != null) {
+			sql.append(" (");
+			for (Iterator<Column> iter = getColumns().iterator(); iter
+					.hasNext();) {
+				Column column = iter.next();
+				sql.append(column.getColumnName());
+				if (iter.hasNext()) {
+					sql.append(", ");
+				}
+			}
+			sql.append(")");
+		}
 
-        sql.append("INSERT INTO ");
-        sql.append(table).append(" ");
-        if (columns != null) {
-            sql.append(DslUtil.getStringList(columns, true, true)).append(" ");
-        }
+		if (useValues) {
+			sql.append(" VALUES");
+		}
 
-        if (useValues) {
-            sql.append(" VALUES");
-        }
+		if (itemsList != null) {
+			sql.append(itemsList);
+		}
 
-        if (itemsList != null) {
-            sql.append(itemsList);
-        }
+		if (useSelectBrackets) {
+			sql.append("(");
+		}
+		if (selectBody != null) {
+			sql.append(selectBody);
+		}
+		if (useSelectBrackets) {
+			sql.append(")");
+		}
 
-        if (useSelectBrackets) {
-            sql.append("(");
-        }
-        if (selectBody != null) {
-            sql.append(selectBody);
-        }
-        if (useSelectBrackets) {
-            sql.append(")");
-        }
+		if (isReturningAllColumns()) {
+			sql.append(" RETURNING *");
+		} else if (getReturningExpressionList() != null) {
+			sql.append(" RETURNING ").append(
+					DslUtil.getStringList(getReturningExpressionList(), true,
+							false));
+		}
 
-        if (isReturningAllColumns()) {
-            sql.append(" RETURNING *");
-        } else if (getReturningExpressionList() != null) {
-            sql.append(" RETURNING ").append(
-                    DslUtil.getStringList(getReturningExpressionList(), true,
-                            false));
-        }
+		return sql.toString();
+	}
 
-        return sql.toString();
-    }
+	public void builderStatement(StatementSqlBuilder builder) {
+		StringBuilder buffer = builder.getStringBuilder();
+		buffer.append("INSERT INTO ");
+		buffer.append(getTable().getFullyQualifiedName());
+		if (getColumns() != null) {
+			buffer.append(" (");
+			for (Iterator<Column> iter = getColumns().iterator(); iter
+					.hasNext();) {
+				Column column = iter.next();
+				buffer.append(column.getColumnName());
+				if (iter.hasNext()) {
+					buffer.append(", ");
+				}
+			}
+			buffer.append(")");
+		}
+		if (useValues) {
+			buffer.append(" VALUES");
+		}
+		if (getItemsList() != null) {
+			getItemsList().builderItemList(builder);
+		}
 
-    public void builderStatement(StatementSqlBuilder builder) {
-        StringBuilder buffer = builder.getStringBuilder();
-        buffer.append("INSERT INTO ");
-        buffer.append(getTable().getFullyQualifiedName());
-        if (getColumns() != null) {
-            buffer.append(" (");
-            for (Iterator<Column> iter = getColumns().iterator(); iter
-                    .hasNext(); ) {
-                Column column = iter.next();
-                buffer.append(column.getColumnName());
-                if (iter.hasNext()) {
-                    buffer.append(", ");
-                }
-            }
-            buffer.append(")");
-        }
-        if (useValues) {
-            buffer.append(" VALUES");
-        }
-        if (getItemsList() != null) {
-            getItemsList().builderItemList(builder);
-        }
+		if (getSelectBody() != null) {
+			buffer.append(" ");
+			if (isUseSelectBrackets()) {
+				buffer.append("(");
+			}
+			getSelectBody().builderStatement(builder);
+			if (isUseSelectBrackets()) {
+				buffer.append(")");
+			}
+		}
 
-        if (getSelectBody() != null) {
-            buffer.append(" ");
-            if (isUseSelectBrackets()) {
-                buffer.append("(");
-            }
-            getSelectBody().builderStatement(builder);
-            if (isUseSelectBrackets()) {
-                buffer.append(")");
-            }
-        }
-
-        if (isReturningAllColumns()) {
-            buffer.append(" RETURNING *");
-        } else if (getReturningExpressionList() != null) {
-            buffer.append(" RETURNING ");
-            for (Iterator<SelectExpressionItem> iter = getReturningExpressionList()
-                    .iterator(); iter.hasNext(); ) {
-                buffer.append(iter.next().toString());
-                if (iter.hasNext()) {
-                    buffer.append(", ");
-                }
-            }
-        }
-    }
+		if (isReturningAllColumns()) {
+			buffer.append(" RETURNING *");
+		} else if (getReturningExpressionList() != null) {
+			buffer.append(" RETURNING ");
+			for (Iterator<SelectExpressionItem> iter = getReturningExpressionList()
+					.iterator(); iter.hasNext();) {
+				buffer.append(iter.next().toString());
+				if (iter.hasNext()) {
+					buffer.append(", ");
+				}
+			}
+		}
+	}
 
 }

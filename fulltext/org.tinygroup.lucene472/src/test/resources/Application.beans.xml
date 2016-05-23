@@ -11,7 +11,6 @@
 			<list>
 				<ref bean="i18nFileProcessor" />
 				<ref bean="xStreamFileProcessor" />
-				<ref bean="tinyMacroFileProcessor" />
 				<ref bean="luceneConfigProcessor" />
 			</list>
 		</property>
@@ -35,14 +34,13 @@
 			<list>
 				<ref bean="fileDocumentListCreator" />
 				<ref bean="fileObjectDocumentListCreator" />
-				<ref bean="resultSetDocumentListCreator" />
 			</list>
 		</property>
 		<property name="indexOperator" ref="luceneIndexOperator"></property>
 	</bean>
 	
 	<bean id="fileDocumentListCreator" scope="singleton"
-		class="org.tinygroup.fulltext.file.FileDocumentListCreator">
+		class="org.tinygroup.fileindexsource.impl.FileDocumentListCreator">
 		<property name="documentCreators">
 			<list>
 				<ref bean="iniDocumentCreator" />
@@ -52,7 +50,7 @@
 	</bean>
 	
 	<bean id="fileObjectDocumentListCreator" scope="singleton"
-		class="org.tinygroup.fulltext.file.FileObjectDocumentListCreator">
+		class="org.tinygroup.fileindexsource.impl.FileObjectDocumentListCreator">
 		<property name="documentCreators">
 			<list>
 				<ref bean="iniDocumentCreator" />
@@ -61,27 +59,24 @@
 		</property>
 	</bean>
 	
-	<bean id="resultSetDocumentListCreator" scope="singleton"
-		class="org.tinygroup.fulltext.db.ResultSetDocumentListCreator">
-	</bean>
-	
 	<bean id="iniDocumentCreator" scope="singleton"
-		class="org.tinygroup.fulltext.file.IniDocumentCreator">
+		class="org.tinygroup.fileindexsource.impl.IniDocumentCreator">
 		<property name="encode" value="utf-8"></property>
 		<property name="templateDocumentCreator" ref="iniTemplate"></property>
 	</bean>
 	
 	<bean id="textDocumentCreator" scope="singleton"
-		class="org.tinygroup.fulltext.file.TextDocumentCreator">
+		class="org.tinygroup.fileindexsource.impl.TextDocumentCreator">
 		<property name="encode" value="utf-8"></property>
 	</bean>
 	
 	<bean id="iniTemplate" scope="singleton"
-		class="org.tinygroup.fulltext.TemplateDocumentCreator">
-		<property name="idRule" value="/ini_id.page"></property>
-		<property name="typeRule" value="/ini_type.page"></property>
-		<property name="titleRule" value="/ini_title.page"></property>
-		<property name="abstractRule" value="/ini_abstract.page"></property>
+		class="org.tinygroup.templateindex.impl.TemplateDocumentCreator">
+		<property name="idRule" value="/ini_id.fulltextpage"></property>
+		<property name="typeRule" value="/ini_type.fulltextpage"></property>
+		<property name="titleRule" value="/ini_title.fulltextpage"></property>
+		<property name="abstractRule" value="/ini_abstract.fulltextpage"></property>
+		<property name="templateRender" ref="fullTextTemplateRender"></property>
 	</bean>
 	
 </beans>

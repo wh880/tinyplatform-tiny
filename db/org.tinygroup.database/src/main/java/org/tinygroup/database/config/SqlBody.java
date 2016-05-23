@@ -19,7 +19,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * 存储过程体
+ * sql信息
  * @author luoguo
  *
  */

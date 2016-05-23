@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.FileUtil;
 import org.tinygroup.fulltext.FullText;
+import org.tinygroup.fulltext.FullTextHelper;
 import org.tinygroup.fulltext.Pager;
 import org.tinygroup.fulltext.document.Document;
 import org.tinygroup.fulltext.document.HighlightDocument;
@@ -30,7 +31,7 @@ public class LuceneTest extends TestCase{
 	
 	public void testScene1(){
 		File sourceDir = new File("src/test/resources/file/");
-		String type = "Tiny数据";
+		String type = "word";
 		
 		//删除索引
 		fullText.deleteIndex(type,sourceDir);
@@ -80,5 +81,15 @@ public class LuceneTest extends TestCase{
 		assertEquals(0, pager.getRecords().size());
 		assertEquals(2, pager.getCurrentPage());
 		assertEquals(2, pager.getTotalPages());
+		
+		//测试限定范围的查询
+		pager = fullText.search(FullTextHelper.getStoreType()+":word",0,10);
+		assertEquals(6, pager.getTotalCount());
+		
+		pager = fullText.search("醉酒",0,10);
+		assertEquals(1, pager.getTotalCount());
+		
+		pager = fullText.search(FullTextHelper.getStoreType()+":word AND 醉酒",0,10);
+		assertEquals(1, pager.getTotalCount());
 	}
 }
