@@ -16,17 +16,18 @@
 package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.config.view.View;
-import org.tinygroup.database.view.impl.creator.SqlserverViewSqlCreator;
+import org.tinygroup.database.view.impl.creator.OracleViewSqlCreator;
+import org.tinygroup.database.view.impl.creator.ViewSqlCreator;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class SqlserverViewSqlProcessorImpl extends ViewSqlProcessorImpl {
+public class OracleViewSqlProcessorImpl extends ViewSqlProcessorImpl {
 
 	public String getCreateSql(View view) {
-	    SqlserverViewSqlCreator creator = new SqlserverViewSqlCreator(view);
+	    ViewSqlCreator creator = new OracleViewSqlCreator(view);
 
 		return creator.getCreateSql();
 	}
@@ -35,35 +36,34 @@ public class SqlserverViewSqlProcessorImpl extends ViewSqlProcessorImpl {
         boolean checkResult = false;
         String checkSql = buildCheckViewSql(view);
 
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(checkSql);
-
-            checkResult = resultSet.next();
+            preparedStatement = conn.prepareStatement(checkSql);
+            preparedStatement.setString(1,view.getName());
+            resultSet.next();
+            long count = resultSet.getLong(1);
+            checkResult = count>0?true:false;
         } finally{
             if(null != resultSet){
                 resultSet.close();
             }
-            if(null != statement){
-                statement.close();
+            if(null != preparedStatement){
+                preparedStatement.close();
             }
         }
         return checkResult;
     }
 
     /**
-     * 获取sqlserver中检测视图是否存在的sql语句
+     * 检测视图是否存在的sql语句
      * @param view 视图构建元数据
      * @return 检测视图是否存在的sql语句
      */
     private String buildCheckViewSql(View view){
         StringBuffer checkSql = new StringBuffer();
-        checkSql.append("SELECT * FROM SYSOBJECTS WHERE NAME= '");
-        checkSql.append(view.getName()).append("'");
-
+        checkSql.append("select count(0) from user_views where view_name = upper(?)");
         return checkSql.toString();
     }
 }

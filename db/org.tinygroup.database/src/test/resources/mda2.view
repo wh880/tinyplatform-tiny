@@ -1,48 +1,22 @@
 <views>
 	<view name="usercompanyview">
-  <view-fields>
-    <view-field view-table-id="companyrefuuid" alias="companyid" tableFieldId="companyiduuid" id="companyidrefuuid"/>
-    <view-field view-table-id="userrefuuid" alias="username" tableFieldId="usernameuuid" id="usernamerefuuid"/>
-    <view-field view-table-id="userrefuuid" alias="userid" tableFieldId="useriduuid" id="useridrefuuid"/>
-  </view-fields>
-  <view-conditions>
-    <view-condition operator="=">
-      <key-field view-table-id="userrefuuid" table-field-id="useriduuid"/>
-      <value-field view-table-id="companyrefuuid" table-field-id="companyiduuid"/>
-    </view-condition>
-  </view-conditions>
-  <order-by-fields>
-    <order-by-field direction="desc">
-      <field view-field-id="companyidrefuuid"/>
-    </order-by-field>
-    <order-by-field direction="asc">
-      <field view-field-id="useridrefuuid"/>
-    </order-by-field>
-  </order-by-fields>
-  <view-tables>
-    <view-table table-alias="company" table-id="companyuuid" id="companyrefuuid"/>
-    <view-table table-alias="user" table-id="useruuid" id="userrefuuid"/>
-  </view-tables>
-  <view-havings>
-    <view-having operator=">" value="1">
-      <key-having aggregate-function="count">
-        <field view-field-id="useridrefuuid"/>
-      </key-having>
-    </view-having>
-    <view-having operator="=">
-      <key-having>
-        <field view-field-id="useridrefuuid"/>
-      </key-having>
-      <value-having>
-        <field view-table-id="companyrefuuid" table-field-id="companyiduuid"/>
-      </value-having>
-    </view-having>
-  </view-havings>
-  <group-by-fields>
-      <group-by-field>
-        <field view-field-id="useridrefuuid"></field>
-      </group-by-field>
-  </group-by-fields>
-</view>
+        <sqls>
+            <sql dialectTypeName="oracle"
+                content="CREATE OR REPLACE VIEW usercompanyview AS  SELECT company.company_id AS companyid,user.user_name AS username,user.user_id AS userid FROM company company,user user WHERE user.user_id=company.company_id GROUP BY user.user_id HAVING   count( user.user_id )  > 1  AND  user.user_id = company.company_id  ORDER BY company.company_id desc,user.user_id asc">
+            </sql>
+            <sql dialectTypeName="mysql"
+                content="CREATE OR REPLACE VIEW usercompanyview AS  SELECT company.company_id AS companyid,user.user_name AS username,user.user_id AS userid FROM company company,user user WHERE user.user_id=company.company_id GROUP BY user.user_id HAVING   count( user.user_id )  > 1  AND  user.user_id = company.company_id  ORDER BY company.company_id desc,user.user_id asc">
+             </sql>
+             <sql dialectTypeName="h2"
+                content="CREATE OR REPLACE VIEW usercompanyview AS  SELECT company.company_id AS companyid,user.user_name AS username,user.user_id AS userid FROM company company,user user WHERE user.user_id=company.company_id GROUP BY user.user_id HAVING   count( user.user_id )  > 1  AND  user.user_id = company.company_id  ORDER BY company.company_id desc,user.user_id asc">
+             </sql>
+             <sql dialectTypeName="db2"
+                content="CREATE OR REPLACE VIEW usercompanyview AS  SELECT company.company_id AS companyid,user.user_name AS username,user.user_id AS userid FROM company company,user user WHERE user.user_id=company.company_id GROUP BY user.user_id HAVING   count( user.user_id )  > 1  AND  user.user_id = company.company_id  ORDER BY company.company_id desc,user.user_id asc">
+             </sql>
+             <sql dialectTypeName="derby"
+               content="CREATE OR REPLACE VIEW usercompanyview AS  SELECT company.company_id AS companyid,user.user_name AS username,user.user_id AS userid FROM company company,user user WHERE user.user_id=company.company_id GROUP BY user.user_id HAVING   count( user.user_id )  > 1  AND  user.user_id = company.company_id  ORDER BY company.company_id desc,user.user_id asc">
+             </sql>
+        </sqls>
+    </view>
 
 </views>

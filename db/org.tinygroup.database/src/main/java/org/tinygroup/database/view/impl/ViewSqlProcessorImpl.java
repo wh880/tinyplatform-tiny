@@ -17,6 +17,7 @@ package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.view.ViewSqlProcessor;
+import org.tinygroup.database.view.impl.creator.ViewSqlCreator;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -44,6 +44,12 @@
 
     <bean id="viewSqlProcessor" scope="singleton" class="org.tinygroup.database.view.impl.ViewSqlProcessorImpl">
     </bean>
+    <bean id="mysqlViewSqlProcessor" scope="singleton" class="org.tinygroup.database.view.impl.MysqlViewSqlProcessorImpl">
+    </bean>
+    <bean id="oracleViewSqlProcessor" scope="singleton" class="org.tinygroup.database.view.impl.OracleViewSqlProcessorImpl">
+    </bean>
+    <bean id="h2ViewSqlProcessor" scope="singleton" class="org.tinygroup.database.view.impl.H2ViewSqlProcessorImpl">
+    </bean>
     <bean id="sqlserverViewSqlProcessor" class="org.tinygroup.database.view.impl.SqlserverViewSqlProcessorImpl" scope="singleton"/>
 
     <bean id="oracleProcedureSqlProcessor" scope="singleton" class="org.tinygroup.database.procedure.impl.OracleProcedureSqlProcessorImpl">

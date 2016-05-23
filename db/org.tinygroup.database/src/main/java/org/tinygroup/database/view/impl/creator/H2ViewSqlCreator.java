@@ -13,22 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.database.config.view;
+package org.tinygroup.database.view.impl.creator;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.tinygroup.database.config.view.View;
 
-@XStreamAlias("group-by-field")
-public class GroupByField {
-	
-	private ViewFieldRef field;
+public class H2ViewSqlCreator extends ViewSqlCreator{
 
-	public ViewFieldRef getField() {
-		return field;
-	}
+    public H2ViewSqlCreator(View view) {
+        super(view);
+    }
 
-	public void setField(ViewFieldRef field) {
-		this.field = field;
-	}
-	
-	
+    protected String getLanguage(){
+        return "h2";
+    }
 }
