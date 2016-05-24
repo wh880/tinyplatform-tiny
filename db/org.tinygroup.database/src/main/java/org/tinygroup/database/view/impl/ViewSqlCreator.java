@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.database.view.impl.creator;
+package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.database.config.view.*;
@@ -38,11 +38,11 @@ public class ViewSqlCreator {
 		this.view = view;
 	}
 
-	public String getCreateSql() {
+	public String getCreateSql(String language) {
 		StringBuffer buffer = new StringBuffer();
 		List<SqlBody> sqlBodyList = view.getSqlBodyList();
 		for(SqlBody sqlBody : sqlBodyList){
-			if(sqlBody.getDialectTypeName().equalsIgnoreCase(getLanguage())) {
+			if(sqlBody.getDialectTypeName().equalsIgnoreCase(language)) {
 				buffer.append(sqlBody.getContent()).append(";");
 			}
 		}

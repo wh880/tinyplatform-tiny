@@ -16,7 +16,6 @@
 package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.config.view.View;
-import org.tinygroup.database.view.impl.creator.SqlserverViewSqlCreator;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -26,9 +25,9 @@ import java.sql.Statement;
 public class SqlserverViewSqlProcessorImpl extends ViewSqlProcessorImpl {
 
 	public String getCreateSql(View view) {
-	    SqlserverViewSqlCreator creator = new SqlserverViewSqlCreator(view);
+        ViewSqlCreator creator = new ViewSqlCreator(view);
 
-		return creator.getCreateSql();
+		return creator.getCreateSql("sqlserver");
 	}
 
     public boolean checkViewExists(View view, Connection conn) throws SQLException {

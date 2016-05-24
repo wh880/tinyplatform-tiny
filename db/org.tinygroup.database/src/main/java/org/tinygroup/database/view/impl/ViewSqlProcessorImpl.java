@@ -17,16 +17,14 @@ package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.view.ViewSqlProcessor;
-import org.tinygroup.database.view.impl.creator.ViewSqlCreator;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ViewSqlProcessorImpl implements ViewSqlProcessor {
-
 	public String getCreateSql(View view) {
 		ViewSqlCreator creator=new ViewSqlCreator(view);
-		return creator.getCreateSql();
+		return creator.getCreateSql("mysql");
 	}
 
 	public String getDropSql(View view) {
