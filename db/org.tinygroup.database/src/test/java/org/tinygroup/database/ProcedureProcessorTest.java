@@ -51,7 +51,7 @@ public class ProcedureProcessorTest extends TestCase {
 	}
 	public void testGetCreateSqlString2() {
 		System.out.println("sql:");
-		List<String> tableSql= procedureProcessor.getCreateSql("oracle");
+		List<String> tableSql= procedureProcessor.getCreateSql("mysql");
 		System.out.println(tableSql);
 		
 	}

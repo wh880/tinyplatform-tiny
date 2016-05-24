@@ -5,13 +5,11 @@ import java.util.List;
 import org.tinygroup.templateindex.config.IndexFieldConfig;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias("sql")
 public class SqlConfig {
    
-	@XStreamAsAttribute
 	private String statement;
 	
 	@XStreamImplicit

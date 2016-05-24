@@ -13,32 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.tinygroup.database.config.view;
+package org.tinygroup.database.view.impl.creator;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.tinygroup.database.config.view.View;
 
-@XStreamAlias("order-by-field")
-public class OrderByField {
-	
-	private ViewFieldRef field;
-	@XStreamAsAttribute
-	private String direction;  //asc,desc
-	
-	
-	public ViewFieldRef getField() {
-		return field;
-	}
-	public void setField(ViewFieldRef field) {
-		this.field = field;
-	}
-	public String getDirection() {
-		return direction;
-	}
-	public void setDirection(String direction) {
-		this.direction = direction;
-	}
-	
-	
-	
+public class MysqlViewSqlCreator extends ViewSqlCreator{
+
+    public MysqlViewSqlCreator(View view) {
+        super(view);
+    }
+
+    protected String getLanguage(){
+        return "mysql";
+    }
 }

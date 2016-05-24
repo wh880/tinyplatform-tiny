@@ -2,7 +2,8 @@
 	<sql-source driver="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://127.0.0.1:3306/kms?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true"
 		user="root" password="123456">
-		<sql statement="select * from doc_ext">
+		<sql>
+		    <statement><![CDATA[select * from doc_ext]]></statement>
 			<!-- 固定的四个标准索引字段只需要配置模板规则 -->
 			<field index-name="_id">
 				<template-rule><![CDATA[${doc_id}]]></template-rule>

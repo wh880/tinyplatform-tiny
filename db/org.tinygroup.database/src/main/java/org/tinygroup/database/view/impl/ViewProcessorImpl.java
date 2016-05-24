@@ -16,11 +16,8 @@
 package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.ProcessorManager;
-import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.config.view.View;
-import org.tinygroup.database.config.view.ViewTable;
 import org.tinygroup.database.config.view.Views;
-import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.database.view.ViewProcessor;
 import org.tinygroup.database.view.ViewSqlProcessor;
 
@@ -136,27 +133,26 @@ public class ViewProcessorImpl implements ViewProcessor {
 				dependencies = new ArrayList<String>();
 				dependencyMap.put(view.getId(), dependencies);
 			}
-			List<ViewTable> viewTables = view.getTableList();
-			for (ViewTable viewTable : viewTables) {
-				String viewTableId = viewTable.getTableId();
-				Table table = DataBaseUtil.getTableById(viewTableId,this.getClass().getClassLoader());
-				if (table == null) {
-					View dependView = viewIdMap.get(viewTableId);
-					if (dependView == null) {
-						throw new RuntimeException(String.format(
-								"视图[id:%s]依赖的视图[id:%s]不存在,", view.getId(),
-								viewTableId));
-					}
-					if (!dependencies.contains(dependView.getId())) {
-						dependencies.add(dependView.getId());
-					}
+			List<String> refViewIdList = view.getRefViewIdList();
+			if(refViewIdList == null){
+                continue;
+            }
+			for (String refViewId : refViewIdList) {
+				View dependView = viewIdMap.get(refViewId);
+				if (dependView == null) {
+					throw new RuntimeException(String.format(
+							"视图[id:%s]依赖的视图[id:%s]不存在,", view.getId(),
+							refViewId));
+				}
+				if (!dependencies.contains(dependView.getId())) {
+					dependencies.add(dependView.getId());
 				}
 
 			}
 		}
 	}
 
-    public boolean checkViewExists(View view, Connection conn,String language) throws SQLException {
+	public boolean checkViewExists(View view, Connection conn,String language) throws SQLException {
         ViewSqlProcessor sqlProcessor = (ViewSqlProcessor) processorManager.getProcessor(language, "view");
         return sqlProcessor.checkViewExists(view, conn);
     }
