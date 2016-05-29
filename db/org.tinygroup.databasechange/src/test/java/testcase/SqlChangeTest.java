@@ -50,8 +50,5 @@ public class SqlChangeTest extends TestCase {
 		
 		DatabaseInstallerStart installerStart = new DatabaseInstallerStart();
 		installerStart.installer();
-		
 	}
-	
-	
 }

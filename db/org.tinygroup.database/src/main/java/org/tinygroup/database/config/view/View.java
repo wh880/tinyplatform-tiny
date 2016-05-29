@@ -20,7 +20,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.tinygroup.database.config.SqlBody;
 import org.tinygroup.metadata.config.BaseObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class View extends BaseObject {
 	@XStreamAlias("sqls")
 	private List<SqlBody> sqlBodyList;
 	@XStreamAlias("ref-view-ids")
-	private List<String> refViewIdList;
+	private RefViewIds refViewIds;//关联视图
 
 	public String getName() {
 		if (getSchema() == null || "".equals(getSchema())) {
@@ -60,11 +59,11 @@ public class View extends BaseObject {
 		return sqlBodyList;
 	}
 
-	public List<String> getRefViewIdList() {
-		return refViewIdList;
+	public void setRefViewIds(RefViewIds refViewIds) {
+		this.refViewIds = refViewIds;
 	}
 
-	public void setRefViewIdList(List<String> refViewIdList) {
-		this.refViewIdList = refViewIdList;
+	public RefViewIds getRefViewIds() {
+		return refViewIds;
 	}
 }

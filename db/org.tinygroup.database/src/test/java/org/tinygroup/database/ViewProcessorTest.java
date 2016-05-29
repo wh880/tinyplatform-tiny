@@ -37,16 +37,23 @@ public class ViewProcessorTest extends TestCase {
 	}
 
 	public void testGetTableStringString() {
-		assertNotNull(viewProcessor.getView("view1"));
+		assertNotNull(viewProcessor.getView("user_view"));
 	}
 
 	public void testGetViewString() {
-		assertNotNull(viewProcessor.getCreateSql("view1", "oracle"));
+		assertNotNull(viewProcessor.getCreateSql("user_view", "oracle"));
 	}
 
 	public void testGetCreateSqlString() {
-		System.out.println("aa.bb.aa,sql:");
-		String tableSql = viewProcessor.getCreateSql("view1", "oracle");
+		System.out.println("view sql:");
+		String tableSql = viewProcessor.getCreateSql("user_view", "oracle");
+		System.out.print("oracle view:");
+		System.out.println(tableSql);
+		tableSql = viewProcessor.getCreateSql("user_view", "mysql");
+		System.out.print("mysql view:");
+		System.out.println(tableSql);
+		tableSql = viewProcessor.getCreateSql("user_view", "h2");
+		System.out.print("h2 view:");
 		System.out.println(tableSql);
 
 	}
