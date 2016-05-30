@@ -2,13 +2,13 @@
 	<view name="user_view" id="user_view_id">
 		<sqls>
                     <sql dialectTypeName="oracle"
-                        content="CREATE OR REPLACE VIEW user_view AS SELECT id,name,age FROM t_user">
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT * FROM t_user">
                     </sql>
                     <sql dialectTypeName="mysql"
-                        content="CREATE OR REPLACE VIEW user_view AS SELECT id,name,age FROM t_user">
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT * FROM t_user">
                      </sql>
                     <sql dialectTypeName="h2"
-                        content="CREATE OR REPLACE VIEW user_view AS SELECT id,name,age FROM t_user">
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT * FROM t_user">
                     </sql>
         </sqls>
         <ref-view-ids>
@@ -28,5 +28,5 @@
             </sql>
         </sqls>
     </view>
-
+	
 </views>

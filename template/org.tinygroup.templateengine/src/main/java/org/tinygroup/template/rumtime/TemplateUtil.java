@@ -218,17 +218,19 @@ public final class TemplateUtil {
                 }
                 stringMethodMap.put(methodName, method);
             } else {
+            	int length = parameters==null?0:parameters.length;
                 for (Method method1 : methods) {
-                    if (method1.getParameterTypes().length != parameters.length) {
+                	int length1 = method1.getParameterTypes()==null?0:method1.getParameterTypes().length;
+                    if (length1 != length) {
                         continue;
                     }
                     int count = 0;
-                    for (int i = 0; i < method1.getParameterTypes().length; i++) {
+                    for (int i = 0; i < length1; i++) {
                         if (parameters[i] == null || parameters[i].getClass().equals(method1.getParameterTypes()[i].getClass())) {
                             count++;
                         }
                     }
-                    if (count == method1.getParameterTypes().length) {
+                    if (count == length1) {
                         return method1;
                     }
                 }
