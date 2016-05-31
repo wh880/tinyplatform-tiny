@@ -7,10 +7,10 @@
     <node id="begin" name="begin" title="开始">
       <next-nodes>
         <next-node next-node-id="sumComponent">
-          <el></el>
+          <el>a&gt;10</el>
         </next-node>
         <next-node next-node-id="sumComponent_1">
-          <el>a&gt;10</el>
+          <el></el>
         </next-node>
         <next-node next-node-id="sumComponent_2">
           <el>a&gt;100</el>
