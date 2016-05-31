@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.event.Parameter;
 import org.tinygroup.flow.FlowExecutor;
 import org.tinygroup.flow.exception.FlowRuntimeException;
@@ -177,6 +178,24 @@ public class Flow implements Serializable{
                 parentFlow.assemble();
                 copyFlow(parentFlow);
             }
+        }
+        for(Node node : nodes){
+        	List<NextNode> nextNodes = node.getNextNodes();
+        	if (nextNodes!= null && nextNodes.size()>1) {
+        		NextNode nullElNode = null;
+				for(NextNode nextNode : nextNodes){
+					// 如果表达式为空或者未配，则放最后执行
+					if (StringUtil.isBlank(nextNode.getEl())) {
+						nullElNode = nextNode;
+						break;
+					}
+				}
+				if(nullElNode != null){
+					int index = nextNodes.indexOf(nullElNode);
+					nextNodes.remove(index);
+					nextNodes.add(nextNodes.size(), nullElNode);
+				}
+			}
         }
         assembled = true;
     }
