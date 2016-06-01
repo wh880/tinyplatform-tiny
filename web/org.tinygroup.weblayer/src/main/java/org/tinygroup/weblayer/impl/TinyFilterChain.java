@@ -24,6 +24,7 @@ import org.tinygroup.weblayer.WebContext;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,31 +36,47 @@ import java.util.List;
  * 
  */
 public class TinyFilterChain implements FilterChain {
-	private List<Filter> filters = new ArrayList<Filter>();
-	private int size;
-	private int currentPosition = 0;
+	private List<Filter> preFilters = new ArrayList<Filter>();
+	private List<Filter> postFilters = new ArrayList<Filter>();
+	private int preCurrentPosition = 0;
+	private int postCurrentPosition = 0;
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyFilterChain.class);
 
 	private TinyFilterHandler tinyFilterHandler;
 
-	public TinyFilterChain(List<Filter> filters, TinyFilterHandler hander) {
-		this.filters = filters;
-		size = filters.size();
+	public TinyFilterChain(List<Filter> preFilters,List<Filter> postFilters, TinyFilterHandler hander) {
+		this.preFilters = preFilters;
+		this.postFilters=postFilters;
 		this.tinyFilterHandler = hander;
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response)
 			throws IOException, ServletException {
-		if (currentPosition <size) {
-			Filter nextFilter = filters.get(currentPosition);
-			logger.logMessage(LogLevel.DEBUG, "firing Filter:'{}'", nextFilter
+		if (preCurrentPosition <preFilters.size()) {//前置包装filter处理
+			Filter nextFilter = preFilters.get(preCurrentPosition);
+			logger.logMessage(LogLevel.DEBUG, "firing pre Filter:'{}'", nextFilter
 					.getClass().getSimpleName());
-			currentPosition++;
+			preCurrentPosition++;
 			nextFilter.doFilter(request, response, this);
-		} else {
+		} else if(preCurrentPosition==preFilters.size()&&postCurrentPosition==0) {
 			initWebContext(request, response);//重新初始化webcontext中保存的request和response对象
 			tinyFilterHandler.tinyFilterProcessor((HttpServletRequest) request, (HttpServletResponse) response);
+			doPostFilter(request, response);
+		}else{
+			doPostFilter(request, response);
+		}
+
+	}
+
+	private void doPostFilter(ServletRequest request, ServletResponse response)
+			throws IOException, ServletException {
+		if(postCurrentPosition<postFilters.size()){//后置包装filter处理
+			Filter nextFilter = preFilters.get(postCurrentPosition);
+			logger.logMessage(LogLevel.DEBUG, "firing pre Filter:'{}'", nextFilter
+					.getClass().getSimpleName());
+			postCurrentPosition++;
+			nextFilter.doFilter(request, response, this);
 		}
 	}
 
