@@ -123,7 +123,33 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
     protected void getOtherUpdate(Table table, String packageName,
                                   Connection connection, List<String> list) throws SQLException {
+        getChangedFooterComment(connection,table, list);
         getForeignUpdate(table, packageName, connection, list);
+    }
+
+    private void getChangedFooterComment(Connection connection,Table table, List<String> list) throws SQLException {
+        DatabaseMetaData metadata = connection.getMetaData();
+        String catalog = connection.getCatalog();
+        Map<String, Map<String, String>> dbColumns = getColumns(metadata,
+                catalog, table);
+
+        for (TableField field : table.getFieldList()) {
+            StandardField standardField = MetadataUtil.getStandardField(
+                    field.getStandardFieldId(), this.getClass().getClassLoader());
+            String standardComment = getComment(standardField);
+            if(standardField.getName()!=null){
+                Map<String, String> attribute = dbColumns.get(standardField.getName().toLowerCase());
+                if(attribute==null){
+                    attribute = dbColumns.get(standardField.getName().toUpperCase());
+                }
+                String remarks = getDbColumnRemarks(attribute);
+                //相等跳过
+                if(StringUtil.equals(standardComment, remarks)){
+                    continue;
+                }
+            }
+            appendFooterColumnComment(table,standardField,standardComment,list);
+        }
     }
 
     private void getForeignUpdate(Table table, String packageName,
@@ -223,6 +249,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         // 存放table中有且数据库表格中存在的字段
         Map<String, TableField> existInTable = new HashMap<String, TableField>();
         // 存放table中无，但数据库中有的字段
+        //此处可能有问题,可能因为dbColumns为空而导致tableFieldDbNames
         List<String> dropFields = checkTableColumn(dbColumns,
                 tableFieldDbNames, existInTable);
         // 处理完所有表格列，若filedDbNames中依然有数据，则表格该数据是新增字段
@@ -238,13 +265,13 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         List<String> existUpdateList = dealExistFields(existInTable, dbColumns,
                 table);
         // 生成drop字段的sql
-        List<String> droplist = dealDropFields(dropFields, table);
+        List<String> dropList = dealDropFields(dropFields, table);
         // 生成add字段的sql
-        List<String> addlist = dealAddFields(tableFieldDbNames, packageName,
+        List<String> addList = dealAddFields(tableFieldDbNames, packageName,
                 table);
         list.addAll(existUpdateList);
-        list.addAll(droplist);
-        list.addAll(addlist);
+        list.addAll(dropList);
+        list.addAll(addList);
     }
 
     protected List<String> checkTableColumn(
@@ -252,17 +279,17 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
             Map<String, TableField> fieldDbNames,
             Map<String, TableField> existInTable) {
         List<String> dropFields = new ArrayList<String>();
-        for (String colum : columns.keySet()) {
+        for (String col : columns.keySet()) {
             // 遍历当前表格所有列
             // 若存在于map，则不处理，切从map中删除该key
             // 若不存在于map，则从表格中删除该列
-            String temp = colum.toUpperCase();
+            String temp = col.toUpperCase();
             if (fieldDbNames.containsKey(temp)) {
                 existInTable.put(temp, fieldDbNames.get(temp));
                 fieldDbNames.remove(temp);
                 continue;
             }
-            dropFields.add(colum);
+            dropFields.add(col);
         }
         return dropFields;
     }
@@ -315,14 +342,12 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
             String columnDef = getDbColumnColumnDef(attribute);
             String standardComment = getComment(standardField);
             String standardDefault = standardField.getDefaultValue();
-            if (standardComment != null && standardComment.trim().length() == 0) {
-                standardComment = null;
-            }
             standardDefault = StringUtil.defaultIfEmpty(standardDefault, null);
             columnDef = StringUtil.defaultIfEmpty(columnDef, null);
-            //类型或默认值或注释可以更新
-            if (!checkTypeSame(dbColumnType, tableDataType) || !StringUtil.equals(standardDefault, columnDef)
-                    || !StringUtil.equals(standardComment, remarks)) {
+            //类型或默认值或注释被修改可以更新
+            if (!checkTypeSame(dbColumnType, tableDataType)
+                    || !StringUtil.equals(standardDefault, columnDef)
+                    || checkCommentChange(standardComment,remarks)) {
                 StringBuffer alterTypeBuffer = new StringBuffer();
                 // 如果数据库中字段允许为空，但table中不允许为空
                 if (field.getNotNull()
@@ -352,14 +377,26 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
     }
 
     /**
+     * 检查comment是否改变
+     * @param standardComment
+     * @param remarks
+     * @return
+     */
+    protected boolean checkCommentChange(String standardComment,String remarks) {
+        return !StringUtil.equals(standardComment, remarks);
+    }
+
+    /**
      * 检查数据类型是否相同
      * @param dbColumnType
      * @param tableDataType
      * @return
      */
     protected boolean checkTypeSame(String dbColumnType, String tableDataType) {
-        return dbColumnType.indexOf(tableDataType.replaceAll(" ", "")
-                .toLowerCase()) != -1;
+        String tbDataTypeLower = tableDataType.replaceAll(" ", "")
+                .replaceAll(",0","").toLowerCase();
+        //我们认为精度为0不需要做为比较对象
+        return dbColumnType.replaceAll(",0","").indexOf(tbDataTypeLower) != -1;
     }
 
 
@@ -437,7 +474,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
     private String getComment(StandardField standardField) {
         String title = standardField.getTitle();
         String description = standardField.getDescription();
-        return StringUtil.isBlank(title) ? description : (StringUtil.isBlank(description) ? title : (title + "\n" + description));
+        String comment =
+                StringUtil.isBlank(title) ? description :
+                        (StringUtil.isBlank(description) ? title : (title + "\n" + description));
+        return comment==null?"":comment;
     }
 
     protected void appendComment(String comment, StringBuffer ddlBuffer, List<String> list) {
@@ -449,31 +489,31 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
     /**
      * 在footer增加comment
-     * @param ddlBuffer
      * @param table
      * @param list
      */
-    protected void appendFooterComment(StringBuffer ddlBuffer, Table table, List<String> list) {
+    protected void appendFooterComment(Table table, List<String> list) {
         for (TableField field : table.getFieldList()) {
-
             StandardField standardField = MetadataUtil.getStandardField(field
                     .getStandardFieldId(), this.getClass().getClassLoader());
-            if (standardField.getDescription() == null) {
-                continue;
-            }
-            String columnName = null;
-            if (StringUtil.isBlank(table.getSchema())) {
-                columnName = String.format("%s.%s", table.getName(),
-                        standardField.getName());
-            } else {
-                columnName = String.format("%s.%s.%s", table.getSchema(), table.getName(),
-                        standardField.getName());
-            }
-            StringBuffer commentBuffer = new StringBuffer();
-            commentBuffer.append("COMMENT ON COLUMN ").append(columnName)
-                    .append(" IS ").append("'").append(standardField.getDescription()).append("'");
-            list.add(commentBuffer.toString());
+            String standardComment = getComment(standardField);
+            appendFooterColumnComment(table,standardField,standardComment,list);
         }
+    }
+
+    private void appendFooterColumnComment(Table table,StandardField standardField,String standardComment,List list){
+        String columnName;
+        if (StringUtil.isBlank(table.getSchema())) {
+            columnName = String.format("%s.%s", table.getName(),
+                    standardField.getName());
+        } else {
+            columnName = String.format("%s.%s.%s", table.getSchema(), table.getName(),
+                    standardField.getName());
+        }
+        StringBuffer commentBuffer = new StringBuffer();
+        commentBuffer.append("COMMENT ON COLUMN ").append(columnName)
+                .append(" IS ").append("'").append(standardComment).append("'");
+        list.add(commentBuffer.toString());
     }
 
     // 如果是字符串类型，defaultValue必须是'XXX'格式
@@ -596,9 +636,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
     protected Map<String, Map<String, String>> getColumns(
             DatabaseMetaData metadata, String catalog, Table table)
             throws SQLException {
-        String databaseName = getDatabaseName(table.getSchema(),metadata.getConnection().getCatalog());
         String tableName = table.getNameWithOutSchema();
-        return getColumns(metadata, catalog, databaseName, tableName);
+        return getColumns(metadata, catalog, table.getSchema(), tableName);
     }
 
     private Map<String, Map<String, String>> getColumns(
@@ -621,7 +660,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
                     getMapByResultSet(colRet, map);
                     exist = true;
                 }
-                if (!exist) {
+                if (!exist && schema!=null) {
                     colRet.close();
                     colRet = metadata.getColumns(catalog, schema.toUpperCase(),
                             tableName.toUpperCase(), "%");
@@ -649,6 +688,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         attributes.put(DECIMAL_DIGITS, colRet.getString(DECIMAL_DIGITS));
         attributes.put(COLUMN_DEF, colRet.getString(COLUMN_DEF));
         attributes.put(REMARKS, colRet.getString(REMARKS));
+        attributes.put(DATA_TYPE,colRet.getString(DATA_TYPE));
         map.put(columnName.toUpperCase(), attributes);
     }
 
@@ -672,7 +712,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
                 } else {
                     resultset.close();
                     resultset = metadata.getTables(connection.getCatalog(),
-                            schema.toUpperCase(), table.getNameWithOutSchema()
+                                schema.toUpperCase(), table.getNameWithOutSchema()
                                     .toUpperCase(), new String[]{"TABLE"});
                     if (resultset.next()) {
                         return true;

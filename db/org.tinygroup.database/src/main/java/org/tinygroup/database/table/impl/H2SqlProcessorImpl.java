@@ -15,6 +15,7 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.table.TableSqlProcessor;
 
@@ -75,7 +76,7 @@ public class H2SqlProcessorImpl extends SqlProcessorImpl {
      */
 	protected void appendFooter(StringBuffer ddlBuffer, Table table, List<String> list) {
 		super.appendFooter(ddlBuffer, table,list);
-		appendFooterComment(ddlBuffer, table,list);
+		appendFooterComment(table,list);
 	}
 
 	public boolean checkTableExist(Table table, Connection connection)
@@ -97,14 +98,12 @@ public class H2SqlProcessorImpl extends SqlProcessorImpl {
 						new String[] { "TABLE" });
 				if (resultset.next()) {
 					return true;
-				} else if(schema!=null){
+				} else if(schema!=null){//目前条件不成立
 					resultset.close();
 					resultset = metadata.getTables(connection.getCatalog(),
 							schema.toUpperCase(), table.getNameWithOutSchema()
 									.toUpperCase(), new String[] { "TABLE" });
-					if (resultset.next()) {
-						return true;
-					}
+					return resultset.next();
 				}
 			}
 		} finally {
@@ -112,6 +111,17 @@ public class H2SqlProcessorImpl extends SqlProcessorImpl {
 				resultset.close();
 			}
 		}
+		return false;
+	}
+
+	/**
+	 * 检查comment是否改变
+	 * h2数据直接返回false(因为comment方式不一样,在footer上)
+	 * @param standardComment
+	 * @param remarks
+	 * @return
+	 */
+	protected boolean checkCommentChange(String standardComment,String remarks) {
 		return false;
 	}
 

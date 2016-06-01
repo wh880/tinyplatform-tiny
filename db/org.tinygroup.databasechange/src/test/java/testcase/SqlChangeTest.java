@@ -23,6 +23,7 @@ import org.tinygroup.databasechange.TableSqlFullUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 
 public class SqlChangeTest extends TestCase {
 
@@ -50,5 +51,32 @@ public class SqlChangeTest extends TestCase {
 		
 		DatabaseInstallerStart installerStart = new DatabaseInstallerStart();
 		installerStart.installer();
+	}
+
+	public void test() throws SQLException, ClassNotFoundException {
+		String driverClass = "org.h2.Driver";
+		String url = "jdbc:h2:h2/TEST;mode=MYSQL;DB_CLOSE_ON_EXIT=FALSE";
+		String user = "sa";
+		String password = "123456";
+		Class.forName(driverClass);
+		Connection connection = DriverManager.getConnection(url,user,password);
+		DatabaseMetaData metadata = connection.getMetaData();
+		Statement stmt = connection.createStatement();
+		stmt.execute("ALTER TABLE t_user ALTER COLUMN age SET DATA TYPE integer DEFAULT 1");
+		stmt.close();
+		ResultSet resultset2 = metadata.getColumns(connection.getCatalog(),null,"comment_detail","%");
+		ResultSetMetaData resultSetMetaData = resultset2.getMetaData();
+		int   count = resultSetMetaData.getColumnCount();
+		System.out.println(count);
+
+		while(resultset2.next()){
+			for(int i=0;i<count;i++) {
+				System.out.print(resultSetMetaData.getColumnName(i+1));
+				System.out.print("=");
+				System.out.println(resultset2.getObject(resultSetMetaData.getColumnName(i+1)));
+			}
+			System.out.println("========================");
+		}
+		connection.close();
 	}
 }

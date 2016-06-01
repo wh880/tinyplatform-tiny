@@ -15,14 +15,19 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
+import org.tinygroup.metadata.config.stdfield.StandardField;
+import org.tinygroup.metadata.util.MetadataUtil;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
@@ -117,4 +122,11 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
         return index.getName();
     }
 
+	/**
+	 * 在footer增加comment
+	 * mysql 实现为空
+	 * @param table
+	 * @param list
+	 */
+	protected void appendFooterComment(Table table, List<String> list) {}
 }
