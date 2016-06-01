@@ -342,11 +342,13 @@ public class SessionWebContextImpl extends AbstractWebContextWrapper implements
 
 			// 不管怎样，先创建一个session对象再说，但这个session有可能不存在或是过期的
 			session = new SessionImpl(sessionID, this, isNew, create);
-			SessionManager manager = SessionManagerFactory
-					.getSessionManager(sessionConfig
-							.getSessionManagerBeanId(), this.getClass()
-							.getClassLoader());
-			manager.addSession(session);
+			if(!StringUtil.isBlank(sessionConfig.getSessionManagerBeanId())){
+				SessionManager manager = SessionManagerFactory
+						.getSessionManager(sessionConfig
+								.getSessionManagerBeanId(), this.getClass()
+								.getClassLoader());
+				manager.addSession(session);
+			}
 		}
 
 		// Session为new，有可能是sessionID为空，或是sessionID对应的session不存在，或是session已过期
