@@ -48,7 +48,7 @@ public class TestTableTest extends TestCase {
 	public void testOracleCreateSql() {
 		List<String> tableSql = tableProcessor.getCreateSql("user","org.tinygroup.test", "oracle");
 		System.out.println(tableSql);
-		assertEquals(1, tableSql.size());
+		assertEquals(5, tableSql.size());
 	}
 	
 }
