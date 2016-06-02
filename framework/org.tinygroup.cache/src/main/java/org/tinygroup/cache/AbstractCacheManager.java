@@ -27,8 +27,20 @@ import org.tinygroup.cache.exception.CacheException;
 public abstract class AbstractCacheManager implements CacheManager {
 
 	protected BiMap<String, Cache> cacheMap = HashBiMap.create();
-
+	
+	/**
+	 * 根据region创建相应的cache实例
+	 * before 2.2.4
+	 * 每次都会创建新的实例
+	 * since 2.2.4
+	 * 如果未创建，则创建实例，若已创建，则返回已创建的实例
+	 * @param region
+	 * @return
+	 */
 	public Cache createCache(String region) {
+		if(cacheMap.containsKey(region)){
+			return cacheMap.get(region);
+		}
 		Cache cache = newCache(region);
 		if (cache == null) {
 			throw new CacheException(String.format("region:%s,未在配置中定义", region));
