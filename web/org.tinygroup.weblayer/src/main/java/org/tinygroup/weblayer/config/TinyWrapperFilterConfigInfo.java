@@ -16,8 +16,6 @@
 package org.tinygroup.weblayer.config;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.tinygroup.commons.tools.Assert;
-import org.tinygroup.commons.tools.StringUtil;
 
 @XStreamAlias("tiny-wrapper-filter")
 public class TinyWrapperFilterConfigInfo extends TinyFilterConfigInfo {

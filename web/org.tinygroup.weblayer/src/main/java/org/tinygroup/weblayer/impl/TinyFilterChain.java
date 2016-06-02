@@ -72,7 +72,7 @@ public class TinyFilterChain implements FilterChain {
 	private void doPostFilter(ServletRequest request, ServletResponse response)
 			throws IOException, ServletException {
 		if(postCurrentPosition<postFilters.size()){//后置包装filter处理
-			Filter nextFilter = preFilters.get(postCurrentPosition);
+			Filter nextFilter = postFilters.get(postCurrentPosition);
 			logger.logMessage(LogLevel.DEBUG, "firing pre Filter:'{}'", nextFilter
 					.getClass().getSimpleName());
 			postCurrentPosition++;
