@@ -1,5 +1,5 @@
 <service-components>
-  <service-component type="org.tinygroup.helloworld.service.HelloWorldXmlService" >
+  <service-component type="org.tinygroup.helloworld.service.HelloWorldXmlService" bean="helloWorldXmlService" >
     <service-method local-name="sayHello" service-id="helloByXml" method-name="sayHello" cacheable="false" category="测试服务">
       <description>演示例子</description>
       <service-parameters>

@@ -37,9 +37,9 @@ import java.util.*;
  */
 public class TinyFilterWrapper implements FilterWrapper {
 
-	private List<Filter> filters = new ArrayList<Filter>();
-
 	private Map<String, Filter> filterMap = new TreeMap<String, Filter>();
+	
+	private Map<String, Filter> postFilterMap = new TreeMap<String, Filter>();
 
 	private Map<String, String> bean2Config = new HashMap<String, String>();
 
@@ -62,15 +62,19 @@ public class TinyFilterWrapper implements FilterWrapper {
 		HttpServletRequest request = context.getRequest();
 		HttpServletResponse response = context.getResponse();
 		String servletPath = handler.getServletPath();
-		List<Filter> matchFilters = getMatchFilters(servletPath);
+		List<Filter> matchFilters = getMatchFilters(servletPath,filterMap);
 		logger.logMessage(LogLevel.DEBUG,
-				"the wrapper httpFilters for the request path:[{0}] is [{1}]",
+				"the pre wrapper httpFilters for the request path:[{0}] is [{1}]",
 				servletPath, matchFilters);
-		TinyFilterChain filterChain = new TinyFilterChain(matchFilters, handler);
+		List<Filter> postMatchFilters = getMatchFilters(servletPath,postFilterMap);
+		logger.logMessage(LogLevel.DEBUG,
+				"the post wrapper httpFilters for the request path:[{0}] is [{1}]",
+				servletPath, postMatchFilters);
+		TinyFilterChain filterChain = new TinyFilterChain(matchFilters, postMatchFilters,handler);
 		filterChain.doFilter(request, response);
 	}
 
-	private List<Filter> getMatchFilters(String servletPath) {
+	private List<Filter> getMatchFilters(String servletPath,Map<String, Filter> filterMap) {
 		List<Filter> matchFilters = new ArrayList<Filter>();
 		for (String filterBeanName : filterMap.keySet()) {
 			TinyFilterConfig filterConfig = tinyFilterManager
@@ -81,31 +85,41 @@ public class TinyFilterWrapper implements FilterWrapper {
 		}
 		return matchFilters;
 	}
+	
+	
 
 	public void addHttpFilter(String filterName, String filterBeanName,
 			Filter filter) {
-		filters.add(filter);
 		filterMap.put(filterBeanName, filter);
+		bean2Config.put(filterBeanName, filterName);
+	}
+	
+	public void addPostHttpFilter(String filterName, String filterBeanName,
+			Filter filter) {
+		postFilterMap.put(filterBeanName, filter);
 		bean2Config.put(filterBeanName, filterName);
 	}
 
 	public void init() throws ServletException {
 		logger.logMessage(
 				LogLevel.DEBUG,
-				"TinyFilterWrapper start initialization wrapper httpfilter:[{0}]",
-				filters);
+				"TinyFilterWrapper start initialization wrapper httpfilter");
+		initWrapperFilters(filterMap);
+		initWrapperFilters(postFilterMap);
+		logger.logMessage(LogLevel.DEBUG,
+				"TinyFilterWrapper initialization end");
+	}
+
+	private void initWrapperFilters(Map<String, Filter> filterMap) throws ServletException {
 		for (String filterBeanName : filterMap.keySet()) {
 			Filter filter = filterMap.get(filterBeanName);
 			TinyFilterConfigInfo filterConfigInfo = tinyFilterConfigManager
 					.getFilterConfig(bean2Config.get(filterBeanName));
 			filter.init(new TinyWrapperFilterConfig(filterConfigInfo));
 		}
-		logger.logMessage(LogLevel.DEBUG,
-				"TinyFilterWrapper initialization end");
 	}
 
 	public void destroy() {
-		filters = null;
 		filterMap = null;
 	}
 

@@ -18,6 +18,7 @@ package org.tinygroup.weblayer.impl;
 import org.springframework.web.util.NestedServletException;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.order.OrderUtil;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -138,15 +139,36 @@ public class TinyFilterManagerImpl implements TinyFilterManager {
 		List<TinyWrapperFilterConfigInfo> wrapperConfigs = configManager
 				.getWrapperFilterConfigs();
 		for (TinyWrapperFilterConfigInfo wrapperConfig : wrapperConfigs) {
-			String filterBeanName = wrapperConfig.getFilterBeanName();
-			String[] beanNameArray = filterBeanName.split(SPLIT_CHAR);
-			for (String beanName : beanNameArray) {
-				Filter filter = BeanContainerFactory.getBeanContainer(
-						this.getClass().getClassLoader()).getBean(beanName);
-				wrapper.addHttpFilter(wrapperConfig.getConfigName(), beanName, filter);
-			}
+			addPreWrapperFilter(wrapperConfig);
+			addPostWrapperFilter(wrapperConfig);
 			filterConfigMap.put(wrapperConfig.getConfigName(),
 					new DefaultTinyFilterConfig(wrapperConfig));
+		}
+	}
+
+	private void addPreWrapperFilter(TinyWrapperFilterConfigInfo wrapperConfig) {
+		String filterBeanName = wrapperConfig.getFilterBeanName();
+		if(StringUtil.isBlank(filterBeanName)){
+			return;
+		}
+		String[] beanNameArray = filterBeanName.split(SPLIT_CHAR);
+		for (String beanName : beanNameArray) {
+			Filter filter = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(beanName);
+			wrapper.addHttpFilter(wrapperConfig.getConfigName(), beanName, filter);
+		}
+	}
+	
+	private void addPostWrapperFilter(TinyWrapperFilterConfigInfo wrapperConfig) {
+		String postFilterBeanName = wrapperConfig.getPostFilterBeanName();
+		if(StringUtil.isBlank(postFilterBeanName)){
+			return;
+		}
+		String[] beanNameArray = postFilterBeanName.split(SPLIT_CHAR);
+		for (String beanName : beanNameArray) {
+			Filter filter = BeanContainerFactory.getBeanContainer(
+					this.getClass().getClassLoader()).getBean(beanName);
+			wrapper.addPostHttpFilter(wrapperConfig.getConfigName(), beanName, filter);
 		}
 	}
 

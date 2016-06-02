@@ -58,7 +58,7 @@ public class TableInstallProcessor extends AbstractInstallProcessor {
 			Connection connect,boolean isFull) throws SQLException {
 		logger.logMessage(LogLevel.INFO, "开始生成表格语句,表格 包:{0},名:{1}",
 				table.getPackageName(), table.getName());
-		List<String> tableSqls = null;
+		List<String> tableSqls;
 		//非全量且表格已经存在,需要生成增量sql
 		if(!isFull && tableProcessor.checkTableExist(table, language, connect)) {
 			tableSqls = tableProcessor.getUpdateSql(table,

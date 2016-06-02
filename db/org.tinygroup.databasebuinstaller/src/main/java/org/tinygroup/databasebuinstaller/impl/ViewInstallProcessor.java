@@ -48,9 +48,9 @@ public class ViewInstallProcessor extends AbstractInstallProcessor {
 	    List<View> views = viewProcessor.getViews();
 
 	    for(View view:views){
-	        if(viewProcessor.checkViewExists(view, con, language)){
+/*	        if(viewProcessor.checkViewExists(view, con, language)){
 	            createViewSqls.add(viewProcessor.getDropSql(view, language));
-	        }
+	        }*/
 	        createViewSqls.add(viewProcessor.getCreateSql(view, language));
 	    }
 

@@ -23,6 +23,7 @@ import org.tinygroup.databasechange.TableSqlFullUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 
 public class SqlChangeTest extends TestCase {
 
@@ -50,8 +51,6 @@ public class SqlChangeTest extends TestCase {
 		
 		DatabaseInstallerStart installerStart = new DatabaseInstallerStart();
 		installerStart.installer();
-		
 	}
-	
-	
+
 }

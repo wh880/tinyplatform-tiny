@@ -43,7 +43,7 @@ public class ViewSqlCreator {
 		List<SqlBody> sqlBodyList = view.getSqlBodyList();
 		for(SqlBody sqlBody : sqlBodyList){
 			if(sqlBody.getDialectTypeName().equalsIgnoreCase(language)) {
-				buffer.append(sqlBody.getContent()).append(";");
+				buffer.append(sqlBody.getContent());
 			}
 		}
 

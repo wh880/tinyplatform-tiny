@@ -16,6 +16,7 @@
 package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.ProcessorManager;
+import org.tinygroup.database.config.view.RefViewIds;
 import org.tinygroup.database.config.view.View;
 import org.tinygroup.database.config.view.Views;
 import org.tinygroup.database.view.ViewProcessor;
@@ -73,8 +74,6 @@ public class ViewProcessorImpl implements ViewProcessor {
 	}
 
 	public String getCreateSql(View view, String language) {
-//		ProcessorManager processorManager = SpringBeanContainer
-//				.getBean(DataBaseUtil.PROCESSORMANAGER_BEAN);
 		ViewSqlProcessor sqlProcessor = (ViewSqlProcessor) processorManager
 				.getProcessor(language, "view");
 		return sqlProcessor.getCreateSql(view);
@@ -133,11 +132,12 @@ public class ViewProcessorImpl implements ViewProcessor {
 				dependencies = new ArrayList<String>();
 				dependencyMap.put(view.getId(), dependencies);
 			}
-			List<String> refViewIdList = view.getRefViewIdList();
-			if(refViewIdList == null){
+			RefViewIds refViews = view.getRefViewIds();
+			if(refViews == null || refViews.getRefViewIdList()==null
+				||refViews.getRefViewIdList().size()==0){
                 continue;
             }
-			for (String refViewId : refViewIdList) {
+			for (String refViewId : refViews.getRefViewIdList()) {
 				View dependView = viewIdMap.get(refViewId);
 				if (dependView == null) {
 					throw new RuntimeException(String.format(

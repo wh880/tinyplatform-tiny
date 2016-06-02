@@ -15,9 +15,14 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Table;
 import org.tinygroup.database.table.TableSqlProcessor;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class H2SqlProcessorImpl extends SqlProcessorImpl {
@@ -71,7 +76,53 @@ public class H2SqlProcessorImpl extends SqlProcessorImpl {
      */
 	protected void appendFooter(StringBuffer ddlBuffer, Table table, List<String> list) {
 		super.appendFooter(ddlBuffer, table,list);
-		appendFooterComment(ddlBuffer, table,list);
+		appendFooterComment(table,list);
+	}
+
+	public boolean checkTableExist(Table table, Connection connection)
+			throws SQLException {
+		ResultSet resultset = null;
+		DatabaseMetaData metadata = connection.getMetaData();
+		try {
+			//h2数据库支持多schema,但是要先手动创建,而且connection无法获取url中schema参数
+			//暂时简化,不支持除public外的其他schema
+			String schema = null;
+			resultset = metadata.getTables(connection.getCatalog(), schema,
+					table.getNameWithOutSchema(), new String[] { "TABLE" });
+			if (resultset.next()) {
+				return true;
+			} else {
+				resultset.close();// 关闭上次打开的
+				resultset = metadata.getTables(connection.getCatalog(), schema,
+						table.getNameWithOutSchema().toUpperCase(),
+						new String[] { "TABLE" });
+				if (resultset.next()) {
+					return true;
+				} else if(schema!=null){//目前条件不成立
+					resultset.close();
+					resultset = metadata.getTables(connection.getCatalog(),
+							schema.toUpperCase(), table.getNameWithOutSchema()
+									.toUpperCase(), new String[] { "TABLE" });
+					return resultset.next();
+				}
+			}
+		} finally {
+			if (resultset != null) {
+				resultset.close();
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 检查comment是否改变
+	 * h2数据直接返回false(因为comment方式不一样,在footer上)
+	 * @param standardComment
+	 * @param remarks
+	 * @return
+	 */
+	protected boolean checkCommentChange(String standardComment,String remarks) {
+		return false;
 	}
 
 }

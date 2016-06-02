@@ -15,14 +15,20 @@
  */
 package org.tinygroup.database.table.impl;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.Table;
+import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
+import org.tinygroup.metadata.config.stdfield.StandardField;
+import org.tinygroup.metadata.util.MetadataUtil;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	
@@ -45,7 +51,7 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 			DatabaseMetaData metadata) {
 		ResultSet r = null;
 		try {
-			String schema = DataBaseUtil.getSchema(table, metadata);
+			String schema = table.getSchema();
 			r = metadata.getTables(catalog, schema,
 					table.getNameWithOutSchema(), new String[] { "TABLE" });
 
@@ -65,17 +71,20 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 
 	protected String getQueryForeignSql(Table table,String schema) {
 		 String sql = "SELECT c.COLUMN_NAME, tc.CONSTRAINT_NAME,fc.REFERENCED_TABLE_NAME,kcu.REFERENCED_COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS c"
-			+ " LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON kcu.TABLE_SCHEMA = c.TABLE_SCHEMA"
-			+ " AND kcu.TABLE_NAME = c.TABLE_NAME"
-			+ " AND kcu.COLUMN_NAME = c.COLUMN_NAME"
-			+ " LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc ON tc.CONSTRAINT_SCHEMA = kcu.CONSTRAINT_SCHEMA"
-			+ " AND tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME"
-			+ " LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS fc ON kcu.CONSTRAINT_SCHEMA = fc.CONSTRAINT_SCHEMA"
-			+ " AND kcu.CONSTRAINT_NAME = fc.CONSTRAINT_NAME"
-			+ " where tc.CONSTRAINT_TYPE='FOREIGN KEY' and c.table_name='"
-			+ table.getName()
-			+ "' and c.table_schema='"
-			+ schema + "'";
+				+ " LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON kcu.TABLE_SCHEMA = c.TABLE_SCHEMA"
+				+ " AND kcu.TABLE_NAME = c.TABLE_NAME"
+				+ " AND kcu.COLUMN_NAME = c.COLUMN_NAME"
+				+ " LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc ON tc.CONSTRAINT_SCHEMA = kcu.CONSTRAINT_SCHEMA"
+				+ " AND tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME"
+				+ " LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS fc ON kcu.CONSTRAINT_SCHEMA = fc.CONSTRAINT_SCHEMA"
+				+ " AND kcu.CONSTRAINT_NAME = fc.CONSTRAINT_NAME"
+				+ " where tc.CONSTRAINT_TYPE='FOREIGN KEY' and c.table_name='"
+				+ table.getName()
+				+ "'";
+		if(schema!=null && schema.trim().length()>0) {
+			sql += " and c.table_schema='"
+					+ schema + "'";
+		}
 		 return sql;
 	}
 
@@ -113,5 +122,11 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
         return index.getName();
     }
 
-
+	/**
+	 * 在footer增加comment
+	 * mysql 实现为空
+	 * @param table
+	 * @param list
+	 */
+	protected void appendFooterComment(Table table, List<String> list) {}
 }

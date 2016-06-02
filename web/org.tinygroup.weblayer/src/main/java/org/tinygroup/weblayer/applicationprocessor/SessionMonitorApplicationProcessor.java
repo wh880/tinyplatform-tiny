@@ -2,6 +2,7 @@ package org.tinygroup.weblayer.applicationprocessor;
 
 import org.tinygroup.application.AbstractApplicationProcessor;
 import org.tinygroup.beancontainer.BeanContainerFactory;
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -93,9 +94,15 @@ public class SessionMonitorApplicationProcessor extends
 							SESSION_CONFIGURATION_BEAN_NAME);
 			SessionConfig sessionConfig = sessionConfiguration
 					.getSessionConfig();
-			SessionManager sessionManager = SessionManagerFactory
-					.getSessionManager(sessionConfig.getSessionManagerBeanId(),
-							getClass().getClassLoader());
+			SessionManager sessionManager=null;
+			if(!StringUtil.isBlank(sessionConfig.getSessionManagerBeanId())){
+				 sessionManager = SessionManagerFactory
+						.getSessionManager(sessionConfig.getSessionManagerBeanId(),
+								getClass().getClassLoader());
+			}
+			if(sessionManager==null){
+				return;
+			}
 			int backgroundProcessorDelay = sessionConfig
 					.getBackgroundProcessorDelay();
 			while (!threadDone) {
