@@ -502,7 +502,6 @@ public class TemplateEngineDefault implements TemplateEngine {
                     }
                     outputStream.write(layoutWriter.toByteArray());
                 } else {
-                    //renderTemplate(template, context, outputStream);
                 	outputStream.write(byteArrayOutputStream.toByteArray());
                 }
             } else {
