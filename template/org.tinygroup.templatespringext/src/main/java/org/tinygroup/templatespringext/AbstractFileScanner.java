@@ -1,4 +1,4 @@
-package org.tinygroup.templatespringext.impl;
+package org.tinygroup.templatespringext;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.templatespringext.FileProcessor;
