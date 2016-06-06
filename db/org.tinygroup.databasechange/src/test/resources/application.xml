@@ -42,16 +42,16 @@
 	<!-- 数据库安装处理器 -->
 	<database-install-processor>
 		<database-installer>
-			<database type="mysql" />
+			<database type="h2" />
 		</database-installer>
 	</database-install-processor>
 
-<!--	<datasource id="test" type="org.apache.commons.dbcp.BasicDataSource">
+	<datasource id="test" type="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.h2.Driver" />
 		<property name="url" value="jdbc:h2:h2/TEST;mode=MYSQL;DB_CLOSE_ON_EXIT=FALSE" />
 		<property name="username" value="sa" />
 		<property name="password" value="123456" />
-	</datasource>-->
+	</datasource>
 
 	<!--<datasource id="test2" type="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
@@ -60,11 +60,11 @@
 		<property name="password" value="opensource" />
 	</datasource>-->
 
-	 <datasource id="test" type="org.apache.commons.dbcp.BasicDataSource">
+<!--	 <datasource id="test" type="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 
 		name="url" value="jdbc:mysql://127.0.0.1:3306/sqlchange?createDatabaseIfNotExist=true"
 		/> <property name="username" value="root" /> <property name="password" value="rd123qwe123"
-		/> </datasource>
+		/> </datasource>-->
 <!-- 	<datasource id="test" type="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" /> <property 
 		name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:orcl" 
