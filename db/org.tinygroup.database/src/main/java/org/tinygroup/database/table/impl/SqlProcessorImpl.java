@@ -127,7 +127,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         getForeignUpdate(table, packageName, connection, list);
     }
 
-    private void getChangedFooterComment(Connection connection,Table table, List<String> list) throws SQLException {
+    protected void getChangedFooterComment(Connection connection,Table table, List<String> list) throws SQLException {
         DatabaseMetaData metadata = connection.getMetaData();
         String catalog = connection.getCatalog();
         Map<String, Map<String, String>> dbColumns = getColumns(metadata,
@@ -346,7 +346,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
             columnDef = StringUtil.defaultIfEmpty(columnDef, null);
             //类型或默认值或注释被修改可以更新
             if (!checkTypeSame(dbColumnType, tableDataType)
-                    || !StringUtil.equals(standardDefault, columnDef)
+                    || !checkDefSame(standardDefault,columnDef)
                     || checkCommentChange(standardComment,remarks)) {
                 StringBuffer alterTypeBuffer = new StringBuffer();
                 // 如果数据库中字段允许为空，但table中不允许为空
@@ -374,6 +374,17 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         }
         return existUpdateList;
 
+    }
+
+    private boolean checkDefSame(String standardDefault, String columnDef) {
+        if(StringUtil.equals(standardDefault, columnDef)){
+            return true;
+        }
+        //因为元数据中字符串类型时不会有单引号，因此要加上单引号作判断
+        if(columnDef!=null){
+            return StringUtil.equals(standardDefault,"'"+columnDef+"'");
+        }
+        return false;
     }
 
     /**

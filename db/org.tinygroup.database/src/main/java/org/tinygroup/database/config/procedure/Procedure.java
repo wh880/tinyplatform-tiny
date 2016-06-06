@@ -34,8 +34,6 @@ import java.util.List;
 public class Procedure extends BaseObject {
 	@XStreamAsAttribute
 	private String schema;
-	@XStreamAlias("use-packages")
-	List<UsePackage> usePackages;
 	@XStreamAlias("procedure-parameters")
 	private List<ProcedureParameter> parameterList;
 	@XStreamAlias("sqls")
@@ -53,16 +51,6 @@ public class Procedure extends BaseObject {
 
 	public void setSchema(String schema) {
 		this.schema = schema;
-	}
-	public List<UsePackage> getUsePackages() {
-		if (usePackages == null) {
-			usePackages = new ArrayList<UsePackage>();
-		}
-		return usePackages;
-	}
-
-	public void setUsePackages(List<UsePackage> usePackages) {
-		this.usePackages = usePackages;
 	}
 
 	public List<ProcedureParameter> getParameterList() {
