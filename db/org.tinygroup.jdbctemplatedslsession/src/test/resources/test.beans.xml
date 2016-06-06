@@ -22,4 +22,7 @@
 	<bean id="myKeyGenerator" class="org.tinygroup.jdbctemplatedslsession.MyKeyGenerator">
 	</bean>
 	
+	<bean id="myIntKeyGenerator" class="org.tinygroup.jdbctemplatedslsession.MyIntKeyGenerator">
+	</bean>
+	
 </beans>

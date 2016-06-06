@@ -1,5 +1,5 @@
 <dsl-config>
-	<table-configs default-generator-bean="myKeyGenerator"
+	<table-configs default-generator-bean="myIntKeyGenerator"
 		default-auto-generator-key="false">
 		<table-config auto-generator-key="false" table-name="score"
 			pojo-class="org.tinygroup.jdbctemplatedslsession.Score">
