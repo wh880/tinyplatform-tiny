@@ -16,9 +16,6 @@
 package org.tinygroup.template.impl;
 
 import org.tinygroup.commons.tools.ExceptionUtil;
-import org.tinygroup.logger.LogLevel;
-import org.tinygroup.logger.Logger;
-import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.template.*;
 import org.tinygroup.template.application.*;
 import org.tinygroup.template.function.*;
@@ -249,6 +246,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         addTemplateFunction(new ParseTemplateFunction());
         addTemplateFunction(new I18nFunction());
         addTemplateFunction(new ExtendMapFunction());
+        addTemplateFunction(new RenderLayerFunction());
     }
 
     public TemplateContext getTemplateContext() {
@@ -481,12 +479,15 @@ public class TemplateEngineDefault implements TemplateEngine {
         try {
             Template template = findTemplate(context, path);
             if (template != null) {
+            	//先执行page的渲染
+            	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                template.render(context, byteArrayOutputStream);
+            	
                 List<Template> layoutPaths = getLayoutList(context,template.getPath());
                 if (layoutPaths.size() > 0) {
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    template.render(context, byteArrayOutputStream);
                     context.put("pageContent", byteArrayOutputStream);
                     ByteArrayOutputStream layoutWriter = null;
+                   
                     TemplateContext layoutContext = context;
                     for (int i = layoutPaths.size() - 1; i >= 0; i--) {
                         //每次都构建新的Writer和Context来执行
@@ -501,7 +502,7 @@ public class TemplateEngineDefault implements TemplateEngine {
                     }
                     outputStream.write(layoutWriter.toByteArray());
                 } else {
-                    renderTemplate(template, context, outputStream);
+                	outputStream.write(byteArrayOutputStream.toByteArray());
                 }
             } else {
                 throw new TemplateException("找不到模板：" + path);
@@ -525,8 +526,11 @@ public class TemplateEngineDefault implements TemplateEngine {
 
     private List<Template> getLayoutList(TemplateContext context, String templatePath) throws TemplateException {
         List<Template> layoutPathList = null;
+        Integer renderLayer = context.get("$renderLayer", 0);//取得用户设置的布局渲染次数
+        
+        String cacheKey =  templatePath+"|"+renderLayer.toString(); //重新定义缓存的key值 
         if (!checkModified) {
-            layoutPathList = layoutPathListCache.get(templatePath);
+            layoutPathList = layoutPathListCache.get(cacheKey);
             if (layoutPathList != null) {
                 return layoutPathList;
             }
@@ -538,7 +542,11 @@ public class TemplateEngineDefault implements TemplateEngine {
         String path = "";
 
         String templateFileName = paths[paths.length - 1];
-        for (int i = 0; i < paths.length - 1; i++) {
+        int num = renderLayer;
+        if(num<=0 || num >= paths.length - 1){
+           num =  paths.length - 1;  //用户设置的渲染次数越界，重置为实际值
+        }
+        for (int i = paths.length-1-num; i < paths.length - 1; i++) {
             path += paths[i] + "/";
             String template = path + templateFileName;
             Template layout = null;
@@ -569,7 +577,7 @@ public class TemplateEngineDefault implements TemplateEngine {
             }
         }
         if (!checkModified) {
-            layoutPathListCache.put(templatePath, layoutPathList);
+            layoutPathListCache.put(cacheKey, layoutPathList);
         }
 
         return layoutPathList;

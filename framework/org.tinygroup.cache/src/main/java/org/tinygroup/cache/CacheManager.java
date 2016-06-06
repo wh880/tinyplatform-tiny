@@ -24,6 +24,10 @@ public interface CacheManager {
 
 	/**
 	 * 根据region创建相应的cache实例
+	 * before 2.2.4
+	 * 每次都会创建新的实例
+	 * since 2.2.4
+	 * 如果未创建，则创建实例，若已创建，则返回已创建的实例
 	 * @param region
 	 * @return
 	 */

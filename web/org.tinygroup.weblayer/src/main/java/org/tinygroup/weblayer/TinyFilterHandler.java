@@ -291,7 +291,7 @@ public class TinyFilterHandler {
 		} catch (Exception e) {
 			logger.errorMessage("Exception occurred while commit rundata", e);
 		}
-
+		setContext(webContext);
 	}
 
 	/**
