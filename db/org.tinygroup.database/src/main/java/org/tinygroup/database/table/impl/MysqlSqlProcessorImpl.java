@@ -24,6 +24,7 @@ import org.tinygroup.database.util.DataBaseUtil;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 
+import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -129,4 +130,15 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	 * @param list
 	 */
 	protected void appendFooterComment(Table table, List<String> list) {}
+
+	/**
+	 * footer检查comment变化
+	 * @param connection
+	 * @param table
+	 * @param list
+	 * @throws SQLException
+     */
+	protected void getChangedFooterComment(Connection connection, Table table, List<String> list) throws SQLException {
+
+	}
 }
