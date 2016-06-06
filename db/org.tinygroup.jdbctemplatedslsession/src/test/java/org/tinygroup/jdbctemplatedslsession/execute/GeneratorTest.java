@@ -74,11 +74,11 @@ public class GeneratorTest extends BaseTest{
          student=session.executeAndReturnObject(scoreInsert,Student.class,false);
          assertNotNull(student.getId());
          assertEquals("悠悠然然",student.getName());
-         scoreInsert = insertInto(TSCORE).values(TSTUDENT.ID.value("22"),TSTUDENT.NAME.value("悠悠然然"));
+         scoreInsert = insertInto(TSTUDENT).values(TSTUDENT.ID.value("22"),TSTUDENT.NAME.value("悠悠然然"));
          student=session.executeAndReturnObject(scoreInsert,Student.class,true);
          assertEquals(22,student.getId());
          assertEquals("悠悠然然",student.getName());
-         scoreInsert = insertInto(TSCORE).values(TSTUDENT.ID.value("23"),TSTUDENT.NAME.value("悠悠然然"));
+         scoreInsert = insertInto(TSTUDENT).values(TSTUDENT.ID.value("23"),TSTUDENT.NAME.value("悠悠然然"));
          student=session.executeAndReturnObject(scoreInsert,Student.class,false);
          assertEquals(23,student.getId());
          assertEquals("悠悠然然",student.getName());
