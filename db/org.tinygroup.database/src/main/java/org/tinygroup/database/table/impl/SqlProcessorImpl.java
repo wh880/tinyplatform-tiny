@@ -22,6 +22,7 @@ import org.tinygroup.database.table.TableProcessor;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseNameUtil;
 import org.tinygroup.database.util.DataBaseUtil;
+import org.tinygroup.database.util.SqlUtil;
 import org.tinygroup.metadata.config.stdfield.StandardField;
 import org.tinygroup.metadata.util.MetadataUtil;
 
@@ -341,7 +342,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
             String remarks = getDbColumnRemarks(attribute);
             String columnDef = getDbColumnColumnDef(attribute);
             String standardComment = getComment(standardField);
-            String standardDefault = standardField.getDefaultValue();
+            String standardDefault = getDefaultValue(field, standardField);
             standardDefault = StringUtil.defaultIfEmpty(standardDefault, null);
             columnDef = StringUtil.defaultIfEmpty(columnDef, null);
             //类型或默认值或注释被修改可以更新
@@ -377,14 +378,13 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
     }
 
     private boolean checkDefSame(String standardDefault, String columnDef) {
-        if(StringUtil.equals(standardDefault, columnDef)){
-            return true;
+        //准备比较的字符串
+        String preComparedStdDef = standardDefault;
+        if(standardDefault!=null) {
+            //替换首尾特殊字符
+            preComparedStdDef = SqlUtil.trim(standardDefault, "^['\"`]?|['\"`]?$");
         }
-        //因为元数据中字符串类型时不会有单引号，因此要加上单引号作判断
-        if(columnDef!=null){
-            return StringUtil.equals(standardDefault,"'"+columnDef+"'");
-        }
-        return false;
+        return StringUtil.equals(preComparedStdDef, columnDef);
     }
 
     /**
