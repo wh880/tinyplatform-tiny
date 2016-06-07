@@ -49,6 +49,7 @@ public class TinyHttpFilter implements Filter {
 	public static final String DEFAULT_POST_NODE_NAME = "$_post_node_name";
 	public static final String DEFAULT_PAGE_KEY = "$_default_page";
 	private static final String EXCLUDE_PATH = "excludePath";
+	private static final String PASSTHRU_PATH = "passthruPath";
 	private static final Logger logger = LoggerFactory
 			.getLogger(TinyHttpFilter.class);
 	private static final String POST_DATA_PROCESS = "post-data-process";
@@ -63,6 +64,7 @@ public class TinyHttpFilter implements Filter {
 	private TinyProcessorManager tinyProcessorManager;
 	private TinyFilterManager tinyFilterManager;
 	private List<Pattern> excludePatterns = new ArrayList<Pattern>();
+	private List<Pattern> passthruPatterns = new ArrayList<Pattern>();
 	private Map<String, String> mapping = new HashMap<String, String>();
 	private String postDataKey;
 	private FilterWrapper wrapper;
@@ -122,7 +124,7 @@ public class TinyHttpFilter implements Filter {
 			}
 			TinyFilterHandler handler = new TinyFilterHandler(servletPath,
 					filterChain, context, tinyFilterManager,
-					tinyProcessorManager);
+					tinyProcessorManager,passthruPatterns);
 			if (wrapper != null) {
 				wrapper.filterWrapper(context, handler);
 			} else {
@@ -262,7 +264,9 @@ public class TinyHttpFilter implements Filter {
 				this.getClass().getClassLoader()).getBean(
 				"fullContextFileRepository");
 		initExcludePattern(filterConfig);
-
+		
+		initPassthruPattern(filterConfig);
+		
 		initTinyFilters();
 
 		initTinyFilterWrapper();
@@ -286,6 +290,17 @@ public class TinyHttpFilter implements Filter {
 			String[] excludeArray = excludePath.split(",");
 			for (String path : excludeArray) {
 				excludePatterns.add(Pattern.compile(path));
+			}
+		}
+	}
+	
+	private void initPassthruPattern(FilterConfig filterConfig) {
+		passthruPatterns.clear();// 先清空
+		String passthruPath = filterConfig.getInitParameter(PASSTHRU_PATH);
+		if (passthruPath != null) {
+			String[] excludeArray = passthruPath.split(",");
+			for (String path : excludeArray) {
+				passthruPatterns.add(Pattern.compile(path));
 			}
 		}
 	}
