@@ -25,7 +25,7 @@ public class ExtendMapFunction extends AbstractBindTemplateFunction{
 		   throw new TemplateException("extend函数缺少参数!");
 		}
 		
-		boolean mode = false;
+		boolean mode = true;
 		if(parameters.length>=3 ){
 			if(parameters[2] instanceof Boolean){
 				mode = (Boolean) parameters[2];
