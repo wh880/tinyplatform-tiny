@@ -479,11 +479,12 @@ public class TemplateEngineDefault implements TemplateEngine {
         try {
             Template template = findTemplate(context, path);
             if (template != null) {
-            	//先执行page的渲染
             	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            	//先执行page的渲染
                 template.render(context, byteArrayOutputStream);
+            	Integer renderLayer = context.get("$renderLayer",0);
             	
-                List<Template> layoutPaths = getLayoutList(context,template.getPath());
+                List<Template> layoutPaths = getLayoutList(context,renderLayer,template.getPath());
                 if (layoutPaths.size() > 0) {
                     context.put("pageContent", byteArrayOutputStream);
                     ByteArrayOutputStream layoutWriter = null;
@@ -524,10 +525,9 @@ public class TemplateEngineDefault implements TemplateEngine {
         }
     }
 
-    private List<Template> getLayoutList(TemplateContext context, String templatePath) throws TemplateException {
+    private List<Template> getLayoutList(TemplateContext context, Integer renderLayer,String templatePath) throws TemplateException {
         List<Template> layoutPathList = null;
-        Integer renderLayer = context.get("$renderLayer", 0);//取得用户设置的布局渲染次数
-        
+       
         String cacheKey =  templatePath+"|"+renderLayer.toString(); //重新定义缓存的key值 
         if (!checkModified) {
             layoutPathList = layoutPathListCache.get(cacheKey);
@@ -542,45 +542,51 @@ public class TemplateEngineDefault implements TemplateEngine {
         String path = "";
 
         String templateFileName = paths[paths.length - 1];
-        int num = renderLayer;
-        if(num<=0 || num >= paths.length - 1){
-           num =  paths.length - 1;  //用户设置的渲染次数越界，重置为实际值
-        }
-        for (int i = paths.length-1-num; i < paths.length - 1; i++) {
+        for (int i = 0; i < paths.length - 1; i++) {
             path += paths[i] + "/";
             String template = path + templateFileName;
-            Template layout = null;
-            //先找同名的看有没有
-            for (ResourceLoader loader : resourceLoaderList) {
-                String layoutPath = loader.getLayoutPath(template);
-                if (layoutPath != null) {
-                    layout = findLayout(context, layoutPath);
-                    if (layout != null) {
-                        layoutPathList.add(layout);
-                        break;
-                    }
-                }
-            }
-            //如果没有找到,则看看默认的有没有
-            if (layout == null) {
-                for (ResourceLoader loader : resourceLoaderList) {
-                    String layoutPath = loader.getLayoutPath(template);
-                    if (layoutPath != null) {
-                        String defaultTemplateName = path + DEFAULT + layoutPath.substring(layoutPath.lastIndexOf('.'));
-                        layout = findLayout(context, defaultTemplateName);
-                        if (layout != null) {
-                            layoutPathList.add(layout);
-                            break;
-                        }
-                    }
-                }
-            }
+            findLayoutTemplateList(path,template,context,layoutPathList);
+        }
+        
+        if(renderLayer>0 && renderLayer<layoutPathList.size()){
+           //除去多余的层次
+           while(renderLayer<layoutPathList.size()){
+        	   layoutPathList.remove(0); //从最外层删起
+           }
         }
         if (!checkModified) {
             layoutPathListCache.put(cacheKey, layoutPathList);
         }
 
         return layoutPathList;
+    }
+    
+    private void findLayoutTemplateList(String path,String template,TemplateContext context,List<Template> layoutPathList) throws TemplateException{
+    	Template layout = null;
+    	for (ResourceLoader loader : resourceLoaderList) {
+            String layoutPath = loader.getLayoutPath(template);
+            if (layoutPath != null) {
+                layout = findLayout(context, layoutPath);
+                if (layout != null) {
+                    layoutPathList.add(layout);
+                    break;
+                }
+            }
+        }
+        //如果没有找到,则看看默认的有没有
+        if (layout == null) {
+            for (ResourceLoader loader : resourceLoaderList) {
+                String layoutPath = loader.getLayoutPath(template);
+                if (layoutPath != null) {
+                    String defaultTemplateName = path + DEFAULT + layoutPath.substring(layoutPath.lastIndexOf('.'));
+                    layout = findLayout(context, defaultTemplateName);
+                    if (layout != null) {
+                        layoutPathList.add(layout);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
 
