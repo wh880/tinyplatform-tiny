@@ -49,8 +49,8 @@ a3b3
 ======
 a1b1
 ======
-#[[CDATA1]]#
-#[[CDATA2]]#
+CDATA1
+CDATA2
 aaabbb$\ccc
 ======
  blank1
