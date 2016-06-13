@@ -20,4 +20,5 @@
 		<property name="fileResolver" ref="fileResolver"></property>
 	</bean>
 	
+	<bean id="hello" class="org.tinygroup.mbean.Hello"></bean>
 </beans>
