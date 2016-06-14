@@ -17,6 +17,7 @@ package org.tinygroup.uiengine.config;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,9 @@ import java.util.List;
 public class UIComponents {
 	@XStreamImplicit
 	private List<UIComponent> components;
+	
+	@XStreamOmitField
+	private String resourcePath; //资源路径(内部使用)
 
 	public List<UIComponent> getComponents() {
 		return components;
@@ -32,6 +36,14 @@ public class UIComponents {
 
 	public void setComponents(ArrayList<UIComponent> components) {
 		this.components = components;
+	}
+
+	public String getResourcePath() {
+		return resourcePath;
+	}
+
+	public void setResourcePath(String resourcePath) {
+		this.resourcePath = resourcePath;
 	}
 
 }
