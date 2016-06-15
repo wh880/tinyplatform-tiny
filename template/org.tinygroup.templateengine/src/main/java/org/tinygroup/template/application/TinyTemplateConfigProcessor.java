@@ -13,6 +13,7 @@ import org.tinygroup.template.I18nVisitor;
 import org.tinygroup.template.ResourceLoader;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.TemplateFunction;
+import org.tinygroup.template.impl.TemplateEngineDefault;
 import org.tinygroup.xmlparser.node.XmlNode;
 
 /**
@@ -97,6 +98,12 @@ public class TinyTemplateConfigProcessor extends AbstractApplicationProcessor{
         			}else if("localeTemplateEnable".equalsIgnoreCase(name)){
         				templateEngine.setLocaleTemplateEnable(Boolean.parseBoolean(StringUtil.defaultIfBlank(value, "false")));
         				LOGGER.logMessage(LogLevel.INFO, "设置模板引擎参数localeTemplateEnable={0}",templateEngine.isLocaleTemplateEnable());
+        			}else if("layoutNames".equalsIgnoreCase(name)){
+        	            if(!StringUtil.isBlank(value) && templateEngine instanceof TemplateEngineDefault){
+        	               TemplateEngineDefault defaultEngine = (TemplateEngineDefault) templateEngine;
+        	               defaultEngine.registerLayoutNames(value.split(","));
+        	               LOGGER.logMessage(LogLevel.INFO, "设置模板引擎参数layoutNames={0}",value);
+        	            }
         			}
         		}catch (Exception e) {
         			LOGGER.errorMessage("设置模板引擎属性[{0}]出错,属性值[{1}]", e ,node.getAttribute("name"),node.getAttribute("value"));

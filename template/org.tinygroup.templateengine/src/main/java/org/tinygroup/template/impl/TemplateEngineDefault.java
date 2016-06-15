@@ -37,7 +37,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TemplateEngineDefault implements TemplateEngine {
 
-    private static final String DEFAULT = "default";
     private Map<String, TemplateFunction> functionMap = new HashMap<String, TemplateFunction>();
     private Map<Class, Map<String, TemplateFunction>> typeFunctionMap = new HashMap<Class, Map<String, TemplateFunction>>();
     private TemplateContext templateEngineContext;
@@ -53,6 +52,7 @@ public class TemplateEngineDefault implements TemplateEngine {
     private TemplateCache<String,Object> localeSearchResults = new TemplateCacheDefault<String,Object>();
     private boolean checkModified = false;
     private boolean localeTemplateEnable = false;
+    private String[] layoutNames = {"default"};
    
     public boolean isLocaleTemplateEnable() {
 		return localeTemplateEnable;
@@ -563,30 +563,72 @@ public class TemplateEngineDefault implements TemplateEngine {
     
     private void findLayoutTemplateList(String path,String template,TemplateContext context,List<Template> layoutPathList) throws TemplateException{
     	Template layout = null;
+    	//先查询同名文件的布局模板
+    	layout = findLayoutTemplate(context,template);
+    	if(layout!=null){
+    	   layoutPathList.add(layout);
+    	}else{
+    		//如果没有找到,则按配置布局名进行查询
+    		for(String layoutName:layoutNames){
+    		    layout = findLayoutTemplate(context,path,layoutName);
+    		    if(layout!=null){
+    		       layoutPathList.add(layout);
+    		       break;
+    		    }
+    		}
+    	}
+    }
+    
+    /**
+     * 根据页面查询同名布局模板
+     * @param context
+     * @param template
+     * @return
+     * @throws TemplateException
+     */
+    private Template findLayoutTemplate(TemplateContext context,String template) throws TemplateException{
+    	Template layout = null;
     	for (ResourceLoader loader : resourceLoaderList) {
-            String layoutPath = loader.getLayoutPath(template);
-            if (layoutPath != null) {
-                layout = findLayout(context, layoutPath);
+    		String layoutPath = loader.getLayoutPath(template);
+    		if (layoutPath != null) {
+    			layout = findLayout(context, layoutPath);
                 if (layout != null) {
-                    layoutPathList.add(layout);
-                    break;
+                	return layout;
                 }
+    		}
+    	}
+    	return null;
+    }
+    
+    /**
+     * 根据配置布局名查询布局模板
+     * @param context
+     * @param path
+     * @param layoutName
+     * @return
+     * @throws TemplateException
+     */
+    private Template findLayoutTemplate(TemplateContext context,String path,String layoutName) throws TemplateException{
+    	Template layout = null;
+    	for (ResourceLoader loader : resourceLoaderList) {
+    		String layoutPath = path + layoutName + loader.getLayoutExtName();
+    		layout = findLayout(context, layoutPath);
+    		if (layout != null) {
+            	return layout;
             }
-        }
-        //如果没有找到,则看看默认的有没有
-        if (layout == null) {
-            for (ResourceLoader loader : resourceLoaderList) {
-                String layoutPath = loader.getLayoutPath(template);
-                if (layoutPath != null) {
-                    String defaultTemplateName = path + DEFAULT + layoutPath.substring(layoutPath.lastIndexOf('.'));
-                    layout = findLayout(context, defaultTemplateName);
-                    if (layout != null) {
-                        layoutPathList.add(layout);
-                        break;
-                    }
-                }
-            }
-        }
+    	}
+    	return null;
+    }
+    
+    /**
+     * 注册布局名称
+     * @param names
+     * @throws TemplateException
+     */
+    public void registerLayoutNames(String[] names) throws TemplateException {
+    	if(names!=null && names.length>0){
+    	   layoutNames = names;
+    	}
     }
 
 
