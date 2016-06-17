@@ -103,7 +103,7 @@ public class MultipleSequenceDao {
 
     /**
      * 初始化multiSequenceDao<br>
-     * 1）获取数据源的个数；2）生成随机对象； 3）初始化各个数据源包装器的sql等参数 4）如果配置了log库，则初始化异步log库
+     * 1）获取数据源的个数；2）生成随机对象； 3）初始化各个数据源包装器的sql等参数
      * @throws SequenceException
      */
     public void init() {

@@ -689,8 +689,16 @@
 		<artifactId>slf4j-log4j12</artifactId>
 		<version>1.7.7</version>
 	</dependency>
-
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.184</version>
+        </dependency>
+       <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.5.0</version>
+        </dependency>
 		</dependencies>
-
 		</dependencyManagement>
 </project>

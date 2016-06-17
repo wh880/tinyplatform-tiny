@@ -19,19 +19,16 @@
          <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
-            <version>2.5.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
-            <version>1.4.184</version>
         </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
-            <version>1.2.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -42,7 +39,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.0.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -50,7 +46,18 @@
                 org.tinygroup
             </groupId>
             <artifactId>
-                org.tinygroup.springutil
+                org.tinygroup.exception
+            </artifactId>
+            <version>
+                ${project.version}
+            </version>
+        </dependency>
+         <dependency>
+            <groupId>
+                org.tinygroup
+            </groupId>
+            <artifactId>
+                org.tinygroup.logger
             </artifactId>
             <version>
                 ${project.version}
