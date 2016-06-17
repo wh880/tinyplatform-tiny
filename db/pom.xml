@@ -19,5 +19,6 @@
     <module>org.tinygroup.jdbctemplatedslsession</module>
     <module>org.tinygroup.databasechange</module>
     <module>org.tinygroup.beanconverter</module>
+    <module>org.tinygroup.sequence</module>
   </modules>
 </project>
