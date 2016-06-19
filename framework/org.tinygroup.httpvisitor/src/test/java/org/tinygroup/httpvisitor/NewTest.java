@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.tinygroup.httpvisitor.builder.HttpFactory;
-import org.tinygroup.vfs.VFS;
 
 public class NewTest {
 
 	/**
+	 * 本测试用例仅用于展示httpvisitor的链式语法，具体链式实现请参见各实现工程的测试用例
 	 * @param args
 	 * @throws Exception 
 	 */

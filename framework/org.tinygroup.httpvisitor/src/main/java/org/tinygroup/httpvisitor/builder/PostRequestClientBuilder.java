@@ -10,7 +10,6 @@ import org.tinygroup.httpvisitor.client.SingleClientBuilder;
 import org.tinygroup.httpvisitor.request.HttpRequestBuilder;
 import org.tinygroup.httpvisitor.request.PostRequestBuilder;
 import org.tinygroup.httpvisitor.request.PostRequestBuilderInterface;
-import org.tinygroup.vfs.FileObject;
 
 public class PostRequestClientBuilder extends RequestClientBuilder<PostRequestClientBuilder,PostRequestBuilder> implements PostRequestBuilderInterface<PostRequestClientBuilder>{
 
@@ -22,9 +21,9 @@ public class PostRequestClientBuilder extends RequestClientBuilder<PostRequestCl
      * @param methodMode
      * @param url
      */
-    PostRequestClientBuilder(MethodMode methodMode, String url){
+    PostRequestClientBuilder(MethodMode methodMode, String url,String templateId){
     	requestBuilder = new PostRequestBuilder(methodMode,url);
-    	singleClientBuilder = new SingleClientBuilder();
+    	singleClientBuilder = new SingleClientBuilder(templateId);
     } 
     
 	public PostRequestClientBuilder data(byte[] data) {

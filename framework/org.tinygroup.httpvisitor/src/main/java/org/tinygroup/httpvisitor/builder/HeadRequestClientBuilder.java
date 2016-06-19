@@ -16,9 +16,9 @@ public class HeadRequestClientBuilder extends RequestClientBuilder<HeadRequestCl
      * @param methodMode
      * @param url
      */
-    HeadRequestClientBuilder(MethodMode methodMode, String url){
+    HeadRequestClientBuilder(MethodMode methodMode, String url,String templateId){
     	requestBuilder = new HeadRequestBuilder(methodMode,url);
-    	singleClientBuilder = new SingleClientBuilder();
+    	singleClientBuilder = new SingleClientBuilder(templateId);
     }
 
 	protected HeadRequestClientBuilder self() {
