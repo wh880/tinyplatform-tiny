@@ -7,7 +7,13 @@
 	default-autowire="byName" default-lazy-init="true">
 
 		<bean id="httpClient31" scope="prototype"
-			class="org.tinygroup.httpclient31.client.HttpClientImpl">
+			class="org.tinygroup.httpclient31.client.SingleClientImpl">
+			<property name="httpTemplateManager" ref="httpTemplateManager"></property>
+		</bean>
+		
+		<bean id="multiClient31" scope="prototype"
+			class="org.tinygroup.httpclient31.client.MultiClientImpl">
+			<property name="httpTemplateManager" ref="httpTemplateManager"></property>
 		</bean>
 		
 	</beans>
