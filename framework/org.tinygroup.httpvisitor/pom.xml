@@ -18,8 +18,19 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.tinyrunner</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>org.tinygroup.fileresolver</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.tinygroup</groupId>
