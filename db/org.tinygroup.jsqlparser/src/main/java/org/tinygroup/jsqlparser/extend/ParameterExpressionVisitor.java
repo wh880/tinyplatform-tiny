@@ -19,6 +19,10 @@ import org.tinygroup.jsqlparser.expression.Expression;
 import org.tinygroup.jsqlparser.expression.ExpressionVisitorAdapter;
 import org.tinygroup.jsqlparser.expression.JdbcParameter;
 import org.tinygroup.jsqlparser.expression.operators.relational.ExpressionList;
+import org.tinygroup.jsqlparser.expression.operators.relational.GreaterThan;
+import org.tinygroup.jsqlparser.expression.operators.relational.GreaterThanEquals;
+import org.tinygroup.jsqlparser.expression.operators.relational.MinorThan;
+import org.tinygroup.jsqlparser.expression.operators.relational.MinorThanEquals;
 import org.tinygroup.jsqlparser.expression.operators.relational.MultiExpressionList;
 import org.tinygroup.jsqlparser.statement.select.SelectVisitor;
 import org.tinygroup.jsqlparser.statement.select.SubSelect;
@@ -33,6 +37,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 
  */
 public class ParameterExpressionVisitor extends ExpressionVisitorAdapter {
+	public static final String GREATER_THAN = "greaterThan";
+	public static final String GREATER_THAN_EQUALS = "greaterThanEquals";
+	public static final String MINOR_THAN_EQUALS = "minorThanEquals";
+	public static final String MINOR_THAN = "minorThan";
 	private Map<String, Integer> positionMap;
 	private AtomicInteger paramLength;
 	private SelectVisitor selectVisitor;
@@ -72,6 +80,43 @@ public class ParameterExpressionVisitor extends ExpressionVisitorAdapter {
 			for (ExpressionList expressionList : expressionLists) {
 				expressionList.accept(this);
 			}
+		}
+	}
+
+	public void visit(GreaterThan expr) {
+		int before = paramLength.intValue();
+		super.visit(expr);
+		int after = paramLength.intValue();
+		if (before != after) {
+			positionMap.put(GREATER_THAN, after);
+		}
+
+	}
+
+	public void visit(GreaterThanEquals expr) {
+		int before = paramLength.intValue();
+		super.visit(expr);
+		int after = paramLength.intValue();
+		if (before != after) {
+			positionMap.put(GREATER_THAN_EQUALS, after);
+		}
+	}
+
+	public void visit(MinorThan expr) {
+		int before = paramLength.intValue();
+		super.visit(expr);
+		int after = paramLength.intValue();
+		if (before != after) {
+			positionMap.put(MINOR_THAN, after);
+		}
+	}
+
+	public void visit(MinorThanEquals expr) {
+		int before = paramLength.intValue();
+		super.visit(expr);
+		int after = paramLength.intValue();
+		if (before != after) {
+			positionMap.put(MINOR_THAN_EQUALS, after);
 		}
 	}
 }

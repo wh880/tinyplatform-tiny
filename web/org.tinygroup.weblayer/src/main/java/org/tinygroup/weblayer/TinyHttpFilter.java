@@ -103,7 +103,6 @@ public class TinyHttpFilter implements Filter {
 			context.put("springUtil", BeanContainerFactory
 					.getBeanContainer(getClass().getClassLoader()));
 			postDataProcess(request, context);
-			context.put("context", context);
 			context.putSubContext("applicationproperties", new ContextImpl(
 					ConfigurationUtil.getConfigurationManager()
 							.getConfiguration()));
