@@ -26,6 +26,7 @@ import org.tinygroup.weblayer.WebContext;
  * 开发时间: 2013-4-24 <br>
  * <br>
  */
+@Deprecated
 public interface WebContextAware {
 	
 	void setContext(WebContext webContext);
