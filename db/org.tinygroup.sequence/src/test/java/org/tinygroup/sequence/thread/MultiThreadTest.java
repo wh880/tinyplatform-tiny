@@ -3,6 +3,7 @@ package org.tinygroup.sequence.thread;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.tinygroup.sequence.AbstractDBUnitTest;
 import org.tinygroup.sequence.impl.MultipleSequenceDao;
 import org.tinygroup.sequence.impl.MultipleSequenceFactory;
 import org.tinygroup.sequence.multi.MultipleSequenceTest;
@@ -13,7 +14,7 @@ import java.util.*;
 /**
  * Created by wangwy11342 on 2016/6/20.
  */
-public class MultiThreadTest extends MultipleSequenceTest{
+public class MultiThreadTest extends AbstractDBUnitTest {
     //线程数
     private static final int THREAD_SIZE = 10;
     //单个线程获取next序列的次数
@@ -22,6 +23,20 @@ public class MultiThreadTest extends MultipleSequenceTest{
     private static MultipleSequenceFactory sequenceFactory;
     //id序列set容器
     private static Set<Long> sequenceSet = new TreeSet<Long>();
+
+    @Override
+    protected List<String> getSchemaFiles() {
+        return Arrays.asList(
+                "integrate/schema/db_sequence1.sql",
+                "integrate/schema/db_sequence2.sql");
+    }
+
+    @Override
+    protected List<String> getDataSetFiles() {
+        return Arrays.asList(
+                "integrate/dataset/thread/multi/init/db_sequence1.xml",
+                "integrate/dataset/thread/multi/init/db_sequence2.xml");
+    }
 
     @Before
     public  void initFactory(){
@@ -44,7 +59,7 @@ public class MultiThreadTest extends MultipleSequenceTest{
             t.start();
             t.join();
         }
-        System.out.println(sequenceSet);
+//        System.out.println(sequenceSet);
         //测试没有重复的id
         //THREAD_SIZE*NEXT_TIMES为获取id的总的次数
         //如果id不重复获取id数与序列set大小会相等
