@@ -76,7 +76,7 @@ public class DsBrokenTest extends AbstractDBUnitTest{
                 long temp = sequenceFactory.getNextValue("user");
                 sequenceSet.add(temp);
             }
-            System.out.println(sequenceSet);
+            assertEquals(sequenceSet.size(),1000);
 
             sequenceSet = new TreeSet<Long>();
             holders.set(1, originHolder);
@@ -84,7 +84,8 @@ public class DsBrokenTest extends AbstractDBUnitTest{
                 long temp = sequenceFactory.getNextValue("user");
                 sequenceSet.add(temp);
             }
-            System.out.println(sequenceSet);
+            assertEquals(sequenceSet.size(),1000);
+//            System.out.println(sequenceSet);
         } catch (Exception e) {
             fail(e.getMessage());
         }

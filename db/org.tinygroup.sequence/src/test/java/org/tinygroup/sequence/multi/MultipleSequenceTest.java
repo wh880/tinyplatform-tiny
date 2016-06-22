@@ -36,7 +36,6 @@ public class MultipleSequenceTest extends AbstractDBUnitTest{
 				}else{
 					curSeqId++;
 				}
-				System.out.println(curSeqId);
 				Assert.assertEquals(curSeqId,temp);
 			}
 		} catch (Exception e) {

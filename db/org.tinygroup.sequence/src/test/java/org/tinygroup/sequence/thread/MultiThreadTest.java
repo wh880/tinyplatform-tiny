@@ -18,7 +18,7 @@ public class MultiThreadTest extends AbstractDBUnitTest {
     //线程数
     private static final int THREAD_SIZE = 10;
     //单个线程获取next序列的次数
-    private static final int NEXT_TIMES = 1005;
+    private static final int NEXT_TIMES = 105;
     //产生sequence的工厂对象,所有线程共用一个工厂对象
     private static MultipleSequenceFactory sequenceFactory;
     //id序列set容器
