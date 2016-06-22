@@ -81,13 +81,16 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 		String serviceId = urlString.substring(lastSplash + 1, lastDot);
 		Object result = callService(serviceId, context);
 		if (urlString.endsWith("servicexml") && result != null) {// 返回xml
+			context.getResponse().setContentType("application/xml;");
 			context.getResponse().getWriter()
 					.write(objectToXml.convert(result));
 		} else if (urlString.endsWith(".servicejson") && result != null) {// 返回json
+			context.getResponse().setContentType("application/json;");
 			context.getResponse().getWriter()
 					.write(objectToJson.convert(result));
 
 		} else if (urlString.endsWith(".servicepage")) {// 返回页面
+			context.getResponse().setContentType("text/html;");
 			ServiceViewMapping viewMapping = manager
 					.getServiceViewMapping(serviceId);
 			if (viewMapping == null) {
@@ -97,6 +100,7 @@ public class ServiceTinyProcessor extends AbstractTinyProcessor {
 			checkPath(serviceId, path);
 			pageJump(path, viewMapping.getType(), context);
 		} else if (urlString.endsWith(".servicepagelet")) {// 返回页面片断
+			context.getResponse().setContentType("text/html;");
 			ServiceViewMapping viewMapping = manager
 					.getServiceViewMapping(serviceId);
 			if (viewMapping == null) {
