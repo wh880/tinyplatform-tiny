@@ -35,27 +35,27 @@ public class EnvironmentManagerImpl implements EnvironmentManager {
 	}
 	
 	public Environment add(Environment env, String versionId, String productId) {
-		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，增加环境[%s ,版本=%s ,项目=%s]" ,env.getName() ,env.getEnvironment() ,versionId ,productId);
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，增加环境[%s ,版本=%s ,项目=%s]" ,env.getName() ,versionId ,productId);
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
 		try {
 			ZKEnvManager.set(env.getName(), env, configPath);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, "远程配置，增加环境失败[%s ,版本=%s ,项目=%s]" , e,env.getName() ,env.getEnvironment() ,versionId ,productId);
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，增加环境失败[%s ,版本=%s ,项目=%s]" , e,env.getName() ,versionId ,productId);
 		}
 		return env;
 	}
 
 	public void update(Environment env, String versionId, String productId) {
-		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，更新环境[%s ,版本=%s ,项目=%s]" ,env.getName() ,env.getEnvironment() ,versionId ,productId);
+		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，更新环境[%s ,版本=%s ,项目=%s]" ,env.getName() ,versionId ,productId);
 		ConfigPath configPath = new ConfigPath();
 		configPath.setProductName(productId);
 		configPath.setVersionName(versionId);
 		try {
 			ZKEnvManager.set(env.getName(), env, configPath);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, "远程配置，更新环境失败[%s ,版本=%s ,项目=%s]" , e,env.getName() ,env.getEnvironment() ,versionId ,productId);
+			LOGGER.logMessage(LogLevel.ERROR, "远程配置，更新环境失败[%s ,版本=%s ,项目=%s]" , e,env.getName() ,versionId ,productId);
 		}
 	}
 
