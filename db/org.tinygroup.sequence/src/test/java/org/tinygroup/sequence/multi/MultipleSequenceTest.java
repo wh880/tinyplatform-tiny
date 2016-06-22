@@ -25,7 +25,7 @@ public class MultipleSequenceTest extends AbstractDBUnitTest{
 		List<DataSource> dataSources=createDataSourceList();
 		multipleSequenceDao.setDataSourceList(dataSources);
 //		multipleSequenceDao.setAdjust(false);
-		multipleSequenceDao.init();
+//		multipleSequenceDao.init();
 		sequenceFactory.setMultipleSequenceDao(multipleSequenceDao);
 		sequenceFactory.init();
 		try {

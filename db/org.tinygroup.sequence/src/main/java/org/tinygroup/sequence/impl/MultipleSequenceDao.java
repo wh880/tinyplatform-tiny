@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.sequence.DataSourceSelector;
 import org.tinygroup.sequence.SequenceConstants;
 import org.tinygroup.sequence.SequenceRange;
 import org.tinygroup.sequence.exception.SequenceException;
@@ -32,8 +33,8 @@ public class MultipleSequenceDao {
     private List<SequenceDataSourceHolder> dataSourceList                   = new ArrayList<SequenceDataSourceHolder>();
     /**重试次数*/
     private int                            retryTimes                       = 150;
-    /**随机权重 */
-    private SequenceWeightRandom           weightRandom;
+    /**数据源选择器 */
+    private DataSourceSelector           dataSourceSelector;
     /** sequence表名默认值*/
     private static final String            DEFAULT_TABLE_NAME               = "sequence";
     /** 以下表结构字段默认值
@@ -115,7 +116,9 @@ public class MultipleSequenceDao {
         if (dataSourceNum < DEFAULT_DATA_SOURCE_NUMBER) {
             throw new IllegalArgumentException("为保证高可用，数据源的个数建议设置多于两个,size=" + dataSourceNum);
         }
-        weightRandom = new SequenceWeightRandom(dataSourceNum);
+        if(dataSourceSelector==null){
+        	 dataSourceSelector = new DataSourceRandomSelector(dataSourceNum);
+        }
         LOGGER.logMessage(LogLevel.WARN,"初始化结束,其中dataSourceNum={0}",dataSourceNum);
         //初始化SequenceDataSourceHolder数据源包装器的一些参数
         for (SequenceDataSourceHolder dsHolder : dataSourceList) {
@@ -207,7 +210,7 @@ public class MultipleSequenceDao {
             List<Integer> excludeIndexes = new ArrayList<Integer>(0);
             for (int j = 0; j < dataSourceNum; j++) {
                 //随机选库
-                int index = weightRandom.getRandomDataSourceIndex(excludeIndexes);
+                int index = dataSourceSelector.getRandomDataSourceIndex(excludeIndexes);
                 if (index == -1) {
                     break;
                 }
@@ -506,5 +509,13 @@ public class MultipleSequenceDao {
     public void setInnerStepColumnName(String innerStepColumnName) {
         this.innerStepColumnName = innerStepColumnName;
     }
+
+	public DataSourceSelector getDataSourceSelector() {
+		return dataSourceSelector;
+	}
+
+	public void setDataSourceSelector(DataSourceSelector dataSourceSelector) {
+		this.dataSourceSelector = dataSourceSelector;
+	}
 
 }

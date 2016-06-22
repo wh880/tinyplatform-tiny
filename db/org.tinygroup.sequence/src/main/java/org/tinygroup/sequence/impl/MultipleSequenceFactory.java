@@ -38,6 +38,7 @@ public class MultipleSequenceFactory {
         if (multipleSequenceDao == null) {
             throw new IllegalArgumentException("The sequenceDao is null!");
         }
+        multipleSequenceDao.init();
         initMultipleSequenceMap();
     }
 

@@ -5,13 +5,14 @@ import java.util.Random;
 
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.sequence.DataSourceSelector;
 import org.tinygroup.sequence.SequenceConstants;
 
 /**
  * 生成随机数，用于选择在哪个库上获取sequence
  * @author renhui
  */
-public class SequenceWeightRandom {
+public class DataSourceRandomSelector implements DataSourceSelector {
 	 private static final Logger            logger                           = LoggerFactory
              .getLogger(SequenceConstants.TINY_SEQUENCE_LOG_NAME);
     private final int           dataSourceNum;
@@ -20,12 +21,17 @@ public class SequenceWeightRandom {
     private final Random        random         = new Random();
     private final int           DEFAULT_WEIGHT = 10;
 
-    public SequenceWeightRandom(int dataSourceNum) {
+    public DataSourceRandomSelector(int dataSourceNum) {
         this.dataSourceNum = dataSourceNum;
         weights = new int[dataSourceNum];
         for (int i = 0; i < dataSourceNum; i++) {
             weights[i] = DEFAULT_WEIGHT;
         }
+    }
+    
+    public DataSourceRandomSelector(int[]  weights) {
+        this.weights = weights;
+        this.dataSourceNum=weights.length;
     }
 
     public int getRandomDataSourceIndex(List<Integer> excludeIndexes) {
