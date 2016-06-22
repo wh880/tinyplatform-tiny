@@ -44,7 +44,6 @@ public class MultiThreadTest extends AbstractDBUnitTest {
         MultipleSequenceDao multipleSequenceDao=new MultipleSequenceDao();
         List<DataSource> dataSources=createDataSourceList();
         multipleSequenceDao.setDataSourceList(dataSources);
-        multipleSequenceDao.init();
         sequenceFactory.setMultipleSequenceDao(multipleSequenceDao);
         sequenceFactory.init();
     }
