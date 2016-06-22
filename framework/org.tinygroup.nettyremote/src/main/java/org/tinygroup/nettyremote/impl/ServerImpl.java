@@ -62,6 +62,7 @@ public class ServerImpl implements Server {
 	protected void init(ServerBootstrap b) {
 		b.channel(NioServerSocketChannel.class)
 				.option(ChannelOption.SO_BACKLOG, 100)
+				.option(ChannelOption.SO_KEEPALIVE, true)
 				.childHandler(new ChannelInitializer<SocketChannel>() {
 					public void initChannel(SocketChannel ch)
 							throws IOException {

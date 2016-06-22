@@ -148,6 +148,7 @@ public class ClientImpl implements Client {
 	protected void init(Bootstrap b) {
 		b.channel(NioSocketChannel.class)
 				.option(ChannelOption.TCP_NODELAY, true)
+				.option(ChannelOption.SO_KEEPALIVE, true)
 				.handler(new ChannelInitializer<SocketChannel>() {
 					public void initChannel(SocketChannel ch) throws Exception {
 						ch.pipeline().addLast(
