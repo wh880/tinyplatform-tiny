@@ -1,10 +1,15 @@
 package org.tinygroup.httpvisitor.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.tinygroup.beancontainer.BeanContainer;
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.context.Context;
 import org.tinygroup.context.impl.ContextImpl;
-import org.tinygroup.httpvisitor.Certifiable;
+import org.tinygroup.httpvisitor.config.HttpConfigTemplate;
+import org.tinygroup.httpvisitor.config.HttpConfigTemplateContext;
 import org.tinygroup.httpvisitor.execption.HttpVisitorException;
 import org.tinygroup.httpvisitor.struct.KeyCert;
 import org.tinygroup.httpvisitor.struct.PasswordCert;
@@ -21,44 +26,62 @@ public abstract class ClientBuilder<Builder extends ClientBuilder<Builder>>
 		implements ClientBuilderInterface<Builder> {
 
 	final static String NODE_NAME = "HTTPVISITOR_BEAN_NAME";
-	final static int defaultTimeout = 10000;
-
-	// how long http connection keep, in milliseconds. default -1, get from
-	// server response
-	protected long timeToLive = -1;
-
-	// settings for client level, can not set/override in request level
-	// if verify http certificate
-	private boolean verify = true;
-
-	// if enable compress response
-	private boolean compress = true;
-	private boolean allowRedirects = true;
-	private String userAgent = null;
-
-	private int connectTimeout = defaultTimeout;
-	private int socketTimeout = defaultTimeout;
-
-	private Proxy proxy;
-	private Certifiable cert;
+	
+	private Map<String,Object> configMaps = new HashMap<String,Object>();
+	
+	private String templateId;
 
 	protected abstract Builder self();
+	
+	ClientBuilder(String templateId){ 
+		this.templateId = templateId;
+	}
 
 	/**
 	 * 构建客户端实例
 	 * 
 	 * @return
 	 */
-	public ClientInterface build() {
+	public synchronized ClientInterface build() {
 
 		String beanName = getClientBeanName();
 		if(beanName==null){
 		   throw new HttpVisitorException("查找HTTP客户端实例Bean名称失败，请检查应用全局配置文件是否配置"+NODE_NAME+"节点");
 		}
 		try{
-			ClientInterface clientInterface = BeanContainerFactory
-					.getBeanContainer(getClass().getClassLoader()).getBean(beanName);
-			clientInterface.init(getContext());
+			BeanContainer<?> container = BeanContainerFactory
+					.getBeanContainer(getClass().getClassLoader());
+			
+			ClientInterface clientInterface = null;
+			if(templateId!=null){
+				//优先从管理器中加载实例缓存
+				ClientInstanceManager manager = container.getBean(ClientInstanceManager.DEFAULT_BEAN_NAME);
+				clientInterface = manager.getClientInterface(templateId);
+				boolean initTag = false;
+				if(clientInterface==null){
+					//如果管理器中没有，再从bean容器加载
+					clientInterface = container.getBean(beanName);
+					initTag = true;
+				}
+				//执行初始化逻辑
+				if(initTag){
+					HttpConfigTemplate template = getHttpConfigTemplate(clientInterface);
+					if(template==null){
+						throw new HttpVisitorException("查找HTTP通讯配置模板实例失败，请检查"+templateId+"的配置节点是否定义");
+					}
+					clientInterface.init(getContext(template));
+					//多例共享的情况需要注册clientInterface实例到manager
+					if(clientInterface.allowMultiton()){
+					   manager.registerClient(templateId, clientInterface); //注册实例
+					}
+				}
+				
+			}else{
+				//没有模板id，不用区分单例独占和多例共享httpclient
+				clientInterface = container.getBean(beanName);
+				clientInterface.init(getContext());
+			}
+			
 			return clientInterface;
 		}catch(Exception e){
 			throw new HttpVisitorException("创建"+beanName+"的客户端实例失败",e);
@@ -73,96 +96,95 @@ public abstract class ClientBuilder<Builder extends ClientBuilder<Builder>>
 	private String getClientBeanName() {
 		return ConfigurationUtil.getConfigurationManager().getConfiguration(NODE_NAME);
 	}
+	
+	private HttpConfigTemplate getHttpConfigTemplate(ClientInterface clientInterface){
+		return templateId!=null?clientInterface.getHttpTemplateManager().getHttpConfigTemplate(templateId):null;
+	}
 
 	protected Context getContext() {
-		Context context = new ContextImpl();
-
-		context.put(ClientConstants.CLIENT_USER_AGENT, userAgent);
-		context.put(ClientConstants.CLIENT_CONNECT_TIME, connectTimeout);
-		context.put(ClientConstants.CLIENT_SOCKET_TIME, socketTimeout);
-		context.put(ClientConstants.CLIENT_KEEP_TIME, timeToLive);
-		context.put(ClientConstants.CLIENT_VERIFY, verify);
-		context.put(ClientConstants.CLIENT_COMPRESS, compress);
-		context.put(ClientConstants.CLIENT_ALLOW_REDIRECT, allowRedirects);
-		context.put(ClientConstants.CLIENT_PROXY, proxy);
-		context.put(ClientConstants.CLIENT_CERT, cert);
-
+		Context context = new ContextImpl(configMaps);
+		return context;
+	}
+	
+	protected Context getContext(HttpConfigTemplate template) {
+		Context context = new HttpConfigTemplateContext(configMaps,template);
 		return context;
 	}
 
 	public Builder timeToLive(long timeToLive) {
-		this.timeToLive = timeToLive;
+		configMaps.put(ClientConstants.CLIENT_KEEP_TIMEOUT, timeToLive);
 		return self();
 	}
 
 	public Builder userAgent(String userAgent) {
-		this.userAgent = userAgent;
+		configMaps.put(ClientConstants.CLIENT_USER_AGENT, userAgent);
 		return self();
 	}
 
 	public Builder verify(boolean verify) {
-		this.verify = verify;
+		configMaps.put(ClientConstants.CLIENT_ALLOW_VERIFY, verify);
 		return self();
 	}
 
 	public Builder allowRedirects(boolean allowRedirects) {
-		this.allowRedirects = allowRedirects;
+		configMaps.put(ClientConstants.CLIENT_ALLOW_REDIRECT, allowRedirects);
 		return self();
 	}
 
 	public Builder compress(boolean compress) {
-		this.compress = compress;
+		configMaps.put(ClientConstants.CLIENT_ALLOW_COMPRESS, compress);
 		return self();
 	}
 
 	public Builder timeout(int timeout) {
-		this.connectTimeout = this.socketTimeout = timeout;
+		configMaps.put(ClientConstants.CLIENT_CONNECT_TIMEOUT, timeout);
+		configMaps.put(ClientConstants.CLIENT_SOCKET_TIMEOUT, timeout);
 		return self();
 	}
 
 	public Builder socketTimeout(int timeout) {
-		this.socketTimeout = timeout;
+		configMaps.put(ClientConstants.CLIENT_SOCKET_TIMEOUT, timeout);
 		return self();
 	}
 
 	public Builder connectTimeout(int timeout) {
-		this.connectTimeout = timeout;
+		configMaps.put(ClientConstants.CLIENT_CONNECT_TIMEOUT, timeout);
 		return self();
 	}
 
 	public Builder proxy(String host, int port, String proxyName,
 			String password) {
-		this.proxy = new Proxy(host, port, proxyName, password);
+		configMaps.put(ClientConstants.CLIENT_PROXY, new Proxy(host, port, proxyName, password));
 		return self();
 	}
 
 	public Builder proxy(String host, int port) {
-		this.proxy = new Proxy(host, port);
+		configMaps.put(ClientConstants.CLIENT_PROXY, new Proxy(host, port));
 		return self();
 	}
 
 	public Builder proxy(Proxy proxy) {
-		this.proxy = proxy;
+		configMaps.put(ClientConstants.CLIENT_PROXY, proxy);
 		return self();
 	}
 
 	public Builder auth(String userName, String password) {
-		this.cert = new PasswordCert(userName, password);
+		configMaps.put(ClientConstants.CLIENT_CERT, new PasswordCert(userName, password));
 		return self();
 	}
 
 	public Builder auth(PasswordCert cert) {
-		this.cert = cert;
+		configMaps.put(ClientConstants.CLIENT_CERT, cert);
 		return self();
 	}
 
 	public Builder auth(String certPath, String password, String certType) {
-		this.cert = new KeyCert(certPath, password, certType);
+		configMaps.put(ClientConstants.CLIENT_CERT, new KeyCert(certPath, password, certType));
 		return self();
 	}
 
 	public Builder auth(KeyCert cert) {
-		this.cert = cert;
+		configMaps.put(ClientConstants.CLIENT_CERT, cert);
 		return self();
 	}
 }

@@ -19,6 +19,7 @@ import static org.tinygroup.weblayer.webcontext.parser.ParserWebContext.DEFAULT_
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.tools.Assert;
+import org.tinygroup.commons.tools.CollectionUtil;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -55,6 +57,7 @@ public class TinyFilterHandler {
 	private FilterChain filterChain;
 	private String servletPath;
 	private WebContext context;
+	private List<Pattern> passthruPatterns;
 	/**
 	 * 在request中保存TinyFilterHandler的键名。
 	 */
@@ -62,13 +65,14 @@ public class TinyFilterHandler {
 
 	public TinyFilterHandler(String servletPath, FilterChain filterChain,
 			WebContext context, TinyFilterManager tinyFilterManager,
-			TinyProcessorManager tinyProcessorManager) {
+			TinyProcessorManager tinyProcessorManager, List<Pattern> passthruPatterns) {
 		super();
 		this.context = context;
 		this.filterChain = filterChain;
 		this.servletPath = servletPath;
 		this.tinyFilterManager = tinyFilterManager;
 		this.tinyProcessorManager = tinyProcessorManager;
+		this.passthruPatterns=passthruPatterns;
 	}
 
 	public WebContext getContext() {
@@ -102,7 +106,7 @@ public class TinyFilterHandler {
 			servletPath = getServletPath(wrapperContext.getRequest(),
 					wrapperContext);// 重新获取路径
 			// 可能之前被修改过
-			if (!tinyProcessorManager.execute(servletPath, wrapperContext)) {
+			if (isRequestPassedThru(servletPath)||!tinyProcessorManager.execute(servletPath, wrapperContext)) {
 				giveUpControl(wrapperContext);
 				return;
 			}
@@ -156,6 +160,25 @@ public class TinyFilterHandler {
 		};
 		parser.parse(StringUtil.substringAfter(servletPath, SEARCH_STR));
 	}
+	
+    /**
+	 * 对于需要被passthru的request，不执行TinyProcessor，而是立即把控制交还给filter chain。
+     * 该功能适用于仅将weblayer视作普通的filter，而filter chain的接下来的部分将可使用weblayer所提供的TinyFilter功能。
+	 * @param servletPath
+	 * @return
+	 */
+	private boolean isRequestPassedThru(String servletPath) {
+		if(!CollectionUtil.isEmpty(passthruPatterns)){
+			for (Pattern pattern : passthruPatterns) {
+				if (pattern.matcher(servletPath).matches()) {
+					logger.logMessage(LogLevel.DEBUG, "Passed through request: {0}",servletPath);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+    
 
 	private void giveUpControl(WebContext wrapperContext) throws IOException,
 			ServletException {
@@ -291,7 +314,7 @@ public class TinyFilterHandler {
 		} catch (Exception e) {
 			logger.errorMessage("Exception occurred while commit rundata", e);
 		}
-
+		setContext(webContext);
 	}
 
 	/**

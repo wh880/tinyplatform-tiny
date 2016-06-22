@@ -42,13 +42,13 @@ public abstract class MBeanFileConfig extends AbstractFileProcessor{
 		for (TinyModeInfo info : list) {
 			ObjectName name = new ObjectName("TinyMBean:name="
 					+ info.getTinyModeName());
-			Class<?> clazz;
+			Object object = null;
 			if("bean".equals(info.getFrom())){
-				clazz = BeanContainerFactory.getBeanContainer(classLoader).getBean(info.getValue());
+				object = BeanContainerFactory.getBeanContainer(classLoader).getBean(info.getValue());
 			}else{
-				clazz = Class.forName(info.getValue());
+				object = Class.forName(info.getValue()).newInstance();
 			}
-			mb.registerMBean(clazz.newInstance(), name);
+			mb.registerMBean(object, name);
 			LOGGER.logMessage(LogLevel.INFO, "MBean服务[{0}]注册成功",
 					info.getTinyModeName());
 		}

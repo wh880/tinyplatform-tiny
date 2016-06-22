@@ -48,12 +48,12 @@ public class MDATableTest extends TestCase {
 		System.out.println("org.tinygroup.user,oracle sql:");
 		List<String> tableSql= tableProcessor.getCreateSql( "user","org.tinygroup", "oracle");
 		System.out.println(tableSql);
-		assertEquals(2, tableSql.size());
+		assertEquals(7, tableSql.size());
 		
 		System.out.println("org.tinygroup.company,oracle sql:");
 		List<String> tableSql2= tableProcessor.getCreateSql("company", "org.tinygroup", "oracle");
 		System.out.println(tableSql2);
-		assertEquals(2, tableSql2.size());
+		assertEquals(6, tableSql2.size());
 	}
 	
 	public void testMysqlCreateSql() {

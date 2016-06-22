@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.tinygroup.httpclient451.wrapper.CookieArrayWrapper;
 import org.tinygroup.httpclient451.wrapper.HeaderArrayWrapper;
 import org.tinygroup.httpclient451.wrapper.StatusLineWrapper;
@@ -21,19 +22,22 @@ import org.tinygroup.httpvisitor.response.AbstractResponse;
  */
 public class DefaultResponse extends AbstractResponse implements Response {
 
+	private HttpRequestBase method;
 	private CookieStore cookieStore;
 	private CloseableHttpResponse closeableHttpResponse;
 	private StatusLine statusLine;
 
-	public DefaultResponse(CookieStore cookieStore,
+	public DefaultResponse(HttpRequestBase method,CookieStore cookieStore,
 			CloseableHttpResponse closeableHttpResponse) {
 		super();
+		this.method = method;
 		this.cookieStore = cookieStore;
 		this.closeableHttpResponse = closeableHttpResponse;
 	}
 
 	public void close() throws IOException {
 		closeableHttpResponse.close();
+		method.abort();
 	}
 
 	public StatusLine getStatusLine() {

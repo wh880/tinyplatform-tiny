@@ -1,0 +1,57 @@
+<flow id="nullElNodeTest" enable="false" private-context="false">
+  <parameters>
+    <parameter array="false" required="true" name="a" type="int" scope="in"/>
+    <parameter array="false" required="true" name="sum" type="int" scope="out"/>
+  </parameters>
+  <nodes>
+    <node id="begin" name="begin" title="开始">
+      <next-nodes>
+        <next-node next-node-id="sumComponent">
+          <el>a&gt;10</el>
+        </next-node>
+        <next-node next-node-id="sumComponent_1">
+          <el></el>
+        </next-node>
+        <next-node next-node-id="sumComponent_2">
+          <el>a&gt;100</el>
+        </next-node>
+      </next-nodes>
+    </node>
+    <node id="sumComponent" name="sumComponent" title="求和组件">
+      <component name="sumComponent" title="求和组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="a" value="${a}" required="false" type="int"/>
+          <flow-property name="b" value="${a}" required="false" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="sumComponent_1" name="sumComponent" title="求和组件">
+      <component name="sumComponent" title="求和组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="a" value="${a}" required="false" type="int"/>
+          <flow-property name="b" value="${a}" required="false" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+    <node id="sumComponent_2" name="sumComponent" title="求和组件">
+      <component name="sumComponent" title="求和组件">
+        <description>求a+b的和</description>
+        <properties>
+          <flow-property name="a" value="${a}" required="false" type="int"/>
+          <flow-property name="b" value="${a}" required="false" type="int"/>
+        </properties>
+      </component>
+      <next-nodes>
+        <next-node next-node-id="end"/>
+      </next-nodes>
+    </node>
+  </nodes>
+</flow>

@@ -21,9 +21,9 @@ public class BodyRequestClientBuilder extends RequestClientBuilder<BodyRequestCl
      * @param methodMode
      * @param url
      */
-    BodyRequestClientBuilder(MethodMode methodMode, String url){
+    BodyRequestClientBuilder(MethodMode methodMode, String url,String templateId){
     	requestBuilder = new BodyRequestBuilder(methodMode,url);
-    	singleClientBuilder = new SingleClientBuilder();
+    	singleClientBuilder = new SingleClientBuilder(templateId);
     } 
     
 	protected BodyRequestClientBuilder self() {

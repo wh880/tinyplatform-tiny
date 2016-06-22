@@ -1,9 +1,5 @@
 <procedures>
 	<procedure name="procedure1">
-		<use-packages>
-			<use-package package-name="aa.bb">
-			</use-package>
-		</use-packages>
 		<procedure-parameters>
 			<procedure-parameter standard-field-id="bbstd" parameter-type="IN" default-value="'1'"/>
 		</procedure-parameters>

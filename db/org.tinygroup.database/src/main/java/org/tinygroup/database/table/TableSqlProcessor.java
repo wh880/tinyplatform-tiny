@@ -25,6 +25,7 @@ import java.util.List;
 public interface TableSqlProcessor {
 	String NULLABLE="NULLABLE";
 	String TYPE_NAME="TYPE_NAME";
+	String DATA_TYPE="DATA_TYPE";
 	String COLUMN_SIZE="COLUMN_SIZE";
 	String DECIMAL_DIGITS="DECIMAL_DIGITS";
 	String COLUMN_NAME="COLUMN_NAME";

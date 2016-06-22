@@ -1,0 +1,70 @@
+<!-- 每个http-template节点代表一种ClientInterface的配置模板,每份*.httptemplate.xml配置文件至少包含一个http-template节点 -->
+<!-- 用户配置模板的优先级低于API设置，通过链式操作接口，用户可以覆盖相同参数的配置模板 -->
+<http-templates>
+  <!-- id必输项，HTTP通讯配置模板唯一标识 -->
+  <!-- 允许配置的模板参数有两类：针对HTTP通讯客户端的client-paramter和针对Request请求Header的header-paramter -->
+  <http-template id="test1">
+     <!-- client-paramter包含以下参数：
+          connectTimeOut：连接超时时间,单位ms,Integer类型
+          socketTimeOut：Socket通讯超时时间,单位ms,Integer类型
+          keepTimeOut：会话生存超时时间,单位ms,Integer类型
+          allowCompress：是否支持压缩,Boolean类型
+          allowRedirect：是否支持重定向,Boolean类型
+          allowVerify：是否支持验证,Boolean类型
+          maxTotalConnections:最大总连接数,Integer类型
+          maxConnectionsPerHost:每个HOST最大连接数,Integer类型
+          proxy:代理配置,写法参考proxy1和proxy2
+          cert:验证配置,写法参考cert1和cert2
+      -->
+     <client-paramter name="socketTimeOut" type="int" ><![CDATA[10000]]></client-paramter>
+     <client-paramter name="connectTimeOut" type="java.lang.Integer" ><![CDATA[5000]]></client-paramter>
+     <client-paramter name="keepTimeOut" type="Integer" ><![CDATA[86400]]></client-paramter>
+     <client-paramter name="allowCompress" type="boolean" ><![CDATA[false]]></client-paramter>
+     <client-paramter name="allowRedirect" type="Boolean" ><![CDATA[false]]></client-paramter>
+     <client-paramter name="allowVerify" type="java.lang.Boolean" ><![CDATA[true]]></client-paramter>
+     <client-paramter name="unknown1" ><![CDATA[xxxx]]></client-paramter>
+     <client-paramter name="unknown2" type="java.lang.String"><![CDATA[yyyy]]></client-paramter>
+     <!-- header-paramter包含但不限于以下参数：
+          Accept
+          Accept-Charset
+          Accept-Encoding
+          Accept-Language
+          Authorization
+          Connection
+          From
+          HOST
+          If-Modified-Since
+          If-Match
+          If-None-Match
+          If-Range
+          If-Unmodified-Since
+          Max-Forwards
+          Proxy-Authorization
+          Range
+          Referer
+          User-Agent
+          Pragma
+     -->
+     <header-paramter name="Accept" ><![CDATA[text/html, application/xhtml+xml, */*]]></header-paramter>
+     <header-paramter name="Accept-Language" ><![CDATA[zh-CN,en-US;q=0.5]]></header-paramter>
+     <header-paramter name="User-Agent" ><![CDATA[Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)]]></header-paramter>
+     <header-paramter name="Accept-Encoding" ><![CDATA[gzip, deflate]]></header-paramter>
+     <header-paramter name="Connection" ><![CDATA[close]]></header-paramter>
+  </http-template>
+   <!-- 验证参数写法,基于密码验证 -->
+   <http-template id="cert1" >
+     <client-paramter name="cert" userName="admin" password="123" />
+   </http-template>
+   <!-- 验证参数写法,基于证书验证 -->
+   <http-template id="cert2" >
+     <client-paramter name="cert" certPath="/opt/user.p12" password="456" certType="PKS12" />
+  </http-template>
+  <!-- 代理参数写法,无密码 -->
+   <http-template id="proxy1" >
+     <client-paramter name="proxy" host="112.45.210.83" port="8080" />
+   </http-template>
+   <!-- 代理参数写法,需要用户名和密码 -->
+   <http-template id="proxy2" >
+     <client-paramter name="proxy" host="112.45.210.83" port="8080" proxyName="root" password="123456" />
+   </http-template>
+</http-templates>

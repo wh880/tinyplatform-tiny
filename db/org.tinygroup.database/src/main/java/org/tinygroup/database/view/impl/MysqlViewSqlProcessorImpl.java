@@ -16,53 +16,14 @@
 package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.config.view.View;
-import org.tinygroup.database.view.impl.creator.MysqlViewSqlCreator;
-import org.tinygroup.database.view.impl.creator.ViewSqlCreator;
-
 import java.sql.*;
 
 public class MysqlViewSqlProcessorImpl extends ViewSqlProcessorImpl {
 
 	public String getCreateSql(View view) {
-	    ViewSqlCreator creator = new MysqlViewSqlCreator(view);
-
-		return creator.getCreateSql();
+	    ViewSqlCreator creator = new ViewSqlCreator(view);
+		return creator.getCreateSql("mysql");
 	}
 
-    public boolean checkViewExists(View view, Connection conn) throws SQLException {
-        boolean checkResult = false;
-        String checkSql = buildCheckViewSql(view);
 
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            preparedStatement = conn.prepareStatement(checkSql);
-            preparedStatement.setString(1,view.getName());
-            preparedStatement.setString(2,view.getSchema());
-            resultSet.next();
-            long count = resultSet.getLong(1);
-            checkResult = count>0?true:false;
-        } finally{
-            if(null != resultSet){
-                resultSet.close();
-            }
-            if(null != preparedStatement){
-                preparedStatement.close();
-            }
-        }
-        return checkResult;
-    }
-
-    /**
-     * 获取mysql中检测视图是否存在的sql语句
-     * @param view 视图构建元数据
-     * @return 检测视图是否存在的sql语句
-     */
-    private String buildCheckViewSql(View view){
-        StringBuffer checkSql = new StringBuffer();
-        checkSql.append("SELECT count(0) FROM information_schema.VIEWS WHERE information_schema.VIEWS.TABLE_NAME = ?")
-        .append(" and information_schema.VIEWS.TABLE_SCHEMA=?");
-        return checkSql.toString();
-    }
 }

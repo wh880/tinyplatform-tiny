@@ -76,7 +76,7 @@ public class OracleSqlProcessorImpl extends SqlProcessorImpl {
 
 	protected void appendFooter(StringBuffer ddlBuffer, Table table,List<String> list) {
 		super.appendFooter(ddlBuffer, table,list);
-		appendFooterComment(ddlBuffer, table,list);
+		appendFooterComment(table,list);
 	}
 
 	/**

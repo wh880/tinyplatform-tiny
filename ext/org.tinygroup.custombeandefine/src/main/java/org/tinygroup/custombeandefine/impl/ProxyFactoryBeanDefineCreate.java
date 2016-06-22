@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
+import org.springframework.core.type.ClassMetadata;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.tinygroup.custombeandefine.BeanDefineCreate;
 
@@ -30,13 +31,16 @@ public class ProxyFactoryBeanDefineCreate implements BeanDefineCreate {
 				metadataReader);
 		sbd.setBeanClassName(PROXY_FACTORY_BEAN);
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
-		propertyValues.addPropertyValue("proxyInterfaces",
-				metadataReader.getClassMetadata()
-						.getClassName());
-		propertyValues.addPropertyValue("interceptorNames",
-				interceptorNames);
-		sbd.setPropertyValues(propertyValues);
-		return sbd;
+		ClassMetadata classMetadata=metadataReader.getClassMetadata();
+		if(classMetadata.isInterface()){
+			propertyValues.addPropertyValue("proxyInterfaces",
+					classMetadata.getClassName());
+			propertyValues.addPropertyValue("interceptorNames",
+					interceptorNames);
+			sbd.setPropertyValues(propertyValues);
+			return sbd;
+		}
+		return null;
 	}
 
 }

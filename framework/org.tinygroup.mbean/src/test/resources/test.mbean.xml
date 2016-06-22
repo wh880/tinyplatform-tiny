@@ -1,5 +1,5 @@
 <tiny-mode-infos>
-	<tiny-mode-info from="class" value="org.tinygroup.mbean.Hello" mode-name="Hello中文" />
+	<tiny-mode-info from="bean" value="hello" mode-name="Hello中文" />
 	<tiny-mode-info from="class" value="org.tinygroup.mbean.HelloDynamic" mode-name="HelloDynamic" />
 	<tiny-mode-info from="class" value="org.tinygroup.mbean.HelloMX" mode-name="HelloMX" />
 </tiny-mode-infos>

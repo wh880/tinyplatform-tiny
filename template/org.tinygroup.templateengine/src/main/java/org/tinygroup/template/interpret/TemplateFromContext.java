@@ -63,7 +63,9 @@ public class TemplateFromContext extends AbstractTemplate {
         if (bytes == null) {
             try {
                 String text = terminalNode.getText();
-
+                if(left>0 || right>0){
+                   text = text.substring(left, text.length()-right);
+                }
                 // 紧凑模型
                 if (getTemplateEngine().isCompactMode()) {
                     // Trim 注释、Set指令和以下指令之间的空格 及 换行

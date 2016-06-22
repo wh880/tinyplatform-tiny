@@ -1,11 +1,9 @@
 package org.tinygroup.templatespringext;
 
+import java.util.List;
+
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.vfs.FileObject;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by wangll13383 on 2015/9/9.

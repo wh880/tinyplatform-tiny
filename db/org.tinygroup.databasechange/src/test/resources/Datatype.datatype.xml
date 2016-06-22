@@ -64,7 +64,13 @@
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_tiny_int">
-    <dialect-type-list/>
+    <dialect-type-list>
+      <dialect-type language="java" base-type="Integer"/>
+      <dialect-type language="derby" base-type="INT" ext-type=""/>
+      <dialect-type language="mysql" base-type="INT"/>
+      <dialect-type language="oracle" base-type="NUMBER"/>
+      <dialect-type language="h2" base-type="TINYINT"/>
+    </dialect-type-list>
   </standard-type>
   <standard-type id="type_small_int">
     <dialect-type-list/>
@@ -101,7 +107,7 @@
       <dialect-type language="derby" base-type="INT" ext-type=""/>
       <dialect-type language="mysql" base-type="INT"/>
       <dialect-type language="oracle" base-type="NUMBER"/>
-      <dialect-type language="h2" base-type="INT"/>
+      <dialect-type language="h2" base-type="integer"/>
     </dialect-type-list>
   </standard-type>
   <standard-type id="type_integer">

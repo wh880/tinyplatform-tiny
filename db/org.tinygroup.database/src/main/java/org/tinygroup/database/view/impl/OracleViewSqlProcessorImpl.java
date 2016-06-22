@@ -16,9 +16,6 @@
 package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.config.view.View;
-import org.tinygroup.database.view.impl.creator.OracleViewSqlCreator;
-import org.tinygroup.database.view.impl.creator.ViewSqlCreator;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,9 +24,9 @@ import java.sql.SQLException;
 public class OracleViewSqlProcessorImpl extends ViewSqlProcessorImpl {
 
 	public String getCreateSql(View view) {
-	    ViewSqlCreator creator = new OracleViewSqlCreator(view);
+	    ViewSqlCreator creator = new ViewSqlCreator(view);
 
-		return creator.getCreateSql();
+		return creator.getCreateSql("oracle");
 	}
 
     public boolean checkViewExists(View view, Connection conn) throws SQLException {

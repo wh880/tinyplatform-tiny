@@ -21,13 +21,13 @@ package org.tinygroup.weblayer.webcontext.session;
  * @author renhui
  */
 public interface SessionConfig {
-    Integer MAX_INACTIVE_INTERVAL_DEFAULT   = 0;
+    Integer MAX_INACTIVE_INTERVAL_DEFAULT   = 1800;
     Long    FORCE_EXPIRATION_PERIOD_DEFAULT = 0L;
     Integer BACKGROUD_PROCESSOR_DELAY_DEFAULT   = 60;
     String  MODEL_KEY_DEFAULT               = "SESSION_MODEL";
     Boolean KEEP_IN_TOUCH_DEFAULT           = false;
 
-    /** Session的最长不活动时间（秒）。假如用户不活动，超过这个时限，session将被作废。值<code>0</code>表示永不过期。 */
+    /** Session的最长不活动时间（秒）。假如用户不活动，超过这个时限，session将被作废。值<code>0</code>表示永不过期。默认值设置为半小时 */
     int getMaxInactiveInterval();
 
     /**

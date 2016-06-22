@@ -65,13 +65,15 @@ public class CustomBeanDefinitionScanner extends
 							.getMetadataReader(resource);
 					if (isCandidateComponent(metadataReader)) {
 						ScannedGenericBeanDefinition sbd = (ScannedGenericBeanDefinition) beanDefineCreate.createBeanDefinition(metadataReader);
-						sbd.setResource(resource);
-						sbd.setSource(resource);
-						if (debugEnabled) {
-							logger.debug("Identified candidate component class: "
-									+ resource);
+						if(sbd!=null){
+							sbd.setResource(resource);
+							sbd.setSource(resource);
+							if (debugEnabled) {
+								logger.debug("Identified candidate component class: "
+										+ resource);
+							}
+							candidates.add(sbd);
 						}
-						candidates.add(sbd);
 					} else {
 						if (traceEnabled) {
 							logger.trace("Ignored because not matching any filter: "

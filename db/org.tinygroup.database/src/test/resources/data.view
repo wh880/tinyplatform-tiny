@@ -1,10 +1,32 @@
 <views>
-	<view name="view1">
+	<view name="user_view" id="user_view_id">
 		<sqls>
                     <sql dialectTypeName="oracle"
-                        content="CREATE OR REPLACE VIEW view1 AS  SELECT aaa.bb AS aa1,aaa.bb AS bb1 FROM aa aaa WHERE  aaa.bb=aaa.bb OR ( aaa.bb=null AND null='1' AND null='1' )  ORDER BY null ASC,aaa.bb DESC">
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT id,name,age FROM t_user">
+                    </sql>
+                    <sql dialectTypeName="mysql"
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT id,name,age FROM t_user">
+                     </sql>
+                    <sql dialectTypeName="h2"
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT id,name,age FROM t_user">
                     </sql>
         </sqls>
+        <ref-view-ids>
+            <ref-view-id>org_view_id</ref-view-id>
+        </ref-view-ids>
 	</view>
-	
+    <view name="org_view" id="org_view_id">
+        <sqls>
+            <sql dialectTypeName="oracle"
+                 content="CREATE OR REPLACE VIEW org_view AS SELECT * FROM t_org">
+            </sql>
+            <sql dialectTypeName="mysql"
+                 content="CREATE OR REPLACE VIEW org_view AS SELECT * FROM t_org">
+            </sql>
+            <sql dialectTypeName="h2"
+                 content="CREATE OR REPLACE VIEW org_view AS SELECT * FROM t_org">
+            </sql>
+        </sqls>
+    </view>
+
 </views>

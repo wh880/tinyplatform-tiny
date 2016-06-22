@@ -1,0 +1,12 @@
+<tables>
+  <table id="b0f233e726fa4c4686799abeb5452a9b" name="comment_detail" title="备注详情表">
+    <table-field standard-field-id="8004f415eac4444b8cb297ddfbc4a90b" primary="true" unique="true" not-null="true" id="common_detail_id" auto-increase="false"/>
+    <table-field standard-field-id="03647af710994369a8b7e2a450521f9d" primary="false" unique="false" not-null="false" id="common_id" auto-increase="false"/>
+    <table-field standard-field-id="1f49956bc2054601947ecf96f20a22a5" primary="false" unique="false" not-null="false" id="common_detail_father_object_id" auto-increase="false"/>
+    <table-field standard-field-id="953525fc743a4ba489e0f7f85637a8aa" primary="false" unique="false" not-null="false" id="common_detail_creator" auto-increase="false"/>
+    <table-field standard-field-id="7f56ac7e61e44ad1be71b5a73f7e9d00" primary="false" unique="false" not-null="false" id="comment_detail_last_modified_person" auto-increase="false"/>
+    <table-field standard-field-id="b01850c043fe405a9bf0f1b3be0684e9" primary="false" unique="false" not-null="false" id="comment_detail_content" auto-increase="false"/>
+    <table-field standard-field-id="c5044096845d49f89bc1baf33a55defe" primary="false" unique="false" not-null="false" id="comment_detail_state" auto-increase="false"/>
+    <table-field standard-field-id="35b701d29e1f4674951187a9bb166319" primary="false" unique="false" not-null="true" id="comment_deleted" auto-increase="false"/>
+  </table>
+</tables>

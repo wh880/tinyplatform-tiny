@@ -2,6 +2,7 @@ package org.tinygroup.templatespringext.impl;
 
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
+import org.tinygroup.templatespringext.AbstractFileScanner;
 import org.tinygroup.templatespringext.processor.TinyJarFileProcessor;
 import org.tinygroup.templatespringext.processor.TinyLocalPathProcessor;
 import org.tinygroup.templatespringext.processor.TinyMacroProcessor;

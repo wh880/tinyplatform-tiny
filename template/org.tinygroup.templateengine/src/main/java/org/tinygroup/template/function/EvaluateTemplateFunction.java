@@ -33,8 +33,12 @@ public class EvaluateTemplateFunction extends AbstractTemplateFunction {
     }
 
     public Object execute(Template template, TemplateContext context, Object... parameters) throws TemplateException {
-        if (parameters.length == 0 || !(parameters[0] instanceof String)) {
-            notSupported(parameters);
+    	//如果参数为空或者非String类型
+        if (parameters.length == 0 || parameters[0]==null) {
+           return null;
+        }
+        if(!(parameters[0] instanceof String)){
+           notSupported(parameters);
         }
         String stringTemplate = parameters[0].toString();
         StringResourceLoader stringResourceLoader = new StringResourceLoader();

@@ -43,6 +43,7 @@ import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.commons.tools.ToStringBuilder;
 import org.tinygroup.commons.tools.ToStringBuilder.MapBuilder;
 import org.tinygroup.logger.LogLevel;
@@ -487,11 +488,13 @@ public class SessionImpl implements HttpSession,Serializable,Session {
 		if(invalidated){
 			return;
 		}
-		SessionManager manager = SessionManagerFactory
-				.getSessionManager(webContext.getSessionConfig()
-						.getSessionManagerBeanId(), this.getClass()
-						.getClassLoader());
-		manager.expireSession(this);
+		if(!StringUtil.isBlank(webContext.getSessionConfig().getSessionManagerBeanId())){
+			SessionManager manager = SessionManagerFactory
+					.getSessionManager(webContext.getSessionConfig()
+							.getSessionManagerBeanId(), this.getClass()
+							.getClassLoader());
+			manager.expireSession(this);
+		}
 		fireEvent(EventType.INVALIDATED);
 		Set<String> attrNames = getAttributeNameSet();
 		for (String name : attrNames) {

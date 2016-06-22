@@ -2,6 +2,7 @@ package org.tinygroup.jdbctemplatedslsession.execute;
 
 import org.tinygroup.jdbctemplatedslsession.Score;
 import org.tinygroup.jdbctemplatedslsession.SimpleDslSession;
+import org.tinygroup.jdbctemplatedslsession.Student;
 import org.tinygroup.tinysqldsl.Delete;
 import org.tinygroup.tinysqldsl.DslSession;
 import org.tinygroup.tinysqldsl.Insert;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.tinygroup.jdbctemplatedslsession.ScoreTable.TSCORE;
+import static org.tinygroup.jdbctemplatedslsession.StudentTable.TSTUDENT;
 import static org.tinygroup.tinysqldsl.Delete.delete;
 import static org.tinygroup.tinysqldsl.Insert.insertInto;
 import static org.tinygroup.tinysqldsl.Select.selectFrom;
@@ -62,11 +64,33 @@ public class GeneratorTest extends BaseTest{
             assertEquals(32, qscore.getId().length());
         }
     }
+    
+    public void testExecuteAndReturnObject(){
+    	 DslSession session = new SimpleDslSession(dataSource);
+         Insert scoreInsert = insertInto(TSTUDENT).values(TSTUDENT.NAME.value("悠悠然然"));
+         Student student=session.executeAndReturnObject(scoreInsert,Student.class,true);
+         assertNotNull(student.getId());
+         assertEquals("悠悠然然",student.getName());
+         student=session.executeAndReturnObject(scoreInsert,Student.class,false);
+         assertNotNull(student.getId());
+         assertEquals("悠悠然然",student.getName());
+         scoreInsert = insertInto(TSTUDENT).values(TSTUDENT.ID.value("22"),TSTUDENT.NAME.value("悠悠然然"));
+         student=session.executeAndReturnObject(scoreInsert,Student.class,true);
+         assertEquals(22,student.getId());
+         assertEquals("悠悠然然",student.getName());
+         scoreInsert = insertInto(TSTUDENT).values(TSTUDENT.ID.value("23"),TSTUDENT.NAME.value("悠悠然然"));
+         student=session.executeAndReturnObject(scoreInsert,Student.class,false);
+         assertEquals(23,student.getId());
+         assertEquals("悠悠然然",student.getName());
+    }
+    
 
     protected void setUp() throws Exception {
         super.setUp();
         Delete delete = delete(TSCORE);
         DslSession session = new SimpleDslSession(dataSource);
+        session.execute(delete);
+        delete=delete(TSTUDENT);
         session.execute(delete);
     }
 }

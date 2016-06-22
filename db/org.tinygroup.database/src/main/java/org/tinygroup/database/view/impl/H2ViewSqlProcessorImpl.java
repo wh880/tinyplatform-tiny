@@ -16,9 +16,6 @@
 package org.tinygroup.database.view.impl;
 
 import org.tinygroup.database.config.view.View;
-import org.tinygroup.database.view.impl.creator.H2ViewSqlCreator;
-import org.tinygroup.database.view.impl.creator.ViewSqlCreator;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,9 +24,9 @@ import java.sql.SQLException;
 public class H2ViewSqlProcessorImpl extends ViewSqlProcessorImpl {
 
 	public String getCreateSql(View view) {
-	    ViewSqlCreator creator = new H2ViewSqlCreator(view);
+	    ViewSqlCreator creator = new ViewSqlCreator(view);
 
-		return creator.getCreateSql();
+		return creator.getCreateSql("h2");
 	}
 
     public boolean checkViewExists(View view, Connection conn) throws SQLException {

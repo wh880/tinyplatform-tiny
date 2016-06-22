@@ -1,0 +1,32 @@
+<views>
+	<view name="user_view" id="user_view_id">
+		<sqls>
+                    <sql dialectTypeName="oracle"
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT * FROM t_user">
+                    </sql>
+                    <sql dialectTypeName="mysql"
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT * FROM t_user">
+                     </sql>
+                    <sql dialectTypeName="h2"
+                        content="CREATE OR REPLACE VIEW user_view AS SELECT * FROM t_user">
+                    </sql>
+        </sqls>
+        <ref-view-ids>
+            <ref-view-id>org_view_id</ref-view-id>
+        </ref-view-ids>
+	</view>
+    <view name="org_view" id="org_view_id">
+        <sqls>
+            <sql dialectTypeName="oracle"
+                 content="CREATE OR REPLACE VIEW org_view AS SELECT * FROM t_org">
+            </sql>
+            <sql dialectTypeName="mysql"
+                 content="CREATE OR REPLACE VIEW org_view AS SELECT * FROM t_org">
+            </sql>
+            <sql dialectTypeName="h2"
+                 content="CREATE OR REPLACE VIEW org_view AS SELECT * FROM t_org">
+            </sql>
+        </sqls>
+    </view>
+	
+</views>

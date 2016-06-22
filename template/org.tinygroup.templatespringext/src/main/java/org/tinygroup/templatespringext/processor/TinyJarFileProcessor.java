@@ -3,7 +3,7 @@ package org.tinygroup.templatespringext.processor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.template.TemplateEngine;
 import org.tinygroup.template.loader.FileObjectResourceLoader;
-import org.tinygroup.templatespringext.impl.AbstractFileProcessor;
+import org.tinygroup.templatespringext.AbstractFileProcessor;
 import org.tinygroup.vfs.FileObject;
 
 import java.util.List;

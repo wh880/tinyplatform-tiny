@@ -14,6 +14,12 @@ import java.util.List;
  */
 public class TinyDSLUtil {
     /**
+     * Utility classes should not have public constructors
+     */
+    private TinyDSLUtil() {
+    }
+
+    /**
      * 添加排序字段工具方法
      *
      * @param select
@@ -31,7 +37,7 @@ public class TinyDSLUtil {
                 orderByElements.add(tempElement);
             }
         }
-        if (orderByElements.size() > 0) {
+        if (!orderByElements.isEmpty()) {
             select.orderBy(orderByElements.toArray(new OrderByElement[0]));
         }
         return select;

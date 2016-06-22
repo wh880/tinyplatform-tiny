@@ -49,15 +49,17 @@ public class UIComponentManagerImpl implements UIComponentManager {
 
     public void addUIComponents(UIComponents uiComponents) {
         for (UIComponent component : uiComponents.getComponents()) {
-            addUiComponent(component);
+            addUiComponent(component,uiComponents.getResourcePath());
         }
     }
 
-    private void addUiComponent(UIComponent component) {
+    private void addUiComponent(UIComponent component,String resourcePath) {
         if (uiMap.get(component.getName()) == null) {
             uiComponentList.add(component);
             uiMap.put(component.getName(), component);
             modified = true;
+        }else{
+        	logger.logMessage(LogLevel.ERROR,"名称{0}的UI组件包存在重复,路径为{1}的同名资源被忽略!",component.getName(),resourcePath);
         }
     }
 
