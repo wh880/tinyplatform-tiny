@@ -72,19 +72,19 @@ public class DsBrokenTest extends AbstractDBUnitTest{
         holders.set(1, mockedHolder);
         EasyMock.replay(mock);
         try {
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 121; i++) {
                 long temp = sequenceFactory.getNextValue("user");
                 sequenceSet.add(temp);
             }
-            assertEquals(sequenceSet.size(),1000);
+            assertEquals(sequenceSet.size(),121);
 
             sequenceSet = new TreeSet<Long>();
             holders.set(1, originHolder);
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 121; i++) {
                 long temp = sequenceFactory.getNextValue("user");
                 sequenceSet.add(temp);
             }
-            assertEquals(sequenceSet.size(),1000);
+            assertEquals(sequenceSet.size(),121);
 //            System.out.println(sequenceSet);
         } catch (Exception e) {
             fail(e.getMessage());
