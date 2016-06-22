@@ -6,12 +6,12 @@ import org.junit.Test;
 import org.tinygroup.sequence.AbstractDBUnitTest;
 import org.tinygroup.sequence.impl.MultipleSequenceDao;
 import org.tinygroup.sequence.impl.MultipleSequenceFactory;
-import org.tinygroup.sequence.multi.MultipleSequenceTest;
 
 import javax.sql.DataSource;
 import java.util.*;
 
 /**
+ * 多个数据源下多线程测试
  * Created by wangwy11342 on 2016/6/20.
  */
 public class MultiThreadTest extends AbstractDBUnitTest {
