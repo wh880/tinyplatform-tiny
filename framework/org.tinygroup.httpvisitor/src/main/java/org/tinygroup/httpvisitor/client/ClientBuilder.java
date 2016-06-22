@@ -54,25 +54,30 @@ public abstract class ClientBuilder<Builder extends ClientBuilder<Builder>>
 			
 			ClientInterface clientInterface = null;
 			if(templateId!=null){
-				//优先从实例中加载bean对象
+				//优先从管理器中加载实例缓存
 				ClientInstanceManager manager = container.getBean(ClientInstanceManager.DEFAULT_BEAN_NAME);
 				clientInterface = manager.getClientInterface(templateId);
 				boolean initTag = false;
 				if(clientInterface==null){
-					//如果管理器中没有，从bean容器加载
+					//如果管理器中没有，再从bean容器加载
 					clientInterface = container.getBean(beanName);
-					initTag = clientInterface.allowMultiton();
+					initTag = true;
 				}
+				//执行初始化逻辑
 				if(initTag){
 					HttpConfigTemplate template = getHttpConfigTemplate(clientInterface);
 					if(template==null){
 						throw new HttpVisitorException("查找HTTP通讯配置模板实例失败，请检查"+templateId+"的配置节点是否定义");
 					}
 					clientInterface.init(getContext(template));
-					manager.registerClient(beanName, clientInterface); //注册实例
+					//多例共享的情况需要注册clientInterface实例到manager
+					if(clientInterface.allowMultiton()){
+					   manager.registerClient(templateId, clientInterface); //注册实例
+					}
 				}
 				
 			}else{
+				//没有模板id，不用区分单例独占和多例共享httpclient
 				clientInterface = container.getBean(beanName);
 				clientInterface.init(getContext());
 			}

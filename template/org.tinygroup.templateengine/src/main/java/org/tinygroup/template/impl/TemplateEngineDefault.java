@@ -52,7 +52,6 @@ public class TemplateEngineDefault implements TemplateEngine {
     private TemplateCache<String,Object> localeSearchResults = new TemplateCacheDefault<String,Object>();
     private boolean checkModified = false;
     private boolean localeTemplateEnable = false;
-    private String[] layoutNames = {"default"};
    
     public boolean isLocaleTemplateEnable() {
 		return localeTemplateEnable;
@@ -545,7 +544,7 @@ public class TemplateEngineDefault implements TemplateEngine {
         for (int i = 0; i < paths.length - 1; i++) {
             path += paths[i] + "/";
             String template = path + templateFileName;
-            findLayoutTemplateList(path,template,context,layoutPathList);
+            findLayoutTemplateList(path,paths[i],template,context,layoutPathList);
         }
         
         if(renderLayer>0 && renderLayer<layoutPathList.size()){
@@ -561,22 +560,28 @@ public class TemplateEngineDefault implements TemplateEngine {
         return layoutPathList;
     }
     
-    private void findLayoutTemplateList(String path,String template,TemplateContext context,List<Template> layoutPathList) throws TemplateException{
+    private void findLayoutTemplateList(String path,String dir,String template,TemplateContext context,List<Template> layoutPathList) throws TemplateException{
     	Template layout = null;
     	//先查询同名文件的布局模板
     	layout = findLayoutTemplate(context,template);
     	if(layout!=null){
     	   layoutPathList.add(layout);
-    	}else{
-    		//如果没有找到,则按配置布局名进行查询
-    		for(String layoutName:layoutNames){
-    		    layout = findLayoutTemplate(context,path,layoutName);
-    		    if(layout!=null){
-    		       layoutPathList.add(layout);
-    		       break;
-    		    }
-    		}
+    	   return;
     	}
+    	
+    	//再查询与当前目录同名的布局模板
+    	layout = findLayoutTemplate(context,path,dir);
+	    if(layout!=null){
+	       layoutPathList.add(layout);
+	       return;
+	    }
+
+    	//最后查询default名称的布局模板
+    	layout = findLayoutTemplate(context,path,"default");
+	    if(layout!=null){
+	       layoutPathList.add(layout);
+	       return;
+	    }
     }
     
     /**
@@ -619,18 +624,6 @@ public class TemplateEngineDefault implements TemplateEngine {
     	}
     	return null;
     }
-    
-    /**
-     * 注册布局名称
-     * @param names
-     * @throws TemplateException
-     */
-    public void registerLayoutNames(String[] names) throws TemplateException {
-    	if(names!=null && names.length>0){
-    	   layoutNames = names;
-    	}
-    }
-
 
     public void renderTemplate(String path) throws TemplateException {
         renderTemplate(path, new TemplateContextDefault(), System.out);
