@@ -15,21 +15,16 @@
  */
 package org.tinygroup.database.table.impl;
 
-import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.database.config.table.Index;
 import org.tinygroup.database.config.table.Table;
-import org.tinygroup.database.config.table.TableField;
 import org.tinygroup.database.table.TableSqlProcessor;
 import org.tinygroup.database.util.DataBaseUtil;
-import org.tinygroup.metadata.config.stdfield.StandardField;
-import org.tinygroup.metadata.util.MetadataUtil;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	
@@ -92,20 +87,20 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
 	protected String createNotNullSql(String tableName, String fieldName,String tableDataType) {
 		return String.format(
 				"ALTER TABLE %s CHANGE %s %s %s NOT NULL",
-				tableName, fieldName, fieldName, tableDataType);
+				delimiter(tableName), delimiter(fieldName), delimiter(fieldName), tableDataType);
 	}
 
 	protected String createNullSql(String tableName, String fieldName,String tableDataType) {
 		return String.format(
-				"ALTER TABLE %s CHANGE %s %s %s NULL", tableName,
-				fieldName, fieldName, tableDataType);
+				"ALTER TABLE %s CHANGE %s %s %s NULL", delimiter(tableName),
+				delimiter(fieldName), delimiter(fieldName), tableDataType);
 	}
 
 	protected String createAlterTypeSql(String tableName, String fieldName,
 			String tableDataType) {
 		return String.format(
-				"ALTER TABLE %s CHANGE %s %s %s ", tableName,
-				fieldName, fieldName, tableDataType);
+				"ALTER TABLE %s CHANGE %s %s %s ", delimiter(tableName),
+				delimiter(fieldName), delimiter(fieldName), tableDataType);
 	}
 
 	protected boolean checkTypeSame(String dbColumnType, String tableDataType) {
@@ -140,5 +135,10 @@ public class MysqlSqlProcessorImpl extends SqlProcessorImpl {
      */
 	protected void getChangedFooterComment(Connection connection, Table table, List<String> list) throws SQLException {
 
+	}
+
+	@Override
+	protected String delimiter(String name) {
+		return "`"+name+"`";
 	}
 }
