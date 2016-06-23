@@ -38,7 +38,7 @@ public class ProductManagerImpl implements ProductManager {
 		try {
 			ZKProductManager.set(product.getName(), product, null);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, "远程配置，增加项目失败[%s]" ,e ,product.getName());
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，增加项目失败[%s]" ,product.getName()) ,e );
 		}
 		return product;
 	}
@@ -48,7 +48,7 @@ public class ProductManagerImpl implements ProductManager {
 		try {
 			ZKProductManager.set(product.getName(), product, null);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, "远程配置，更新项目失败[%s]" ,e ,product.getName());
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，更新项目失败[%s]",product.getName()) ,e);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class ProductManagerImpl implements ProductManager {
 		try {
 			ZKProductManager.delete(productId, null);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, "远程配置，删除项目失败[%s]" ,e ,productId);
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，删除项目失败[%s]" ,productId) ,e);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class ProductManagerImpl implements ProductManager {
 			product.setVersions(versionManager.query(productId));
 			return product;
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, "远程配置，获取项目失败[%s]" ,e ,productId);
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，获取项目失败[%s]" , productId),e);
 		}
 		return null;
 	}
@@ -90,7 +90,7 @@ public class ProductManagerImpl implements ProductManager {
 				}
 			}
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, "远程配置，批量获取项目失败[%s]" ,e ,product.getName());
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，批量获取项目失败[%s]" ,product.getName()),e);
 		}
 		return products;
 	}

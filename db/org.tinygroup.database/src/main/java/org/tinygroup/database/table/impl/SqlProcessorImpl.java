@@ -82,15 +82,15 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
                         .getTableById(foreignReference.getMainTable());
                 String sql = String
                         .format("ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s);",
-                                table.getName(),
-                                foreignReference.getName(),
-                                getFieldStdFieldName(
+                                delimiter(table.getName()),
+                                delimiter(foreignReference.getName()),
+                                delimiter(getFieldStdFieldName(
                                         foreignReference.getForeignField(),
-                                        table),
-                                foreignTable.getName(),
-                                getFieldStdFieldName(
+                                        table)),
+                                delimiter(foreignTable.getName()),
+                                delimiter(getFieldStdFieldName(
                                         foreignReference.getReferenceField(),
-                                        foreignTable));
+                                        foreignTable)));
                 foreignSqls.add(sql);
             }
         }
@@ -153,6 +153,14 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         }
     }
 
+    /**
+     * 更新外键
+     * @param table
+     * @param packageName
+     * @param connection
+     * @param list
+     * @throws SQLException
+     */
     private void getForeignUpdate(Table table, String packageName,
                                   Connection connection, List<String> list) throws SQLException {
         String databaseName = getDatabaseName(table.getSchema(),connection.getCatalog());
@@ -169,6 +177,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
                 rs = statement.executeQuery(sql);
                 List<String> dropConstraints = new ArrayList<String>();
                 while (rs.next()) {
+                    //关联名称
                     String constraintName = rs.getString("CONSTRAINT_NAME");
                     String columnName = rs.getString("COLUMN_NAME");
                     String referenceTableName = rs
@@ -187,7 +196,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
                 for (String dropConstraint : dropConstraints) {
                     list.add(String.format(
                             "ALTER TABLE %s DROP FOREIGN KEY %s",
-                            table.getName(), dropConstraint));
+                            delimiter(table.getName()), delimiter(dropConstraint)));
                 }
                 list.addAll(getForeignKeySqls(table, packageName, preparedForeignRefs));
             } finally {
@@ -300,7 +309,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         for (String column : dropFields) {
             StringBuffer ddlBuffer = new StringBuffer();
             ddlBuffer.append(String.format("ALTER TABLE %s DROP COLUMN %s",
-                    table.getName(), column));
+                    delimiter(table.getName()), delimiter(column)));
             droplist.add(ddlBuffer.toString());
 
         }
@@ -313,13 +322,20 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         for (TableField field : fieldDbNames.values()) {
             StringBuffer ddlBuffer = new StringBuffer();
             ddlBuffer.append(String.format("ALTER TABLE %s ADD ",
-                    table.getName()));
+                    delimiter(table.getName())));
             appendField(ddlBuffer, field, addList);
             addList.add(ddlBuffer.toString());
         }
         return addList;
     }
 
+    /**
+     *比较数据库metadata和配置中数据
+     * @param existInTable 配置文件中对应tablefield k-v
+     * @param dbColumns 数据库中的metadata k-v
+     * @param table 表信息
+     * @return
+     */
     protected List<String> dealExistFields(
             Map<String, TableField> existInTable,
             Map<String, Map<String, String>> dbColumns, Table table) {
@@ -369,6 +385,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
                     String fieldDefaultValue = getDefaultValue(field, standardField);
                     appendDefaultValue(fieldDefaultValue, alterTypeBuffer);
                 }
+                //注释
                 appendComment(standardComment, alterTypeBuffer, existUpdateList);
                 existUpdateList.add(alterTypeBuffer.toString());
             }
@@ -437,7 +454,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         StandardField standardField = MetadataUtil.getStandardField(
                 field.getStandardFieldId(), this.getClass().getClassLoader());
         ddlBuffer.append(String.format(" %s ",
-                DataBaseUtil.getDataBaseName(standardField.getName())));
+                delimiter(DataBaseUtil.getDataBaseName(standardField.getName()))));
         ddlBuffer.append(" ");
         ddlBuffer.append(MetadataUtil.getStandardFieldType(standardField
                 .getId(), getDatabaseType(), this.getClass().getClassLoader()));
@@ -493,7 +510,9 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
 
     protected void appendComment(String comment, StringBuffer ddlBuffer, List<String> list) {
         if (!StringUtil.isBlank(comment)) {
-            ddlBuffer.append(" COMMENT ").append("'").append(comment.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\""))
+            ddlBuffer.append(" COMMENT ")
+                    .append("'")
+                    .append(comment.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\""))
                     .append("'");
         }
     }
@@ -515,14 +534,14 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
     private void appendFooterColumnComment(Table table,StandardField standardField,String standardComment,List list){
         String columnName;
         if (StringUtil.isBlank(table.getSchema())) {
-            columnName = String.format("%s.%s", table.getName(),
-                    standardField.getName());
+            columnName = String.format("%s.%s", delimiter(table.getName()),
+                    delimiter(standardField.getName()));
         } else {
-            columnName = String.format("%s.%s.%s", table.getSchema(), table.getName(),
-                    standardField.getName());
+            columnName = String.format("%s.%s.%s", delimiter(table.getSchema()), delimiter(table.getName()),
+                    delimiter(standardField.getName()));
         }
         StringBuffer commentBuffer = new StringBuffer();
-        commentBuffer.append("COMMENT ON COLUMN ").append(columnName)
+        commentBuffer.append("COMMENT ON COLUMN ").append(delimiter(columnName))
                 .append(" IS ").append("'").append(standardComment).append("'");
         list.add(commentBuffer.toString());
     }
@@ -572,14 +591,14 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         ddlBuffer.append(getIndexName(index, table));
 
         ddlBuffer.append(" ON ");
-        ddlBuffer.append(table.getName());
+        ddlBuffer.append(delimiter(table.getName()));
         ddlBuffer.append(" ( ");
         List<IndexField> fields = index.getFields();
         String fieldsStr = "";
         if (fields != null) {
             for (IndexField field : fields) {
                 fieldsStr = fieldsStr + ","
-                        + getFieldStdFieldName(field.getField(), table);
+                        + delimiter(getFieldStdFieldName(field.getField(), table));
 
                 if (!StringUtil.isEmpty(field.getDirection())) {
                     fieldsStr = fieldsStr + " " + field.getDirection();
@@ -599,8 +618,8 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
         if (table.getSchema() == null || "".equals(table.getSchema())) {
             indexName = index.getName();
         } else {
-            indexName = String.format("%s.%s", table.getSchema(),
-                    index.getName());
+            indexName = String.format("%s.%s", delimiter(table.getSchema()),
+                    delimiter(index.getName()));
         }
 
         return indexName;
@@ -624,9 +643,14 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
     }
 
     private void appendHeader(StringBuffer ddlBuffer, Table table, List<String> list) {
-        ddlBuffer.append(String.format("CREATE TABLE %s (", table.getName()));
+        ddlBuffer.append(String.format("CREATE TABLE %s (", delimiter(table.getName())));
     }
 
+    /**
+     * 将tablefields组装成k-v
+     * @param fields
+     * @return
+     */
     private Map<String, TableField> getFiledDbNames(List<TableField> fields) {
         Map<String, TableField> filedDbNames = new HashMap<String, TableField>();
         for (TableField field : fields) {
@@ -641,7 +665,7 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
     }
 
     public String getDropSql(Table table, String packageName) {
-        return String.format("DROP TABLE %s", table.getName());
+        return String.format("DROP TABLE %s", delimiter(table.getName()));
     }
 
     protected Map<String, Map<String, String>> getColumns(
@@ -770,6 +794,10 @@ public abstract class SqlProcessorImpl implements TableSqlProcessor {
             fieldDefaultValue = standardField.getDefaultValue();
         }
         return fieldDefaultValue;
+    }
+
+    protected String delimiter(String name){
+        return name;
     }
 
 }

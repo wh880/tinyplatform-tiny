@@ -55,12 +55,12 @@ public class MultipleSequenceFactory {
             }
             for (Map.Entry<String, Map<String, Object>> sequenceRecord : sequenceRecords.entrySet()) {
                 String seqName = sequenceRecord.getKey().trim();
-                Map<String, Object> sequeceRecordvalue = sequenceRecord.getValue();
-                long min = (Long) sequeceRecordvalue.get(multipleSequenceDao
+                Map<String, Object> sequenceRecordValue = sequenceRecord.getValue();
+                long min = (Long) sequenceRecordValue.get(multipleSequenceDao
                     .getMinValueColumnName());
-                long max = (Long) sequeceRecordvalue.get(multipleSequenceDao
+                long max = (Long) sequenceRecordValue.get(multipleSequenceDao
                     .getMaxValueColumnName());
-                int step = (Integer) sequeceRecordvalue.get(multipleSequenceDao
+                int step = (Integer) sequenceRecordValue.get(multipleSequenceDao
                     .getInnerStepColumnName());
                 MultipleSequence multipleSequence = new MultipleSequence(multipleSequenceDao,
                     seqName, min, max, step);

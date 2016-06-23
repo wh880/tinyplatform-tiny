@@ -19,32 +19,32 @@ public class ModuleManagerImpl implements ModuleManager {
 			.getLogger(ModuleManagerImpl.class);
 	
 	public Module add(Module module, ConfigPath entity) {
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，模块设值[%s=%s]" ,module.getName() ,module.getModuleName()));
+		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，模块设值[%s]" ,module.getName()));
 		try {
 			ZKModuleManager.set(module.getName(), module, entity);
 			return module;
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，模块设值失败[模块=%s]" ,e, module.getName() ));
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，模块设值失败[%s]" ,module.getName()) ,e);
 		}
 		return null;
 	}
 
 	public void update(Module module, ConfigPath entity) {
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，更新模块[%s=%s]" ,module.getName() ,module.getModuleName()));
+		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，更新模块[%s]" ,module.getName()));
 		try {
 			ZKModuleManager.set(module.getName(), module, entity);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，更新模块失败[%s=%s]" , e,module.getName() ,module.getModuleName()));
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，更新模块失败[%s]" , module.getName()) ,e);
 		}
 	}
 
 	public void delete(ConfigPath entity) {
 		String path = PathHelper.createPath(entity);
-		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，删除模块[%s=%s]" ,path));
+		LOGGER.logMessage(LogLevel.DEBUG, String.format("远程配置，删除模块[%s]" ,path));
 		try {
 			ZKModuleManager.delete("", entity);
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，删除模块[%s=%s]" ,e ,path));
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，删除模块[%s]" ,path) ,e);
 		}
 	}
  
@@ -68,7 +68,7 @@ public class ModuleManagerImpl implements ModuleManager {
 			}
 			return module;
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，获取模块失败[%s]",e ,path));
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，获取模块失败[%s]",path) ,e);
 		}
 		return null;
 	}
@@ -93,7 +93,7 @@ public class ModuleManagerImpl implements ModuleManager {
 				getSubModule(parentModule, tempPath);
 			}
 		} catch (Exception e) {
-			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，获取子模块失败[%s]" ,e ,path));
+			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，获取子模块失败[%s]" ,path) ,e);
 		}
 		return modules;
 	}

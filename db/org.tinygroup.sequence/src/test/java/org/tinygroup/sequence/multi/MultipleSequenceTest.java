@@ -24,8 +24,6 @@ public class MultipleSequenceTest extends AbstractDBUnitTest{
 		MultipleSequenceDao multipleSequenceDao=new MultipleSequenceDao();
 		List<DataSource> dataSources=createDataSourceList();
 		multipleSequenceDao.setDataSourceList(dataSources);
-//		multipleSequenceDao.setAdjust(false);
-//		multipleSequenceDao.init();
 		sequenceFactory.setMultipleSequenceDao(multipleSequenceDao);
 		sequenceFactory.init();
 		long curSeqId = 0;//当前id
@@ -38,7 +36,6 @@ public class MultipleSequenceTest extends AbstractDBUnitTest{
 				}else{
 					curSeqId++;
 				}
-				System.out.println(curSeqId);
 				Assert.assertEquals(curSeqId,temp);
 			}
 		} catch (Exception e) {

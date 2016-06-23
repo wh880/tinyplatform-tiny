@@ -10,7 +10,6 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.Stat;
 import org.tinygroup.exception.BaseRuntimeException;
-import org.tinygroup.logger.LogLevel;
 import org.tinygroup.remoteconfig.config.ConfigPath;
 import org.tinygroup.remoteconfig.config.Module;
 import org.tinygroup.remoteconfig.zk.utils.PathHelper;
@@ -55,7 +54,6 @@ public class ZKManager extends BaseManager{
 		try {
 			Stat stat = zooKeeper.exists(key, false);
 			if (stat == null) {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("节点设值[%s=%s]，节点不存在，自动创建" ,key ,value));
 				addSimple(key ,value);
 				return;
 			}
@@ -78,8 +76,6 @@ public class ZKManager extends BaseManager{
 					}
 				}
 				zooKeeper.create(node, value.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-			}else {
-				LOGGER.logMessage(LogLevel.DEBUG, String.format("节点[%s]已经存在" ,node));
 			}
 			return zooKeeper.exists(node, true);
 		} catch (KeeperException e) {
