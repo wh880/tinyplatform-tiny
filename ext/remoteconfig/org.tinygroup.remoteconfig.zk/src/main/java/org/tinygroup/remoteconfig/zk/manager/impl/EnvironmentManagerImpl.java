@@ -30,8 +30,11 @@ public class EnvironmentManagerImpl implements EnvironmentManager {
 	
 	ModuleManager moduleManager;
 	
-	public void setModuleManager(ModuleManager moduleManager) {
-		this.moduleManager = moduleManager;
+	public ModuleManager getModuleManager() {
+		if (moduleManager == null) {
+			moduleManager = new ModuleManagerImpl();
+		}
+		return moduleManager;
 	}
 	
 	public Environment add(Environment env, String versionId, String productId) {
@@ -83,7 +86,7 @@ public class EnvironmentManagerImpl implements EnvironmentManager {
 				return null;
 			}
 			configPath.setEnvironmentName(envId);
-			environment.setModules(moduleManager.querySubModules(configPath));
+			environment.setModules(getModuleManager().querySubModules(configPath));
 			return environment;
 		} catch (Exception e) {
 			LOGGER.logMessage(LogLevel.ERROR, "远程配置，获取环境失败[%s ,版本=%s ,项目=%s]" ,e ,envId ,versionId ,productId);

@@ -4,31 +4,8 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	   default-autowire="byName" default-lazy-init="true">
 	
-	<bean id="remoteConfigClient" name="remoteConfigClient" scope="singleton"
-		class="org.tinygroup.remoteconfig.zk.manager.impl.ZKConfigClientImpl">
-	</bean>
-	
 	<bean id="remoteConfigServer" name="remoteConfigServer" scope="singleton"
 		class="org.tinygroup.remoteconfig.zk.manager.impl.ConfigItemManagerImpl">
-	</bean>
-	
-	<bean id="environmentManager" name="environmentManager" scope="singleton"
-		class="org.tinygroup.remoteconfig.zk.manager.impl.EnvironmentManagerImpl">
-		<property name="moduleManager" ref="moduleManager"></property>
-	</bean>
-	
-	<bean id="moduleManager" name="moduleManager" scope="singleton"
-		class="org.tinygroup.remoteconfig.zk.manager.impl.ModuleManagerImpl">
-	</bean>
-	
-	<bean id="productManager" name="productManager" scope="singleton"
-		class="org.tinygroup.remoteconfig.zk.manager.impl.ProductManagerImpl">
-		<property name="versionManager" ref="versionManager"></property>
-	</bean>
-	
-	<bean id="versionManager" name="versionManager" scope="singleton"
-		class="org.tinygroup.remoteconfig.zk.manager.impl.VersionManagerImpl">
-		<property name="environmentManager" ref="environmentManager"></property>
 	</bean>
 	
 </beans>

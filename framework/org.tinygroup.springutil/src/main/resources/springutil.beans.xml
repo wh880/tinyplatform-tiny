@@ -12,9 +12,6 @@
 		class="org.tinygroup.springutil.ApplicationPropertyResourceConfigurer">
 		<property name="order" value="1" />  
 		<property name="ignoreUnresolvablePlaceholders" value="true" /> 
-		<property name="application">
-			<value>classpath:/application.xml</value>
-		</property>
 	</bean>
 	
 	<bean id="compositeParameterNameDiscoverer" scope="singleton"

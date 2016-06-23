@@ -29,8 +29,11 @@ public class ProductManagerImpl implements ProductManager {
 	
 	VersionManager versionManager;
 	
-	public void setVersionManager(VersionManager versionManager) {
-		this.versionManager = versionManager;
+	public VersionManager getVersionManager() {
+		if (versionManager == null) {
+			versionManager = new VersionManagerImpl();
+		}
+		return versionManager;
 	}
 	
 	public Product add(Product product) {
@@ -65,7 +68,7 @@ public class ProductManagerImpl implements ProductManager {
 		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，获取项目[%s]" ,productId);
 		try {
 			Product product = ZKProductManager.get(productId, null);
-			product.setVersions(versionManager.query(productId));
+			product.setVersions(getVersionManager().query(productId));
 			return product;
 		} catch (Exception e) {
 			LOGGER.logMessage(LogLevel.ERROR, String.format("远程配置，获取项目失败[%s]" , productId),e);
