@@ -1,3 +1,4 @@
 <tiny-mode-infos>
-	<tiny-mode-info from="bean" value="flowMonitor" mode-name="流程监控" />
+	<tiny-mode-info from="bean" value="flowMonitor" mode-name="逻辑流程监控" />
+	<tiny-mode-info from="bean" value="pageFlowMonitor" mode-name="页面流程监控" />
 </tiny-mode-infos>

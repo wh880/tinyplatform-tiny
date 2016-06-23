@@ -6,6 +6,9 @@
 	<bean id="flowMonitor" scope="singleton"
 		class="org.tinygroup.flow.mbean.FlowMonitor">
 		<property name="flowExecutor" ref="flowExecutor"></property>
-		<property name="pageFlowExecutor" ref="pageFlowExecutor"></property>
+	</bean>
+	<bean id="pageFlowMonitor" scope="singleton"
+		class="org.tinygroup.flow.mbean.FlowMonitor">
+		<property name="flowExecutor" ref="pageFlowExecutor"></property>
 	</bean>
 </beans>

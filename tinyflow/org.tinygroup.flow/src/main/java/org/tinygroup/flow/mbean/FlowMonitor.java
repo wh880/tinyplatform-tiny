@@ -5,7 +5,6 @@ import org.tinygroup.flow.FlowExecutor;
 public class FlowMonitor implements FlowMonitorMBean{
 
 	FlowExecutor flowExecutor;
-	FlowExecutor pageFlowExecutor;
 	
 	public FlowExecutor getFlowExecutor() {
 		return flowExecutor;
@@ -13,14 +12,6 @@ public class FlowMonitor implements FlowMonitorMBean{
 
 	public void setFlowExecutor(FlowExecutor flowExecutor) {
 		this.flowExecutor = flowExecutor;
-	}
-	
-	public FlowExecutor getPageFlowExecutor() {
-		return pageFlowExecutor;
-	}
-
-	public void setPageFlowExecutor(FlowExecutor pageFlowExecutor) {
-		this.pageFlowExecutor = pageFlowExecutor;
 	}
 	
 	public Integer getFlowServiceTotal() {
@@ -34,12 +25,13 @@ public class FlowMonitor implements FlowMonitorMBean{
 		return false;
 	}
 
-	public Integer getPageFlowServiceTotal() {
-		return pageFlowExecutor.getFlowIdMap().size();
+	public Integer getComponentTotal() {
+		flowExecutor.getComponentDefines();
+		return null;
 	}
 
-	public boolean isExistPageFlowService(String pageflowId) {
-		if(pageFlowExecutor.getFlow(pageflowId)!=null){
+	public boolean isExistComponent(String componentName) {
+		if(flowExecutor.getComponentDefine(componentName)!=null){
 			return true;
 		}
 		return false;
