@@ -62,7 +62,7 @@ public class CEPCoreImpl implements CEPCore {
 	private static final String ASYN_POOL_ATTRIBUTE = "bean";
 	private Map<String, List<EventProcessor>> serviceIdMap = new HashMap<String, List<EventProcessor>>();
 	// 服务版本，每次注册注销都会使其+1;
-	ExecutorService executor = null;
+	private static ExecutorService executor = null;
 	private static int serviceVersion = 0;
 	/**
 	 * 存放所有的EventProcessor
