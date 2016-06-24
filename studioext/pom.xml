@@ -13,5 +13,6 @@
         <module>org.tinygroup.genservicewrap</module>
         <module>org.tinygroup.gensql</module>
 		<module>org.tinygroup.uimllayout</module>
+		<module>org.tinygroup.genservicewrapxml</module>
     </modules>
 </project>
