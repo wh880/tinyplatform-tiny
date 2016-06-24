@@ -96,6 +96,16 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.tinygroup</groupId>
+            <artifactId>org.tinygroup.uiengineweblayer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tinygroup</groupId>
+            <artifactId>org.tinygroup.serviceweblayer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 		</dependency>
