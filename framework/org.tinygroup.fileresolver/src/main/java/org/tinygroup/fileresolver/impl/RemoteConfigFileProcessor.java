@@ -4,7 +4,6 @@
 package org.tinygroup.fileresolver.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.config.util.ConfigurationUtil;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
@@ -34,6 +33,11 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 		this.applicationXML = applicationXML;
 	}
 	
+	public void setRemoteConfigReadClient(
+			RemoteConfigReadClient remoteConfigReadClient) {
+		this.remoteConfigReadClient = remoteConfigReadClient;
+	}
+	
 	public String getApplicationNodePath() {
 		return REMOTE_CONFIG_PATH;
 	}
@@ -50,7 +54,6 @@ public class RemoteConfigFileProcessor extends AbstractFileProcessor{
 			}
 		}
 		LOGGER.logMessage(LogLevel.INFO, "开始启动远程配置处理器");
-		remoteConfigReadClient = BeanContainerFactory.getBeanContainer(getClass().getClassLoader()).getBean(RemoteConfigReadClient.class);
 		if (remoteConfigReadClient == null) {
 			throw new RuntimeException("未找到远程配置实现bean");
 		}

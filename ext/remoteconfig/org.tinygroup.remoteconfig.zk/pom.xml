@@ -24,12 +24,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.tinygroup</groupId>
-			<artifactId>org.tinygroup.tinyrunner</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.tinygroup</groupId>
 			<artifactId>org.tinygroup.remoteconfig</artifactId>
 			<version>${project.version}</version>
 		</dependency>

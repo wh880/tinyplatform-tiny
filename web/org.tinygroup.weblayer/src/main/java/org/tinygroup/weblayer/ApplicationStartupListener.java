@@ -42,7 +42,6 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
@@ -50,7 +49,6 @@ import org.tinygroup.fileresolver.FullContextFileRepository;
 import org.tinygroup.fileresolver.impl.ConfigurationFileProcessor;
 import org.tinygroup.fileresolver.impl.LocalPropertiesFileProcessor;
 import org.tinygroup.fileresolver.impl.MergePropertiesFileProcessor;
-import org.tinygroup.fileresolver.impl.RemoteConfigFileProcessor;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
@@ -244,14 +242,12 @@ public class ApplicationStartupListener implements ServletContextListener {
 		} catch (Exception e) {
 			logger.errorMessage("为文件扫描器添加webLibJars时出现异常", e);
 		}
-		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		
 		fileResolver.addFileProcessor(new LocalPropertiesFileProcessor(applicationConfig));
 		
-		FileProcessor remoteConfig = new RemoteConfigFileProcessor(applicationConfig);
-		fileResolver.addFileProcessor(remoteConfig);
-		
 		fileResolver.addFileProcessor(new MergePropertiesFileProcessor());
+		
+		fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 		
 		fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 		fileResolver.resolve();

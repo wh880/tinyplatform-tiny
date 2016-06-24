@@ -28,8 +28,11 @@ public class VersionManagerImpl implements VersionManager {
 	
 	EnvironmentManager environmentManager;
 	
-	public void setEnvironmentManager(EnvironmentManager environmentManager) {
-		this.environmentManager = environmentManager;
+	public EnvironmentManager getEnvironmentManager() {
+		if (environmentManager == null) {
+			environmentManager = new EnvironmentManagerImpl();
+		}
+		return environmentManager;
 	}
 	
 	public Version add(Version version, String productId) {
@@ -76,7 +79,7 @@ public class VersionManagerImpl implements VersionManager {
 			if (version == null) {
 				return null;
 			}
-			version.setEnvironment(environmentManager.query(versionId, productId));
+			version.setEnvironment(getEnvironmentManager().query(versionId, productId));
 			return version;
 		} catch (Exception e) {
 			LOGGER.logMessage(LogLevel.ERROR,"远程配置，获取版本失败[项目=%s ,版本=%s]" ,e ,productId ,versionId);

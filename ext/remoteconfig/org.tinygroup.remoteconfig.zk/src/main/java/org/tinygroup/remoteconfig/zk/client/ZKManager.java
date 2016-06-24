@@ -1,5 +1,6 @@
 package org.tinygroup.remoteconfig.zk.client;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ public class ZKManager extends BaseManager{
 			throw new BaseRuntimeException("0TE120119003", e ,key);
 		} catch (InterruptedException e) {
 			throw new BaseRuntimeException("0TE120119004", e ,key);
+		} catch (UnsupportedEncodingException e) {
+			throw new BaseRuntimeException("0TE120119003", e ,key);
 		}
 	}
 
@@ -44,6 +47,8 @@ public class ZKManager extends BaseManager{
 		} catch (KeeperException e) {
 			//当没有找到子项时，会抛出此异常，我们不做任何处理
 		} catch (InterruptedException e) {
+			throw new BaseRuntimeException("0TE120119006", e ,node);
+		} catch (UnsupportedEncodingException e) {
 			throw new BaseRuntimeException("0TE120119006", e ,node);
 		}
 		return dataMap;
@@ -114,20 +119,16 @@ public class ZKManager extends BaseManager{
 		}
 	}
 
-	private static String getSimple(String key) throws KeeperException, InterruptedException{
+	private static String getSimple(String key) throws KeeperException, InterruptedException, UnsupportedEncodingException{
 		Stat stat = zooKeeper.exists(key, false);
 		if (stat != null) {
 			byte[] resultData = zooKeeper.getData(key, false, stat);
 			if (resultData != null) {
-				try {
-					Object obj =  SerializeUtil.unserialize(resultData);
-					if (obj == null) {
-						return new String(resultData);
-					}else if (obj instanceof String) {
-						return obj.toString();
-					}
-				} catch (ClassCastException e) {
-					
+				Object obj =  SerializeUtil.unserialize(resultData);
+				if (obj == null) {
+					return new String(resultData ,"UTF-8");
+				}else if (obj instanceof String) {
+					return obj.toString();
 				}
 			}
 		}

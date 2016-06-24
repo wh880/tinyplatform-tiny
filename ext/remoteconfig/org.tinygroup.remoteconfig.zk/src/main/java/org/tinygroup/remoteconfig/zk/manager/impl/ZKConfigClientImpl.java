@@ -27,10 +27,13 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 	
 	ConfigPath configPath;
 	
-	EnvironmentManager environmentManager;
+	private EnvironmentManager environmentManager;
 	
-	public void setEnvironmentManager(EnvironmentManager environmentManager) {
-		this.environmentManager = environmentManager;
+	public EnvironmentManager getEnvironmentManager() {
+		if (environmentManager == null) {
+			environmentManager = new EnvironmentManagerImpl();
+		}
+		return environmentManager;
 	}
 	
 	public boolean exists(String key) throws BaseRuntimeException{
@@ -61,8 +64,8 @@ public class ZKConfigClientImpl implements RemoteConfigReadClient{
 		Map<String,String> defaultItemMap = new HashMap<String, String>();
 		String path = PathHelper.createPath(configPath);
 		LOGGER.logMessage(LogLevel.DEBUG, "远程配置，批量获取节点[path=%s]" ,path);
-		Environment defaultEnvironment = environmentManager.get(IRemoteConfigConstant.DEFAULT_ENV_NAME, configPath.getVersionName(), configPath.getProductName());
-		Environment environment = environmentManager.get(configPath.getEnvironmentName(), configPath.getVersionName(), configPath.getProductName());
+		Environment defaultEnvironment = getEnvironmentManager().get(IRemoteConfigConstant.DEFAULT_ENV_NAME, configPath.getVersionName(), configPath.getProductName());
+		Environment environment = getEnvironmentManager().get(configPath.getEnvironmentName(), configPath.getVersionName(), configPath.getProductName());
 		if (environment != null && defaultEnvironment != null) {
 			//取默认环境
 			getConfig(defaultEnvironment, defaultItemMap);

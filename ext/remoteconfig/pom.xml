@@ -10,5 +10,6 @@
     <modules>
 		<module>org.tinygroup.remoteconfig</module>
 		<module>org.tinygroup.remoteconfig.zk</module>
+		<module>org.tinygroup.remoteconfig.zk.web</module>
     </modules>
 </project>

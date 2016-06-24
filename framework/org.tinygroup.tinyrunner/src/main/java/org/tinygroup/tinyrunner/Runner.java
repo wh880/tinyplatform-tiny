@@ -25,7 +25,6 @@ import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.commons.io.StreamUtil;
 import org.tinygroup.config.ConfigurationManager;
 import org.tinygroup.config.util.ConfigurationUtil;
-import org.tinygroup.fileresolver.FileProcessor;
 import org.tinygroup.fileresolver.FileResolver;
 import org.tinygroup.fileresolver.FileResolverFactory;
 import org.tinygroup.fileresolver.FileResolverUtil;
@@ -36,6 +35,7 @@ import org.tinygroup.fileresolver.impl.RemoteConfigFileProcessor;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
 import org.tinygroup.parser.filter.PathFilter;
+import org.tinygroup.remoteconfig.RemoteConfigReadClient;
 import org.tinygroup.springutil.SpringBeanContainer;
 import org.tinygroup.springutil.fileresolver.SpringBeansFileProcessor;
 import org.tinygroup.xmlparser.node.XmlNode;
@@ -57,6 +57,14 @@ public class Runner {
 			}
 			initDirect(xmlFile,includePathPatterns);
 		}
+		
+		private static RemoteConfigReadClient remoteConfigReadClient;
+		
+		public static void setRemoteConfigReadClient(
+				RemoteConfigReadClient remoteConfigReadClient) {
+			Runner.remoteConfigReadClient = remoteConfigReadClient;
+		}
+		
 		/**
 		 * 初始化
 		 * 
@@ -153,14 +161,16 @@ public class Runner {
 			fileResolver.addIncludePathPattern(TINY_JAR_PATTERN);
 			addIncludePathPatterns(fileResolver,includePathPatterns);
 			loadFileResolverConfig(fileResolver, applicationConfig);
-			fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 			
 			fileResolver.addFileProcessor(new LocalPropertiesFileProcessor(applicationConfig));
 			
-			FileProcessor remoteConfig = new RemoteConfigFileProcessor(applicationConfig);
+			RemoteConfigFileProcessor remoteConfig = new RemoteConfigFileProcessor(applicationConfig);
+			remoteConfig.setRemoteConfigReadClient(remoteConfigReadClient);
 			fileResolver.addFileProcessor(remoteConfig);
 			
 			fileResolver.addFileProcessor(new MergePropertiesFileProcessor());
+			
+			fileResolver.addFileProcessor(new SpringBeansFileProcessor());
 			
 			fileResolver.addFileProcessor(new ConfigurationFileProcessor());
 			// SpringUtil.regSpringConfigXml(xmlFile);

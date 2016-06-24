@@ -1,0 +1,5 @@
+<xstream-configuration package-name="contextParam">
+	<xstream-annotation-classes>
+		<xstream-annotation-class class-name="org.tinygroup.webservice.config.ContextParams" />
+	</xstream-annotation-classes>
+</xstream-configuration>
