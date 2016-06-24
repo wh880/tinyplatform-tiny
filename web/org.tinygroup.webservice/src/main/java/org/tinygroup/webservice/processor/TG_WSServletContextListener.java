@@ -32,14 +32,20 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.xml.ws.WebServiceException;
 
-import org.tinygroup.beancontainer.BeanContainerFactory;
 import org.tinygroup.cepcore.CEPCore;
 import org.tinygroup.commons.tools.StringUtil;
 import org.tinygroup.event.ServiceInfo;
 import org.tinygroup.logger.LogLevel;
 import org.tinygroup.logger.Logger;
 import org.tinygroup.logger.LoggerFactory;
+import org.tinygroup.weblayer.listener.ServletContextHolder;
 import org.tinygroup.weblayer.listener.TinyListenerProcessor;
+import org.tinygroup.weblayer.listener.TinyServletContext;
+import org.tinygroup.webservice.config.ContextParam;
+import org.tinygroup.webservice.config.ContextParams;
+import org.tinygroup.webservice.config.PastPattern;
+import org.tinygroup.webservice.config.SkipPattern;
+import org.tinygroup.webservice.manager.ContextParamManager;
 import org.tinygroup.webservice.util.WebserviceUtil;
 import org.tinygroup.xmlparser.node.XmlNode;
 import org.tinygroup.xmlparser.parser.XmlParser;
@@ -56,7 +62,7 @@ import com.sun.xml.ws.transport.http.servlet.WSServletDelegate;
 
 public class TG_WSServletContextListener implements
 		ServletContextAttributeListener, ServletContextListener {
-	CEPCore core;
+	private CEPCore core;
 
 	public CEPCore getCore() {
 		return core;
@@ -64,6 +70,16 @@ public class TG_WSServletContextListener implements
 
 	public void setCore(CEPCore core) {
 		this.core = core;
+	}
+
+	private ContextParamManager contextParamManager;
+
+	public ContextParamManager getContextParamManager() {
+		return contextParamManager;
+	}
+
+	public void setContextParamManager(ContextParamManager contextParamManager) {
+		this.contextParamManager = contextParamManager;
 	}
 
 	private WSServletDelegate delegate;
@@ -103,8 +119,9 @@ public class TG_WSServletContextListener implements
 		XmlParser<String> parser = new XmlStringParser();
 		XmlNode xmlNode = parser.parse(linsenterConfig).getRoot();
 		addSkipPathPattern(xmlNode);
+		addSkipPathPattern(contextParamManager.getAllSkipPattens());
 		addPastPathPattern(xmlNode);
-		core = BeanContainerFactory.getBeanContainer(this.getClass().getClassLoader()).getBean(CEPCore.CEP_CORE_BEAN);
+		addPastPathPattern(contextParamManager.getAllPastPatterns());
 		List<ServiceInfo> serviceInfos = core.getServiceInfos();
 		List<ServiceInfo> publishList = new ArrayList<ServiceInfo>();
 		for (ServiceInfo serviceInfo : serviceInfos) {
@@ -116,9 +133,21 @@ public class TG_WSServletContextListener implements
 		return publishList;
 	}
 
+	private void addPastPathPattern(List<PastPattern> allPastPatterns) {
+		for (PastPattern pastPattern : allPastPatterns) {
+			addPastPathPattern(pastPattern.getPattern());
+		}
+	}
+
+	private void addSkipPathPattern(List<SkipPattern> allSkipPattens) {
+		for (SkipPattern skipPattern : allSkipPattens) {
+			addSkipPathPattern(skipPattern.getPattern());
+		}
+	}
+
 	private void addSkipPathPattern(XmlNode xmlNode) {
 		List<XmlNode> skipTags = xmlNode.getSubNodes(SKIP_TAG);
-		if(skipTags==null){
+		if (skipTags == null) {
 			return;
 		}
 		for (XmlNode tag : skipTags) {
@@ -126,13 +155,14 @@ public class TG_WSServletContextListener implements
 			addSkipPathPattern(pattern);
 		}
 	}
+
 	public void addSkipPathPattern(String pattern) {
 		skipPathPatternMap.put(pattern, Pattern.compile(pattern));
 	}
 
 	private void addPastPathPattern(XmlNode xmlNode) {
 		List<XmlNode> pastTags = xmlNode.getSubNodes(PAST_TAG);
-		if(pastTags==null){
+		if (pastTags == null) {
 			return;
 		}
 		for (XmlNode tag : pastTags) {
@@ -140,6 +170,7 @@ public class TG_WSServletContextListener implements
 			addPastPathPattern(pattern);
 		}
 	}
+
 	public void addPastPathPattern(String pattern) {
 		pastPathPatternMap.put(pattern, Pattern.compile(pattern));
 	}
@@ -175,7 +206,9 @@ public class TG_WSServletContextListener implements
 		logger.logMessage(LogLevel.INFO,
 				WsservletMessages.LISTENER_INFO_INITIALIZE());
 
-		ServletContext context = event.getServletContext();
+		TinyServletContext context = (TinyServletContext) ServletContextHolder
+				.getServletContext();
+		initParam(contextParamManager.getAllContextParams(),context);
 		String linsenterConfig = context
 				.getInitParameter(TinyListenerProcessor.LISTENER_NODE_CONFIG);
 
@@ -184,14 +217,16 @@ public class TG_WSServletContextListener implements
 		if (classLoader == null) {
 			classLoader = getClass().getClassLoader();
 		}
-		String contextPath = StringUtil.substringAfter(context.getContextPath(), "/");
-		String packageName=WebserviceUtil.PACKAGE_NAME+"."+contextPath.toLowerCase();
+		String contextPath = StringUtil.substringAfter(
+				context.getContextPath(), "/");
+		String packageName = WebserviceUtil.PACKAGE_NAME + "."
+				+ contextPath.toLowerCase();
 		List<ServiceInfo> serviceInfos = getPublishService(linsenterConfig);
 		for (ServiceInfo serviceInfo : serviceInfos) {
 			try {
 				logger.logMessage(LogLevel.INFO,
 						"开始发布服务" + serviceInfo.getServiceId());
-				createService(packageName,serviceInfo, classLoader, context);
+				createService(packageName, serviceInfo, classLoader, context);
 				logger.logMessage(LogLevel.INFO,
 						"发布服务" + serviceInfo.getServiceId() + "成功");
 			} catch (Throwable e) {
@@ -203,16 +238,27 @@ public class TG_WSServletContextListener implements
 
 			}
 		}
-		if(adapters==null){
-			adapters=new ArrayList<ServletAdapter>();
+		if (adapters == null) {
+			adapters = new ArrayList<ServletAdapter>();
 		}
 		delegate = createDelegate(adapters, context);
 		context.setAttribute(WSServlet.JAXWS_RI_RUNTIME_INFO, delegate);
 	}
 
-	private void createService(String packageName,ServiceInfo serviceInfo,
+	private void initParam(List<ContextParams> allContextParams,
+			TinyServletContext servletContext) {
+		for (ContextParams contextParams : allContextParams) {
+			for (ContextParam contextParam : contextParams.getContextParams()) {
+				servletContext.setInitParameter(contextParam.getName(),
+						contextParam.getValue());
+			}
+		}
+
+	}
+
+	private void createService(String packageName, ServiceInfo serviceInfo,
 			ClassLoader classLoader, ServletContext context) throws IOException {
-		WebserviceUtil.genWSDL(serviceInfo,packageName);
+		WebserviceUtil.genWSDL(serviceInfo, packageName);
 		// Parse the descriptor file and build endpoint infos
 		DeploymentDescriptorParser<ServletAdapter> parser = new DeploymentDescriptorParser<ServletAdapter>(
 				classLoader, new ServletResourceLoader(context),
@@ -226,7 +272,8 @@ public class TG_WSServletContextListener implements
 		if (sunJaxWsXml == null)
 			throw new WebServiceException(
 					WsservletMessages.NO_SUNJAXWS_XML(JAXWS_RI_RUNTIME));
-		InputStream is = WebserviceUtil.getXmlInputStream(serviceInfo,packageName);
+		InputStream is = WebserviceUtil.getXmlInputStream(serviceInfo,
+				packageName);
 		if (adapters == null) {
 			adapters = parser.parse(sunJaxWsXml.toExternalForm(), is);
 		} else {
@@ -237,17 +284,15 @@ public class TG_WSServletContextListener implements
 	/**
 	 * Creates {@link Container} implementation that hosts the JAX-WS endpoint.
 	 */
-	protected @NotNull
-	Container createContainer(ServletContext context) {
+	protected @NotNull Container createContainer(ServletContext context) {
 		return new ServletContainer(context);
 	}
 
 	/**
 	 * Creates {@link WSServletDelegate} that does the real work.
 	 */
-	protected @NotNull
-	WSServletDelegate createDelegate(List<ServletAdapter> adapters,
-			ServletContext context) {
+	protected @NotNull WSServletDelegate createDelegate(
+			List<ServletAdapter> adapters, ServletContext context) {
 		return new WSServletDelegate(adapters, context);
 	}
 
