@@ -1,5 +1,6 @@
 package org.tinygroup.remoteconfig.zk.client;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +123,7 @@ public class ZKManager extends BaseManager{
 				try {
 					Object obj =  SerializeUtil.unserialize(resultData);
 					if (obj == null) {
-						return new String(resultData);
+						return new String(resultData ,"UTF-8");
 					}else if (obj instanceof String) {
 						return obj.toString();
 					}
